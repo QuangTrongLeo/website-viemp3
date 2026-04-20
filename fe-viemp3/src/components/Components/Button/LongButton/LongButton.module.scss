@@ -1,0 +1,17 @@
+.long-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 20px;
+  border-radius: 16px;
+  font-weight: 600;
+  border: 1px solid;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+}
