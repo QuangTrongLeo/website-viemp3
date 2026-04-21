@@ -1,0 +1,49 @@
+.search-row-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+
+  &:hover .search-row {
+    background-color: var(--black-color-light-2);
+  }
+
+  &:hover .search-row-content {
+    color: var(--primary-color);
+  }
+}
+
+.search-row {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--black-color-light-2);
+  cursor: pointer;
+
+  .search-row-cover {
+    width: 54px;
+    height: 54px;
+    border: 1px solid var(--black-color-light-1);
+    border-radius: 4px;
+    object-fit: cover;
+
+    &.artist-avatar {
+      border-radius: 50%;
+    }
+  }
+
+  .search-row-content {
+    font-weight: 500;
+    max-width: 274px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .search-row-desc {
+    color: var(--white-darker-color);
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
