@@ -1,0 +1,29 @@
+.create-card {
+  background-color: var(--black-color-light-1);
+  border: none;
+  min-height: 200px;
+  min-width: 200px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 10px;
+  color: var(--white-color);
+
+  &:hover {
+    color: var(--primary-color);
+    background-color: var(--black-color-light-2);
+  }
+}
+
+.create-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.create-content {
+  font-size: 16px;
+}
