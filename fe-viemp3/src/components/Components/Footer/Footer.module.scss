@@ -1,0 +1,15 @@
+.footer {
+  a {
+    color: #b3b3b3;
+    text-decoration: none;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  h5 {
+    color: white;
+    margin-bottom: 1rem;
+  }
+}
