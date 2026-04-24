@@ -1,21 +1,21 @@
-// import Header from '~/components/Components/Header';
+import Header from '~/components/Components/Header';
 
 function BaseLayout({
   children,
   renderMainContent,
-  // isLoggedIn,
-  // onToggleAvatarMenu,
-  // onToggleNotificationTablet,
-  // bellButtonRef,
+  isLoggedIn,
+  onToggleAvatarMenu,
+  onToggleNotificationTablet,
+  bellButtonRef,
 }) {
   return (
     <div>
-      {/* <Header
+      <Header
         isLoggedIn={isLoggedIn}
         onToggleAvatarMenu={onToggleAvatarMenu}
         onToggleNotificationTablet={onToggleNotificationTablet}
         bellButtonRef={bellButtonRef}
-      /> */}
+      />
 
       {renderMainContent?.() || (
         <div className="container-fluid">
