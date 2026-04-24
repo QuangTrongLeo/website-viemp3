@@ -1,0 +1,87 @@
+// NAV SONG PLAYER
+.navbar-song-player {
+  height: 90px;
+  border-top: 2px solid var(--black-color-light-1);
+  background-color: var(--black-color);
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(0); // mặc định hiện
+}
+
+.navbar-song-player.slide-down-song-player {
+  transform: translateY(100%);
+}
+
+// SONGPLAYER LEFT ELEMENT
+.link-artist-hover-color,
+.link-song-hover-color {
+  color: var(--white-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--primary-color-light);
+  }
+}
+
+.song-info-wrapper {
+  margin-top: 2%;
+  max-width: 30vw; /* 30% chiều rộng viewport */
+  overflow: hidden;
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0; /* loại bỏ margin mặc định của h5 nếu cần */
+}
+
+// SONGPLAYER RIGHT ELEMENT
+.icon-song-player-right-element-btn {
+  background: transparent;
+  border: none;
+  color: var(--black-color-light-2);
+  font-size: 16px;
+  position: relative;
+  cursor: pointer;
+  padding: 4px;
+
+  &:hover {
+    color: var(--white-color);
+  }
+
+  &.active {
+    color: var(--primary-color);
+
+    .dot-indicator {
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+    }
+  }
+}
+
+.icon-song-player-right-element-btn.flash {
+  color: var(--primary-color);
+}
+
+.volume-bar-wrapper {
+  width: 30%;
+  height: 4px;
+  background-color: var(--black-color-light-2);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  pointer-events: auto;
+
+  .volume-bar-fill {
+    height: 100%;
+    background-color: var(--white-color);
+    transition: width 0.2s ease;
+  }
+}
