@@ -1,0 +1,47 @@
+.notification-wrapper {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  background-color: var(--white-color);
+  border-left: 6px solid var(--primary-color);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 12px 16px;
+  min-width: 320px;
+  max-width: 400px;
+  z-index: 12;
+
+  /* ban đầu ẩn ngoài màn hình */
+  transform: translate3d(100%, 0, 0);
+  opacity: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  will-change: transform, opacity;
+  pointer-events: none; /* không cho tương tác khi ẩn */
+
+  &.visible {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    pointer-events: auto; /* bật tương tác khi hiện */
+  }
+
+  &.hidden {
+    transform: translate3d(100%, 0, 0);
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--black-color-light-2);
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: var(--primary-color);
+}
