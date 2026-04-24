@@ -12,6 +12,9 @@ const cx = classNames.bind(styles);
 function Search() {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  // const [artists, setArtists] = useState([]);
+  // const [songs, setSongs] = useState([]);
+  // const [albums, setAlbums] = useState([]);
   const navigate = useNavigate();
 
   const artists = [

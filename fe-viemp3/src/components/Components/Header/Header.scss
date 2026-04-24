@@ -1,0 +1,116 @@
+// LOGO
+.navbar-logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 22%;
+}
+
+// VOICE BTN
+.voice-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--black-color-light-1);
+  border: none;
+  color: var(--white-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--black-color-light-2);
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.custom-navbar {
+  background-color: var(--black-color) !important;
+  box-shadow: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-nav-header .nav-link i {
+  color: var(--white-color);
+  transition: color 0.3s ease;
+}
+
+.navbar-nav-header .nav-link:hover i {
+  color: var(--primary-color);
+}
+
+// Dropdown-left for under avatar
+.custom-dropdown-left {
+  left: 0 !important;
+  right: auto !important;
+  transform: translateX(-70%); /* Điều chỉnh mức lệch trái */
+  background-color: var(--black-color-light-1);
+  border: none; // tùy chọn nếu muốn bỏ viền
+
+  .dropdown-item {
+    color: white; // chữ trắng nếu bạn cần
+    background-color: transparent;
+
+    &:hover {
+      background-color: var(--black-color-light-2);
+      color: white; // đảm bảo vẫn rõ chữ
+    }
+  }
+}
+
+.icon-tooltip-wrapper {
+  position: relative;
+
+  .icon-tooltip {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--black-color-light-1, #2e2b29);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+  }
+
+  &:hover .icon-tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// PREMIUM BTN
+.btn-premium {
+  background-color: var(--white-color);
+  color: var(--black-color);
+  font-weight: 600;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+}
+
+// TOGGLER
+.navbar-toggler {
+  border-color: var(--white-color);
+
+  .fa-bars {
+    color: var(--white-color);
+  }
+}

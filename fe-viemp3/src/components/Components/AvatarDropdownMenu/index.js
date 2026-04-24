@@ -12,6 +12,11 @@ function AvatarDropdownMenu({ isMod, isAdmin }) {
           <i className={`${icons.iconUser} me-2`}></i> Hồ sơ
         </Link>
       </li>
+      <li>
+        <Link className="dropdown-item" to={config.routes.order}>
+          <i className={`${icons.iconOrder} me-2`}></i> Đơn hàng của bạn
+        </Link>
+      </li>
 
       {/* MOD */}
       {isMod && (
