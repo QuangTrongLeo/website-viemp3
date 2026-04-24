@@ -1,0 +1,65 @@
+.notification-tablet {
+  position: absolute;
+  right: 8%;
+  top: 80px;
+  z-index: 10;
+  padding: 8px;
+  min-width: 460px;
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+
+  background-color: var(--black-dark-color);
+  color: var(--white-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--black-color-light-2);
+
+  h4 {
+    margin: 0;
+    padding: 10px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--black-color-light-2);
+  }
+
+  .notification-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .notification-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    .notif-avatar {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    span {
+      font-size: 0.75rem;
+      color: #aaa;
+    }
+
+    &:hover {
+      background-color: var(--black-color-light-1);
+    }
+  }
+
+  // Màn hình nhỏ hơn desktop
+  @media (max-width: 1024px) {
+    top: 132px;
+  }
+}
