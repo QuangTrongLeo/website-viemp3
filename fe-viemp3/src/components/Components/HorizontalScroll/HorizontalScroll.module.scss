@@ -1,0 +1,58 @@
+.scroll-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  // Ẩn nút khi không hover
+  .scroll-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover .scroll-btn {
+    opacity: 1;
+  }
+}
+
+.scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: var(--black-color);
+  border: none;
+  color: var(--white-color);
+  font-size: 20px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: var(--primary-color);
+    background-color: var(--black-color-light-1);
+  }
+}
+
+.scroll-btn.left {
+  left: 10px;
+}
+
+.scroll-btn.right {
+  right: 10px;
+}
