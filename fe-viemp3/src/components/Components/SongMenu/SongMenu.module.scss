@@ -1,0 +1,75 @@
+// --- Tippy Menu Styling ---
+.menu-popper {
+  background-color: #282828;
+  box-shadow:
+    0 16px 24px rgba(0, 0, 0, 0.3),
+    0 6px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 4px;
+  min-width: 220px;
+  z-index: 9999;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  color: #eaeaea;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: 2px;
+  gap: 12px;
+  text-decoration: none;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  span {
+    flex: 1;
+  }
+  i {
+    width: 16px;
+    text-align: center;
+  }
+
+  &.has-submenu {
+    position: relative;
+  }
+}
+
+.menu-item-disabled {
+  padding: 12px;
+  color: #777;
+  font-size: 0.875rem;
+}
+
+.divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
+}
+
+.search-wrapper {
+  padding: 8px;
+  input {
+    width: 100%;
+    background: #3e3e3e;
+    border: none;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    outline: none;
+
+    &::placeholder {
+      color: #b3b3b3;
+    }
+  }
+}
+
+.playlist-list {
+  max-height: 200px;
+  overflow-y: auto;
+}

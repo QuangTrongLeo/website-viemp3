@@ -4,9 +4,16 @@ import styles from './SongItem.module.scss';
 import icons from '~/assets/icons';
 import { Link } from 'react-router-dom';
 
-import SongMenu from '../SongMenu';
+import SongMenu from '../SongMenu/index';
 
+// API: ARTIST
+// Lấy thông tin nghệ sĩ theo artistId
 import { apiGetArtist } from '~/api/services/serviceArtists';
+
+// API: FAVORITE
+// Lấy danh sách bài hát yêu thích của người dùng
+// Thêm bài hát vào danh sách yêu thích
+// Xóa bài hát khỏi danh sách yêu thích
 import { apiGetMyFavoriteSongs, apiAddSongToFavorite, apiRemoveSongFromFavorite } from '~/api/services/serviceSongs';
 
 const cx = classNames.bind(styles);
