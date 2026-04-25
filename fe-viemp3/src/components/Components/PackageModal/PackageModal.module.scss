@@ -1,0 +1,226 @@
+$on-primary-container: #002a0c;
+$surface-container: #1a1a1a;
+$on-surface-variant: #adaaaa;
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 1050;
+  animation: fadeIn 0.3s ease;
+}
+
+.modalWrapper {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 1060;
+  animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modalContent {
+  background-color: $surface-container !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  width: 100%;
+  max-width: 450px;
+
+  .header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title {
+      font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: white;
+    }
+  }
+
+  .body {
+    padding: 0 20px;
+
+    .label {
+      font-size: 0.85rem;
+    }
+
+    .planHighlight {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .voucherSection {
+      .voucherSelect {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 12px;
+        padding: 12px;
+        color: white;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+    padding: 20px;
+    display: flex;
+
+    .btnCancel {
+      flex: 1;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--white-color);
+      border-radius: 12px;
+      padding: 8px;
+      font-weight: 600;
+      transition: all 0.2s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    .btnConfirm {
+      flex: 2;
+      background-color: var(--primary-color);
+      color: var(--white-color);
+      border: none;
+      border-radius: 12px;
+      padding: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &:hover {
+        filter: brightness(1.2);
+      }
+    }
+  }
+}
+
+.infoBox {
+  .infoRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+
+    span {
+      color: $on-surface-variant;
+    }
+    strong {
+      color: var(--white-color);
+    }
+
+    &.discountText {
+      strong {
+        color: #ff4d4f;
+      }
+    }
+
+    &.totalRow {
+      span {
+        color: var(--white-color);
+        font-weight: 600;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .finalPrice {
+    color: var(--primary-color) !important;
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+  }
+
+  .divider {
+    margin: 8px 0;
+    border-top: 1px dashed rgba(255, 255, 255, 0.2);
+  }
+}
+
+.voucherCard {
+  margin-top: 10px;
+  display: flex;
+  background: linear-gradient(135deg, #2dbd69 0%, #1a9a52 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  animation: modalIn 0.3s ease;
+
+  .cardLeft {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 2px dashed rgba(255, 255, 255, 0.3);
+    color: var(--white-color);
+
+    .percent {
+      font-size: 1.4rem;
+      font-weight: 900;
+    }
+    .off {
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+  }
+
+  .cardRight {
+    flex: 1;
+    padding: 6px;
+    color: var(--white-color);
+
+    .vTitle {
+      margin: 0;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+    .vLimit,
+    .vDate {
+      margin: 0;
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+    .vStock {
+      margin-top: 5px;
+      font-size: 0.7rem;
+      background: rgba(0, 0, 0, 0.2);
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
