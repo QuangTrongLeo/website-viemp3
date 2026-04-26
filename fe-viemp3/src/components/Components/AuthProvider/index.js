@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-import { apiRefreshToken } from '~/api/services/serviceAuths';
+// import { apiRefreshToken } from '~/api/services/serviceAuths';
 import config from '~/config';
 
 const AuthContext = createContext();
@@ -98,16 +98,16 @@ function AuthProvider({ children }) {
   }, [currentToken]);
 
   const handleRefresh = async () => {
-    try {
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (!refreshToken) return logout();
+    // try {
+    //   const refreshToken = localStorage.getItem('refreshToken');
+    //   if (!refreshToken) return logout();
 
-      const data = await apiRefreshToken(refreshToken);
-      setCurrentToken(data.accessToken);
-    } catch (error) {
-      console.error('Refresh failed', error);
-      logout();
-    }
+    //   const data = await apiRefreshToken(refreshToken);
+    //   setCurrentToken(data.accessToken);
+    // } catch (error) {
+    //   console.error('Refresh failed', error);
+    //   logout();
+    // }
   };
 
   const logout = () => {
