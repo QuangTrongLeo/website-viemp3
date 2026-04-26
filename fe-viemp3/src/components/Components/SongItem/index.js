@@ -6,15 +6,8 @@ import { Link } from 'react-router-dom';
 
 import SongMenu from '../SongMenu/index';
 
-// API: ARTIST
-// Lấy thông tin nghệ sĩ theo artistId
-import { apiGetArtist } from '~/api/services/serviceArtists';
-
-// API: FAVORITE
-// Lấy danh sách bài hát yêu thích của người dùng
-// Thêm bài hát vào danh sách yêu thích
-// Xóa bài hát khỏi danh sách yêu thích
-import { apiGetMyFavoriteSongs, apiAddSongToFavorite, apiRemoveSongFromFavorite } from '~/api/services/serviceSongs';
+// import { apiGetArtist } from '~/api/services/serviceArtists';
+// import { apiGetMyFavoriteSongs, apiAddSongToFavorite, apiRemoveSongFromFavorite } from '~/api/services/serviceSongs';
 
 const cx = classNames.bind(styles);
 
@@ -33,13 +26,13 @@ function SongItem({ song }) {
   // ===== FAVORITE =====
   useEffect(() => {
     const fetchFavorites = async () => {
-      try {
-        const data = await apiGetMyFavoriteSongs();
-        const ids = data.map(item => item.song.id);
-        setIsLiked(ids.includes(song.id));
-      } catch (error) {
-        console.error(error);
-      }
+      // try {
+      //   const data = await apiGetMyFavoriteSongs();
+      //   const ids = data.map(item => item.song.id);
+      //   setIsLiked(ids.includes(song.id));
+      // } catch (error) {
+      //   console.error(error);
+      // }
     };
 
     fetchFavorites();
@@ -65,8 +58,8 @@ function SongItem({ song }) {
   useEffect(() => {
     const fetchArtist = async () => {
       if (!song.artistId) return;
-      const data = await apiGetArtist(song.artistId);
-      setArtist(data);
+      // const data = await apiGetArtist(song.artistId);
+      // setArtist(data);
     };
 
     fetchArtist();

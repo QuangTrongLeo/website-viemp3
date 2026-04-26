@@ -6,15 +6,8 @@ import styles from './SongMenu.module.scss';
 import LimitedList from '../LimitedList';
 import icons from '~/assets/icons';
 
-// API: ARTIST
-// Lấy thông tin nghệ sĩ theo artistId
-import { apiGetArtist } from '~/api/services/serviceArtists';
-
-// API: PLAYLIST
-// Lấy danh sách playlist của người dùng
-// Thêm bài hát vào playlist
-// Xóa bài hát khỏi playlist
-import { apiGetMyPlaylists, apiAddSongToPlaylist, apiRemoveSongFromPlaylist } from '~/api/services/servicePlaylists';
+// import { apiGetArtist } from '~/api/services/serviceArtists';
+// import { apiGetMyPlaylists, apiAddSongToPlaylist, apiRemoveSongFromPlaylist } from '~/api/services/servicePlaylists';
 
 const cx = classNames.bind(styles);
 
@@ -26,16 +19,16 @@ function SongMenu({ song, isLiked, onToggleLike, handleActionClick }) {
   // ===== FETCH PLAYLIST =====
   useEffect(() => {
     const fetchPlaylists = async () => {
-      try {
-        const data = await apiGetMyPlaylists();
-        const mapped = (data || []).map(pl => ({
-          ...pl,
-          isContainsSong: pl.songs?.some(s => s.id === song?.id),
-        }));
-        setPlaylists(mapped);
-      } catch (error) {
-        console.error('Lỗi lấy playlist:', error);
-      }
+      // try {
+      //   const data = await apiGetMyPlaylists();
+      //   const mapped = (data || []).map(pl => ({
+      //     ...pl,
+      //     isContainsSong: pl.songs?.some(s => s.id === song?.id),
+      //   }));
+      //   setPlaylists(mapped);
+      // } catch (error) {
+      //   console.error('Lỗi lấy playlist:', error);
+      // }
     };
     if (song?.id) fetchPlaylists();
   }, [song?.id]);
@@ -45,8 +38,8 @@ function SongMenu({ song, isLiked, onToggleLike, handleActionClick }) {
     const fetchArtist = async () => {
       try {
         if (song?.artistId) {
-          const data = await apiGetArtist(song.artistId);
-          setArtist(data);
+          // const data = await apiGetArtist(song.artistId);
+          // setArtist(data);
         }
       } catch (error) {
         console.error('Lỗi fetch artist:', error);
