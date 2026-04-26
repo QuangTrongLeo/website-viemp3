@@ -1,4 +1,3 @@
-// Layouts/MainLayout/index.js
 import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from '~/components/Components/Sidebar';
 import Footer from '~/components/Components/Footer';
