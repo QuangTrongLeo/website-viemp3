@@ -5,14 +5,20 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'tippy.js/dist/tippy.css';
 
 import App from '~/App';
+import GlobalStyles from './components/GlobalStyles';
+import AuthProvider from './components/Components/AuthProvider';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Router>
-      <App />
-    </Router>
+  <Router>
+    <AuthProvider>
+      <GlobalStyles>
+        <App />
+      </GlobalStyles>
+    </AuthProvider>
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function

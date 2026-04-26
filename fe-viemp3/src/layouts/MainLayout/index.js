@@ -1,5 +1,5 @@
 function MainLayout({ children }) {
-    return <>{children}</>;
+  return <>{children}</>;
 }
 
 export default MainLayout;

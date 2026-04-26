@@ -54,11 +54,11 @@ function SongMenu({ song, isLiked, onToggleLike, handleActionClick }) {
     setLoadingPlaylistId(pl.id);
     try {
       let success;
-      if (pl.isContainsSong) {
-        success = await apiRemoveSongFromPlaylist(pl.id, song.id);
-      } else {
-        success = await apiAddSongToPlaylist(pl.id, song.id);
-      }
+      // if (pl.isContainsSong) {
+      //   success = await apiRemoveSongFromPlaylist(pl.id, song.id);
+      // } else {
+      //   success = await apiAddSongToPlaylist(pl.id, song.id);
+      // }
       if (success) {
         setPlaylists(prev =>
           prev.map(item => (item.id === pl.id ? { ...item, isContainsSong: !item.isContainsSong } : item))

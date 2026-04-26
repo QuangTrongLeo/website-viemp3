@@ -42,13 +42,13 @@ function SongItem({ song }) {
     handleActionClick(e);
 
     try {
-      if (isLiked) {
-        await apiRemoveSongFromFavorite(song.id);
-        setIsLiked(false);
-      } else {
-        await apiAddSongToFavorite(song.id);
-        setIsLiked(true);
-      }
+      // if (isLiked) {
+      //   await apiRemoveSongFromFavorite(song.id);
+      //   setIsLiked(false);
+      // } else {
+      //   await apiAddSongToFavorite(song.id);
+      //   setIsLiked(true);
+      // }
     } catch (error) {
       console.error(error);
     }
