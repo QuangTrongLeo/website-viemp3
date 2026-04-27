@@ -8,6 +8,9 @@ import viemp3.be_viemp3.entity.Genre;
 import viemp3.be_viemp3.mapper.music.GenreMapper;
 import viemp3.be_viemp3.repository.music.GenreRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class GenreService {
@@ -23,5 +26,10 @@ public class GenreService {
         genre.setName(name);
         genreRepository.save(genre);
         return GenreMapper.toResponse(genre);
+    }
+
+    // GET ALL GENRES
+    public List<GenreResponse> getAllGenres() {
+        return GenreMapper.toResponseList(genreRepository.findAll());
     }
 }
