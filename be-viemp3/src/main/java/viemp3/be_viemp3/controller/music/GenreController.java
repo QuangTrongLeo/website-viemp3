@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import viemp3.be_viemp3.common.response.ApiResponse;
@@ -26,6 +27,19 @@ public class GenreController {
         return ResponseEntity.ok(ApiResponse.<List<GenreResponse>>builder()
                         .success(true)
                         .message("Lấy danh sách genre thành công")
+                        .data(response)
+                        .build()
+        );
+    }
+
+    // ===== GET BY ID =====
+    @PreAuthorize("permitAll()")
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<GenreResponse>> getGenreById(@PathVariable String id) {
+        GenreResponse response = genreService.getGenreById(id);
+        return ResponseEntity.ok(ApiResponse.<GenreResponse>builder()
+                        .success(true)
+                        .message("Lấy genre thành công")
                         .data(response)
                         .build()
         );

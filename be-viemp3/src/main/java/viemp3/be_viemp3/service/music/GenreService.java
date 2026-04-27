@@ -2,6 +2,7 @@ package viemp3.be_viemp3.service.music;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.dto.request.music.genre.GenreRequest;
 import viemp3.be_viemp3.dto.response.music.GenreResponse;
 import viemp3.be_viemp3.entity.Genre;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GenreService {
     private final GenreRepository genreRepository;
+    private final EntityQueryService entityService;
 
     // CREATE GENRE
     public GenreResponse createGenre(GenreRequest request) {
@@ -31,5 +33,10 @@ public class GenreService {
     // GET ALL GENRES
     public List<GenreResponse> getAllGenres() {
         return GenreMapper.toResponseList(genreRepository.findAll());
+    }
+
+    // GET GENRE BY ID
+    public GenreResponse getGenreById(String id) {
+        return GenreMapper.toResponse(entityService.findGenreById(id));
     }
 }
