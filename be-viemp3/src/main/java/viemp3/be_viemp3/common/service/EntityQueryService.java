@@ -3,7 +3,10 @@ package viemp3.be_viemp3.common.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import viemp3.be_viemp3.entity.Genre;
+import viemp3.be_viemp3.entity.Role;
 import viemp3.be_viemp3.entity.User;
+import viemp3.be_viemp3.enums.RoleEnum;
+import viemp3.be_viemp3.repository.auth.RoleRepository;
 import viemp3.be_viemp3.repository.auth.UserRepository;
 import viemp3.be_viemp3.repository.music.GenreRepository;
 
@@ -12,6 +15,7 @@ import viemp3.be_viemp3.repository.music.GenreRepository;
 public class EntityQueryService {
     private final GenreRepository genreRepository;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     // ===== GENRE =====
     public Genre findGenreById(String id) {
@@ -29,6 +33,12 @@ public class EntityQueryService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User không tồn tại"));
+    }
+
+    // ===== ROLE =====
+    public Role findRoleByName(RoleEnum role) {
+        return roleRepository.findByName(role)
+                .orElseThrow(() -> new RuntimeException("Role không tồn tại!"));
     }
     
 }
