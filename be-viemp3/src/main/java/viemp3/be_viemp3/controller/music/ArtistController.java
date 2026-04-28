@@ -10,6 +10,8 @@ import viemp3.be_viemp3.dto.request.music.artist.ArtistRequest;
 import viemp3.be_viemp3.dto.response.music.ArtistResponse;
 import viemp3.be_viemp3.service.music.ArtistService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("${api.vie-mp3-url}/artists")
 @RequiredArgsConstructor
@@ -55,6 +57,20 @@ public class ArtistController {
                 ApiResponse.<Void>builder()
                         .success(true)
                         .message("Xóa nghệ sĩ thành công")
+                        .build()
+        );
+    }
+
+    // ===== GET ALL ARTIST =====
+    @PreAuthorize("permitAll()")
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<ArtistResponse>>> getAllArtists() {
+        List<ArtistResponse> responses = artistService.getAllArtists();
+        return ResponseEntity.ok(
+                ApiResponse.<List<ArtistResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách nghệ sĩ thành công")
+                        .data(responses)
                         .build()
         );
     }

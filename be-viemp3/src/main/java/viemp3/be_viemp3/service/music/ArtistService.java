@@ -10,6 +10,8 @@ import viemp3.be_viemp3.mapper.music.ArtistMapper;
 import viemp3.be_viemp3.repository.music.ArtistRepository;
 import viemp3.be_viemp3.service.file.FileStorageService;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ArtistService {
@@ -69,5 +71,10 @@ public class ArtistService {
         Artist artist = entityService.findArtistById(artistId);
         fileStorageService.deleteByUrl(artist.getAvatar());
         artistRepository.delete(artist);
+    }
+
+    // ===== GET ALL ARTIST =====
+    public List<ArtistResponse> getAllArtists() {
+        return ArtistMapper.toResponseList(artistRepository.findAll());
     }
 }
