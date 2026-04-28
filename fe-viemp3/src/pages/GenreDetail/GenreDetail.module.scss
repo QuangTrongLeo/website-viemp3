@@ -1,0 +1,68 @@
+.genre-wrapper {
+  color: white;
+  padding: 20px;
+}
+
+.genre-header {
+  background-color: var(--black-color-light-2);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.genre-cover {
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
+  border: 2px solid #ccc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.genre-cover i {
+  font-size: 70px;
+  color: #fff;
+}
+
+.genre-title {
+  color: var(--primary-color);
+  font-size: 2.4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.genre-description {
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
+.genre-meta {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 12px;
+}
+
+.play-all-btn {
+  background-color: var(--primary-color, #9b4de0);
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 999px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: #843fd3;
+  }
+
+  i {
+    margin-right: 8px;
+  }
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}

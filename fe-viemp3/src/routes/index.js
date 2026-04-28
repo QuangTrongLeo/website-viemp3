@@ -1,9 +1,10 @@
 import config from '~/config';
 
-import { Home, Genres } from '~/pages';
+import { Home, GenreDetail, Genres } from '~/pages';
 
 const publishRoutes = [
   { path: config.routes.home, component: Home },
+  { path: config.routes.genre, component: GenreDetail },
   { path: config.routes.genres, component: Genres },
 ];
 
