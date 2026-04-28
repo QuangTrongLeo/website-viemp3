@@ -45,4 +45,17 @@ public class ArtistController {
                         .build()
         );
     }
+
+    // ===== DELETE =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD')")
+    @DeleteMapping
+    public ResponseEntity<ApiResponse<Void>> deleteArtist(@RequestParam("artistId") String artistId) {
+        artistService.deleteArtist(artistId);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Xóa nghệ sĩ thành công")
+                        .build()
+        );
+    }
 }

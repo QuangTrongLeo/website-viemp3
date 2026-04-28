@@ -63,4 +63,11 @@ public class ArtistService {
         artistRepository.save(artist);
         return ArtistMapper.toResponse(artist);
     }
+
+    // ===== DELETE =====
+    public void deleteArtist(String artistId) {
+        Artist artist = entityService.findArtistById(artistId);
+        fileStorageService.deleteByUrl(artist.getAvatar());
+        artistRepository.delete(artist);
+    }
 }
