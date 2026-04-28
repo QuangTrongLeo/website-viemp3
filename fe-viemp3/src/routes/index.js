@@ -4,7 +4,7 @@ import { Home, GenreDetail, Genres } from '~/pages';
 
 const publishRoutes = [
   { path: config.routes.home, component: Home },
-  { path: config.routes.genre, component: GenreDetail },
+  { path: `${config.routes.genre}/:genreId`, component: GenreDetail },
   { path: config.routes.genres, component: Genres },
 ];
 
