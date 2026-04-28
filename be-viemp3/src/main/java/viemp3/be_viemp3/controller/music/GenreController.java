@@ -1,13 +1,12 @@
 package viemp3.be_viemp3.controller.music;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import viemp3.be_viemp3.common.response.ApiResponse;
+import viemp3.be_viemp3.dto.request.music.genre.GenreRequest;
 import viemp3.be_viemp3.dto.response.music.GenreResponse;
 import viemp3.be_viemp3.service.music.GenreService;
 
@@ -18,6 +17,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GenreController {
     private final GenreService genreService;
+
+    // ===== CREATE =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD')")
+    @PostMapping()
+    public ResponseEntity<ApiResponse<GenreResponse>> createGenre(@RequestBody @Valid GenreRequest request) {
+        GenreResponse response = genreService.createGenre(request);
+        return ResponseEntity.ok(
+                ApiResponse.<GenreResponse>builder()
+                        .success(true)
+                        .message("Tạo genre thành công")
+                        .data(response)
+                        .build()
+        );
+    }
 
     // ===== GET ALL =====
     @PreAuthorize("permitAll()")
