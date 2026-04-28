@@ -88,4 +88,18 @@ public class ArtistController {
                         .build()
         );
     }
+
+    // ===== GET BY NAME =====
+    @PreAuthorize("permitAll()")
+    @GetMapping
+    public ResponseEntity<ApiResponse<ArtistResponse>> getArtistByName(@RequestParam String name) {
+        ArtistResponse response = artistService.getArtistByName(name);
+        return ResponseEntity.ok(
+                ApiResponse.<ArtistResponse>builder()
+                        .success(true)
+                        .message("Lấy thông tin nghệ sĩ thành công")
+                        .data(response)
+                        .build()
+        );
+    }
 }

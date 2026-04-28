@@ -82,4 +82,9 @@ public class ArtistService {
     public ArtistResponse getArtistById(String artistId) {
         return ArtistMapper.toResponse(entityService.findArtistById(artistId));
     }
+
+    // ===== GET BY NAME =====
+    public ArtistResponse getArtistByName(String artistName) {
+        return ArtistMapper.toResponse(entityService.findArtistByName(artistName));
+    }
 }

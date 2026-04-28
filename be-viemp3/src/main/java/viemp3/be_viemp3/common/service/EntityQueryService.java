@@ -26,6 +26,11 @@ public class EntityQueryService {
                 .orElseThrow(() -> new IllegalArgumentException("Nghệ sĩ không tồn tại với id: " + id));
     }
 
+    public Artist findArtistByName(String artistName) {
+        return artistRepository.findByNameContainingIgnoreCase(artistName)
+                .orElseThrow(() -> new IllegalArgumentException("Nghệ sĩ không tồn tại"));
+    }
+
     // ===== GENRE =====
     public Genre findGenreById(String id) {
         return genreRepository.findById(id)
