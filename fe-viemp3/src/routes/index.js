@@ -1,9 +1,10 @@
-import config from "~/config";
+import config from '~/config';
 
-import { Home } from "~/pages";
+import { Home, Genres } from '~/pages';
 
 const publishRoutes = [
   { path: config.routes.home, component: Home },
+  { path: config.routes.genres, component: Genres },
 ];
 
 const userRoutes = [];
