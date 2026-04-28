@@ -77,4 +77,9 @@ public class ArtistService {
     public List<ArtistResponse> getAllArtists() {
         return ArtistMapper.toResponseList(artistRepository.findAll());
     }
+
+    // ===== GET BY ID =====
+    public ArtistResponse getArtistById(String artistId) {
+        return ArtistMapper.toResponse(entityService.findArtistById(artistId));
+    }
 }
