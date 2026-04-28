@@ -3,16 +3,32 @@ package viemp3.be_viemp3.common.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import viemp3.be_viemp3.entity.Genre;
+import viemp3.be_viemp3.entity.User;
+import viemp3.be_viemp3.repository.auth.UserRepository;
 import viemp3.be_viemp3.repository.music.GenreRepository;
 
 @Service
 @RequiredArgsConstructor
 public class EntityQueryService {
     private final GenreRepository genreRepository;
+    private final UserRepository userRepository;
 
     // ===== GENRE =====
     public Genre findGenreById(String id) {
         return genreRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Genre không tồn tại với id: " + id));
     }
+
+    // ===== USER =====
+    public User findUserById(String id) {
+        return userRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("User không tồn tại với id: " + id));
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User không tồn tại"));
+    }
+    
 }
