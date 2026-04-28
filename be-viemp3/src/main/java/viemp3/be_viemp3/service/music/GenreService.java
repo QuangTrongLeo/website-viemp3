@@ -42,6 +42,15 @@ public class GenreService {
         return GenreMapper.toResponse(genre);
     }
 
+    // DELETE GENRE
+    public void deleteGenre(String id) {
+        Genre genre = entityService.findGenreById(id);
+        if (genre.getSongs() != null && !genre.getSongs().isEmpty()) {
+            throw new IllegalStateException("Không thể xóa Genre đang chứa bài hát");
+        }
+        genreRepository.delete(genre);
+    }
+
     // GET ALL GENRES
     public List<GenreResponse> getAllGenres() {
         return GenreMapper.toResponseList(genreRepository.findAll());

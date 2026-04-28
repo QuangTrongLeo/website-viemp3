@@ -47,6 +47,19 @@ public class GenreController {
         );
     }
 
+    // ===== DELETE =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD')")
+    @DeleteMapping("/{genreId}")
+    public ResponseEntity<ApiResponse<Void>> deleteGenre(@PathVariable String genreId) {
+        genreService.deleteGenre(genreId);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Xóa genre thành công")
+                        .build()
+        );
+    }
+
     // ===== GET ALL =====
     @PreAuthorize("permitAll()")
     @GetMapping("/all")
