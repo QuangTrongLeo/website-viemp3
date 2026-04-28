@@ -3,6 +3,8 @@ package viemp3.be_viemp3.service.auth;
 import lombok.RequiredArgsConstructor;
 import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.dto.request.auth.LoginRequest;
+import viemp3.be_viemp3.dto.request.auth.RegisterRequest;
+import viemp3.be_viemp3.dto.request.auth.VerifyOtpRequest;
 import viemp3.be_viemp3.dto.response.auth.TokenResponse;
 import viemp3.be_viemp3.entity.User;
 
@@ -16,6 +18,20 @@ public class AuthService {
     private final EntityQueryService entityService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final OtpService otpService;
+    private final UserService userService;
+
+    // Đăng ký
+    public void register(RegisterRequest request) {
+        userService.createUser(request);
+        otpService.createAndSendOtp(request.getEmail());
+    }
+
+    // Xác thực OTP
+    public void verifyOtp(VerifyOtpRequest request) {
+        otpService.verifyOtp(request.getEmail(), request.getOtp());
+        userService.enableUser(request.getEmail());
+    }
 
     // Đăng nhập
     public TokenResponse login(LoginRequest request) {

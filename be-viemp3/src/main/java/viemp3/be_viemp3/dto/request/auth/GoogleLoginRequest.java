@@ -1,4 +1,4 @@
-package viemp3.be_viemp3.controller.auth;
+package viemp3.be_viemp3.dto.request.auth;
 
 import lombok.Data;
 
