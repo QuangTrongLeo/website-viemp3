@@ -32,6 +32,21 @@ public class GenreController {
         );
     }
 
+    // ===== UPDATE =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD')")
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<GenreResponse>> updateGenre(
+            @PathVariable String id,
+            @RequestBody @Valid GenreRequest request) {
+        return ResponseEntity.ok(
+                ApiResponse.<GenreResponse>builder()
+                        .success(true)
+                        .message("Cập nhật genre thành công")
+                        .data(genreService.updateGenre(id, request))
+                        .build()
+        );
+    }
+
     // ===== GET ALL =====
     @PreAuthorize("permitAll()")
     @GetMapping("/all")

@@ -30,6 +30,18 @@ public class GenreService {
         return GenreMapper.toResponse(genre);
     }
 
+    // UPDATE GENRE
+    public GenreResponse updateGenre(String id, GenreRequest request) {
+        Genre genre = entityService.findGenreById(id);
+        String newName = request.getName().trim().toUpperCase();
+        if (!genre.getName().equalsIgnoreCase(newName) && genreRepository.existsByNameIgnoreCase(newName)) {
+            throw new IllegalArgumentException("Genre đã tồn tại: " + newName);
+        }
+        genre.setName(newName);
+        genreRepository.save(genre);
+        return GenreMapper.toResponse(genre);
+    }
+
     // GET ALL GENRES
     public List<GenreResponse> getAllGenres() {
         return GenreMapper.toResponseList(genreRepository.findAll());
