@@ -2,6 +2,7 @@ package viemp3.be_viemp3.service.music;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.dto.request.music.artist.ArtistRequest;
 import viemp3.be_viemp3.dto.response.music.ArtistResponse;
 import viemp3.be_viemp3.entity.Artist;
@@ -13,6 +14,7 @@ import viemp3.be_viemp3.service.file.FileStorageService;
 @RequiredArgsConstructor
 public class ArtistService {
     private final ArtistRepository artistRepository;
+    private final EntityQueryService entityService;
     private final FileStorageService fileStorageService;
 
     // ===== CREATE =====
@@ -31,5 +33,34 @@ public class ArtistService {
         artist.setFavorites(100000);
         Artist savedArtist = artistRepository.save(artist);
         return ArtistMapper.toResponse(savedArtist);
+    }
+
+    // ===== UPDATE =====
+    public ArtistResponse updateArtist(String id, ArtistRequest request) {
+        Artist artist = entityService.findArtistById(id);
+        boolean isUpdated = false;
+
+        // ===== UPDATE NAME =====
+        if (request.getName() != null && !request.getName().isBlank()) {
+            artist.setName(request.getName().trim());
+            isUpdated = true;
+        }
+
+        // ===== UPDATE AVATAR =====
+        if (request.getAvatar() != null && !request.getAvatar().isEmpty()) {
+            // Xóa avatar cũ nếu có
+            if (artist.getAvatar() != null && !artist.getAvatar().isBlank()) {
+                fileStorageService.deleteByUrl(artist.getAvatar());
+            }
+            String newAvatarUrl = fileStorageService.upload(request.getAvatar(), "artists");
+            artist.setAvatar(newAvatarUrl);
+            isUpdated = true;
+        }
+
+        if (!isUpdated) {
+            throw new IllegalArgumentException("Không có dữ liệu nào để cập nhật");
+        }
+        artistRepository.save(artist);
+        return ArtistMapper.toResponse(artist);
     }
 }

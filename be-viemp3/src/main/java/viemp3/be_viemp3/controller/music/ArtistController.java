@@ -29,4 +29,20 @@ public class ArtistController {
                         .build()
         );
     }
+
+    // ===== UPDATE =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD')")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<ArtistResponse>> updateArtist(
+            @PathVariable("id") String id,
+            @ModelAttribute ArtistRequest request) {
+
+        return ResponseEntity.ok(
+                ApiResponse.<ArtistResponse>builder()
+                        .success(true)
+                        .message("Cập nhật nghệ sĩ thành công")
+                        .data(artistService.updateArtist(id, request))
+                        .build()
+        );
+    }
 }
