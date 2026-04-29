@@ -13,7 +13,6 @@ const routes = {
   register: '/register',
   otp: '/otp',
   order: '/order',
-  register: '/register',
   premium: '/premium',
 };
 
