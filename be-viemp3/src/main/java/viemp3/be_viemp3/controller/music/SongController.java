@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.request.music.song.SongRequest;
 import viemp3.be_viemp3.dto.response.music.SongResponse;
 import viemp3.be_viemp3.service.music.SongService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("${api.vie-mp3-url}/songs")
@@ -29,6 +28,20 @@ public class SongController {
                         .success(true)
                         .message("Tạo bài hát thành công")
                         .data(response)
+                        .build()
+        );
+    }
+
+    // ===== GET ALL =====
+    @PreAuthorize("permitAll()")
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<SongResponse>>> getAllSongs() {
+        List<SongResponse> responses = songService.getAllSongs();
+        return ResponseEntity.ok(
+                ApiResponse.<List<SongResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách bài hát thành công")
+                        .data(responses)
                         .build()
         );
     }
