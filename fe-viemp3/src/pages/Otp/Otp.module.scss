@@ -1,0 +1,12 @@
+.login-btn {
+  color: var(--black-color);
+  background-color: var(--primary-color);
+  opacity: 1;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    background-color: var(--primary-color); // giữ nguyên màu
+    opacity: 0.8; // làm mờ nhẹ khi hover
+    color: var(--black-color); // đảm bảo text không đổi màu
+  }
+}

@@ -10,6 +10,8 @@ const routes = {
   playlists: '/playlists',
   home: '/',
   login: '/login',
+  register: '/register',
+  otp: '/otp',
   order: '/order',
   register: '/register',
   premium: '/premium',
