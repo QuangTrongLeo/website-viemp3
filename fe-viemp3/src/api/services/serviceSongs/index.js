@@ -11,3 +11,14 @@ export async function apiGetSongs() {
     throw new Error(message);
   }
 }
+
+// ===== GET SONGS BY GENRE =====
+export async function apiGetSongsByGenre(genreId) {
+  try {
+    const response = await axios.get(`${apiSongUrls.apiSongUrl}/genre/${genreId}`);
+    return response.data.data;
+  } catch (error) {
+    const message = error.response?.data?.message || error.message;
+    throw new Error(message);
+  }
+}
