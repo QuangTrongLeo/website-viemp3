@@ -59,4 +59,18 @@ public class SongController {
                         .build()
         );
     }
+
+    // ===== GET SONGS BY GENRE =====
+    @PreAuthorize("permitAll()")
+    @GetMapping("/genre/{genreId}")
+    public ResponseEntity<ApiResponse<List<SongResponse>>> getSongsByGenre(@PathVariable String genreId) {
+        List<SongResponse> response = songService.getSongsByGenre(genreId);
+        return ResponseEntity.ok(
+                ApiResponse.<List<SongResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách bài hát theo thể loại thành công")
+                        .data(response)
+                        .build()
+        );
+    }
 }

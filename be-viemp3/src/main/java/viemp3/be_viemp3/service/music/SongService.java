@@ -52,4 +52,11 @@ public class SongService {
     public List<SongResponse> getAllSongs() {
         return SongMapper.toResponseList(songRepository.findAll());
     }
+
+    // ===== GET SONGS BY GENRE =====
+    public List<SongResponse> getSongsByGenre(String genreId) {
+        entityService.findGenreById(genreId);
+        List<Song> songs = songRepository.findByGenreId(genreId);
+        return SongMapper.toResponseList(songs);
+    }
 }
