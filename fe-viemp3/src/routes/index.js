@@ -1,4 +1,5 @@
 import config from '~/config';
+import { SecondLayout } from '~/layouts';
 
 import { Home, GenreDetail, Genres, Login, Register, Otp } from '~/pages';
 
