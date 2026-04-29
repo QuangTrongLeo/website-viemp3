@@ -32,6 +32,20 @@ public class SongController {
         );
     }
 
+    // ===== GET BY ID =====
+    @PreAuthorize("hasAnyRole('USER')")
+    @GetMapping("/{songId}")
+    public ResponseEntity<ApiResponse<SongResponse>> getSongById(@PathVariable String songId) {
+        SongResponse response = songService.getSongById(songId);
+        return ResponseEntity.ok(
+                ApiResponse.<SongResponse>builder()
+                        .success(true)
+                        .message("Lấy thông tin bài hát thành công")
+                        .data(response)
+                        .build()
+        );
+    }
+
     // ===== GET ALL =====
     @PreAuthorize("permitAll()")
     @GetMapping("/all")
