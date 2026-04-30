@@ -1,0 +1,31 @@
+.artist-detail {
+  color: var(--white-color);
+
+  .artist-detail-header {
+    border-radius: 24px;
+    padding: 2%;
+    background-color: var(--black-color-light-2);
+  }
+
+  .avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .artist-name {
+    font-size: 3.2rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+  }
+
+  .followers {
+    color: var(--grey-color);
+    margin-bottom: 0.5rem;
+  }
+}

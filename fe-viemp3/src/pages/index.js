@@ -1,3 +1,4 @@
+export { default as ArtistDetail } from './ArtistDetail';
 export { default as GenreDetail } from './GenreDetail';
 export { default as Genres } from './Genres';
 export { default as Home } from './Home';

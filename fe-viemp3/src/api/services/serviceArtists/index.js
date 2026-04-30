@@ -12,6 +12,19 @@ export async function apiGetArtist(artistId) {
   }
 }
 
+// ===== GET ARTIST BY NAME =====
+export async function apiGetArtistByName(name) {
+  try {
+    const response = await axios.get(apiArtistUrls.apiArtistUrl, {
+      params: { name: name },
+    });
+    return response.data.data;
+  } catch (error) {
+    const message = error.response?.data?.message || error.response?.data || error.message;
+    throw new Error(message);
+  }
+}
+
 // ===== GET ALL ARTIST =====
 export async function apiGetArtists() {
   try {

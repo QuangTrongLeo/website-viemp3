@@ -1,4 +1,5 @@
 const routes = {
+  artist: '/artist',
   favoriteAlbums: '/favorite-albums',
   favoriteArtists: '/favorite-artists',
   favoriteSongs: '/favorite-songs',
