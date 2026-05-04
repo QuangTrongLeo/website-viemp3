@@ -1,0 +1,22 @@
+.song-cover {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.song-name {
+  color: var(--primary-color);
+}
+
+.song-row {
+  border-bottom: 1px solid var(--black-color-light-2);
+  font-weight: 500;
+  color: var(--white-color);
+
+  .song-row-icon-header {
+    font-size: 16px;
+  }
+}

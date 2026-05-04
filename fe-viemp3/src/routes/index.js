@@ -1,7 +1,7 @@
 import config from '~/config';
 import { SecondLayout } from '~/layouts';
 
-import { ArtistDetail, Home, GenreDetail, Genres, Login, Register, Otp } from '~/pages';
+import { ArtistDetail, Home, GenreDetail, Genres, Login, Register, Otp, SongDetail } from '~/pages';
 
 const publishRoutes = [
   { path: config.routes.home, component: Home },
@@ -13,7 +13,7 @@ const publishRoutes = [
   { path: config.routes.otp, component: Otp, layout: SecondLayout },
 ];
 
-const userRoutes = [];
+const userRoutes = [{ path: `${config.routes.song}/:songId`, component: SongDetail }];
 
 const modRoutes = [];
 
