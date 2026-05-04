@@ -59,4 +59,11 @@ public class SongService {
         List<Song> songs = songRepository.findByGenreId(genreId);
         return SongMapper.toResponseList(songs);
     }
+
+    // ===== GET SONGS BY ARTIST =====
+    public List<SongResponse> getSongsByArtist(String artistId) {
+        entityService.findArtistById(artistId);
+        List<Song> songs = songRepository.findByArtistId(artistId);
+        return SongMapper.toResponseList(songs);
+    }
 }
