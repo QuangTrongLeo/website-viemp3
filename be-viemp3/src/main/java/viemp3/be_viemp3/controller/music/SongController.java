@@ -73,4 +73,18 @@ public class SongController {
                         .build()
         );
     }
+
+    // ===== GET SONGS BY ARTIST =====
+    @PreAuthorize("permitAll()")
+    @GetMapping("/artist/{artistId}")
+    public ResponseEntity<ApiResponse<List<SongResponse>>> getSongsByArtist(@PathVariable String artistId) {
+        List<SongResponse> response = songService.getSongsByArtist(artistId);
+        return ResponseEntity.ok(
+                ApiResponse.<List<SongResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách bài hát theo nghệ sĩ thành công")
+                        .data(response)
+                        .build()
+        );
+    }
 }

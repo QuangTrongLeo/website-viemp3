@@ -61,10 +61,10 @@ function SongRow({ song }) {
     handleActionClick(e);
     try {
       if (isLiked) {
-        await apiRemoveSongFromFavorite(song.id);
+        // await apiRemoveSongFromFavorite(song.id);
         setIsLiked(false);
       } else {
-        await apiAddSongToFavorite(song.id);
+        // await apiAddSongToFavorite(song.id);
         setIsLiked(true);
       }
     } catch (error) {

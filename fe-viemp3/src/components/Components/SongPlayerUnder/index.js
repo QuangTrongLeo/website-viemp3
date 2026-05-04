@@ -6,13 +6,8 @@ import * as bootstrap from 'bootstrap';
 import './SongPlayerUnder.scss';
 import PlayerControls from '../PlayerControls';
 import { useAuth } from '~/components/Components/AuthProvider';
-// import {
-//   apiGetSong,
-//   apiGetMyFavoriteSongs,
-//   apiAddSongToFavorite,
-//   apiRemoveSongFromFavorite,
-// } from '~/api/services/serviceSongs';
-// import { apiGetArtist } from '~/api/services/serviceArtists';
+import { apiGetSong } from '~/api/services/serviceSongs';
+import { apiGetArtist } from '~/api/services/serviceArtists';
 
 initMDB({ Dropdown });
 
@@ -137,46 +132,46 @@ function SongPlayerUnder({
   }, [currentTime, durationAudio]);
 
   //////// LOAD SONG ////////
-  // useEffect(() => {
-  //   const fetchSong = async () => {
-  //     if (!songId) return;
-  //     try {
-  //       const song = await apiGetSong(songId);
-  //       if (currentSong && String(currentSong.id) === String(songId)) {
-  //         setClosedSongPlayerUnder(false);
-  //         return;
-  //       }
-  //       setCurrentSong(song);
-  //       if (song) {
-  //         setClosedSongPlayerUnder(false);
-  //         setTimeout(() => {
-  //           if (audioRef.current) {
-  //             audioRef.current.currentTime = 0;
-  //             audioRef.current.play().catch(err => console.warn('Không thể tự phát:', err));
-  //           }
-  //         }, 0);
-  //         setIsPaused(false);
-  //       }
-  //     } catch (error) {
-  //       console.error('Không tìm thấy bài hát:', error);
-  //     }
-  //   };
-  //   fetchSong();
-  // }, [songId]);
+  useEffect(() => {
+    const fetchSong = async () => {
+      if (!songId) return;
+      try {
+        const song = await apiGetSong(songId);
+        if (currentSong && String(currentSong.id) === String(songId)) {
+          setClosedSongPlayerUnder(false);
+          return;
+        }
+        setCurrentSong(song);
+        if (song) {
+          setClosedSongPlayerUnder(false);
+          setTimeout(() => {
+            if (audioRef.current) {
+              audioRef.current.currentTime = 0;
+              audioRef.current.play().catch(err => console.warn('Không thể tự phát:', err));
+            }
+          }, 0);
+          setIsPaused(false);
+        }
+      } catch (error) {
+        console.error('Không tìm thấy bài hát:', error);
+      }
+    };
+    fetchSong();
+  }, [songId]);
 
   //////// LOAD ARTIST ////////
-  // useEffect(() => {
-  //   const fetchArtist = async () => {
-  //     if (!currentSong?.artistId) return;
-  //     try {
-  //       const artistData = await apiGetArtist(currentSong.artistId);
-  //       setArtist(artistData);
-  //     } catch (error) {
-  //       console.error('Không lấy được artist:', error);
-  //     }
-  //   };
-  //   fetchArtist();
-  // }, [currentSong]);
+  useEffect(() => {
+    const fetchArtist = async () => {
+      if (!currentSong?.artistId) return;
+      try {
+        const artistData = await apiGetArtist(currentSong.artistId);
+        setArtist(artistData);
+      } catch (error) {
+        console.error('Không lấy được artist:', error);
+      }
+    };
+    fetchArtist();
+  }, [currentSong]);
 
   // useEffect(() => {
   //   const fetchFavorites = async () => {
