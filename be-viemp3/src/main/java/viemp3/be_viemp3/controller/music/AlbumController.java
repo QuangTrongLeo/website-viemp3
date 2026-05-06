@@ -6,6 +6,8 @@ import viemp3.be_viemp3.dto.request.music.album.AlbumRequest;
 import viemp3.be_viemp3.dto.response.music.AlbumResponse;
 import viemp3.be_viemp3.service.music.AlbumService;
 
+import java.util.List;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,6 +59,34 @@ public class AlbumController {
                 ApiResponse.<Void>builder()
                         .success(true)
                         .message("Xóa album thành công")
+                        .build()
+        );
+    }
+
+    // ===== GET BY ID =====
+    @PreAuthorize("permitAll()")
+    @GetMapping("/{albumId}")
+    public ResponseEntity<ApiResponse<AlbumResponse>> getAlbum(@PathVariable String albumId) {
+        AlbumResponse response = albumService.getAlbumById(albumId);
+        return ResponseEntity.ok(
+                ApiResponse.<AlbumResponse>builder()
+                        .success(true)
+                        .message("Lấy thông tin album thành công")
+                        .data(response)
+                        .build()
+        );
+    }
+
+    // ===== GET ALL =====
+    @PreAuthorize("permitAll()")
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<AlbumResponse>>> getAllAlbums() {
+        List<AlbumResponse> responses = albumService.getAllAlbums();
+        return ResponseEntity.ok(
+                ApiResponse.<List<AlbumResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách album thành công")
+                        .data(responses)
                         .build()
         );
     }

@@ -1,5 +1,7 @@
 package viemp3.be_viemp3.service.music;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -66,6 +68,16 @@ public class AlbumService {
             fileStorageService.deleteByUrl(album.getCover());
         }
         albumRepository.delete(album);
+    }
+    
+    // ===== GET BY ID =====
+    public AlbumResponse getAlbumById(String albumId) {
+        return AlbumMapper.toResponse(entityQueryService.findAlbumById(albumId));
+    }
+
+    // ===== GET ALL =====
+    public List<AlbumResponse> getAllAlbums() {
+        return AlbumMapper.toResponseList(albumRepository.findAll());
     }
     
 }
