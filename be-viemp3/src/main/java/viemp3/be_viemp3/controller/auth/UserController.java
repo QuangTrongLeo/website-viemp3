@@ -6,6 +6,8 @@ import viemp3.be_viemp3.dto.request.auth.UpdateProfileRequest;
 import viemp3.be_viemp3.dto.response.auth.UserResponse;
 import viemp3.be_viemp3.service.auth.UserService;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +42,20 @@ public class UserController {
                         .success(true)
                         .message("Cập nhật profile thành công")
                         .data(response)
+                        .build()
+        );
+    }
+
+    // ===== GET ALL USERS =====
+    @PreAuthorize("hasRole('MOD')")
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
+        List<UserResponse> responses = userService.getAllUsers();
+        return ResponseEntity.ok(
+                ApiResponse.<List<UserResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách user thành công")
+                        .data(responses)
                         .build()
         );
     }

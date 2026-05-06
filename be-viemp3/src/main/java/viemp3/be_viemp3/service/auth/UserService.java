@@ -1,5 +1,7 @@
 package viemp3.be_viemp3.service.auth;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,6 +114,12 @@ public class UserService {
         }
         userRepository.save(currentUser);
         return UserMapper.toResponse(currentUser);
+    }
+
+    // ===== GET ALL USER =====
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return UserMapper.toResponseList(users);
     }
 
 }
