@@ -4,9 +4,11 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import viemp3.be_viemp3.common.service.EntityQueryService;
+import viemp3.be_viemp3.dto.response.music.ListenHistoryResponse;
 import viemp3.be_viemp3.entity.ListenHistory;
 import viemp3.be_viemp3.entity.Song;
 import viemp3.be_viemp3.entity.User;
+import viemp3.be_viemp3.mapper.music.ListenHistoryMapper;
 import viemp3.be_viemp3.repository.music.ListenHistoryRepository;
 import viemp3.be_viemp3.repository.music.SongRepository;
 import viemp3.be_viemp3.service.auth.SecurityService;
@@ -23,6 +25,12 @@ public class ListenHistoryService {
     private final EntityQueryService entityService;
     private final SecurityService securityService;
     private static final int MAX_HISTORY = 30;
+
+    public List<ListenHistoryResponse> getMyListenHistory() {
+        User user = securityService.getCurrentUser();
+        List<ListenHistory> histories = listenHistoryRepository.findByUserIdOrderByListenedAtDesc(user.getId());
+        return ListenHistoryMapper.toResponseList(histories);
+    }
 
     @Transactional
     public void saveListenHistory(String songId) {
