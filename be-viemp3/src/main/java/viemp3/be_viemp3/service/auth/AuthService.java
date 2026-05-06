@@ -8,7 +8,6 @@ import viemp3.be_viemp3.dto.request.auth.VerifyOtpRequest;
 import viemp3.be_viemp3.dto.response.auth.TokenResponse;
 import viemp3.be_viemp3.entity.User;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +67,7 @@ public class AuthService {
                 .refreshToken(refreshToken)
                 .build();
     }
+
 }
 
 

@@ -1,5 +1,7 @@
 package viemp3.be_viemp3.service.auth;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,10 +10,14 @@ import lombok.RequiredArgsConstructor;
 import viemp3.be_viemp3.common.exception.EmailAlreadyExistsException;
 import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.dto.request.auth.RegisterRequest;
+import viemp3.be_viemp3.dto.request.auth.UpdateProfileRequest;
+import viemp3.be_viemp3.dto.response.auth.UserResponse;
 import viemp3.be_viemp3.entity.Role;
 import viemp3.be_viemp3.entity.User;
 import viemp3.be_viemp3.enums.RoleEnum;
+import viemp3.be_viemp3.mapper.auth.UserMapper;
 import viemp3.be_viemp3.repository.auth.UserRepository;
+import viemp3.be_viemp3.service.file.FileStorageService;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +25,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final EntityQueryService entityService;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityService securityService;
+    private final FileStorageService fileStorageService;
 
     // Tạo user chưa kích hoạt
     public void createUser(RegisterRequest request) {
@@ -75,4 +83,43 @@ public class UserService {
             return userRepository.save(newUser);
         });
     }
+
+    // ===== GET PROFILE =====
+    public UserResponse getMyProfile() {
+        User currentUser = securityService.getCurrentUser();
+        return UserMapper.toResponse(currentUser);
+    }
+
+    // ===== UPDATE PROFILE =====
+    public UserResponse updateProfile(UpdateProfileRequest request) {
+        User currentUser = securityService.getCurrentUser();
+        boolean isUpdated = false;
+        // update username
+        if (request.getUsername() != null && !request.getUsername().isBlank()) {
+            currentUser.setUsername(request.getUsername().trim());
+            isUpdated = true;
+        }
+        // update avatar
+        if (request.getAvatar() != null && !request.getAvatar().isEmpty()) {
+            // xóa avatar cũ nếu có
+            if (currentUser.getAvatar() != null && !currentUser.getAvatar().isBlank()) {
+                fileStorageService.deleteByUrl(currentUser.getAvatar());
+            }
+            String newAvatar = fileStorageService.upload(request.getAvatar(), "avatars");
+            currentUser.setAvatar(newAvatar);
+            isUpdated = true;
+        }
+        if (!isUpdated) {
+            throw new IllegalArgumentException("Không có dữ liệu để cập nhật");
+        }
+        userRepository.save(currentUser);
+        return UserMapper.toResponse(currentUser);
+    }
+
+    // ===== GET ALL USER =====
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return UserMapper.toResponseList(users);
+    }
+
 }

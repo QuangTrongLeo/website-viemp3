@@ -6,6 +6,7 @@ import viemp3.be_viemp3.entity.*;
 import viemp3.be_viemp3.enums.RoleEnum;
 import viemp3.be_viemp3.repository.auth.RoleRepository;
 import viemp3.be_viemp3.repository.auth.UserRepository;
+import viemp3.be_viemp3.repository.music.AlbumRepository;
 import viemp3.be_viemp3.repository.music.ArtistRepository;
 import viemp3.be_viemp3.repository.music.GenreRepository;
 import viemp3.be_viemp3.repository.music.SongRepository;
@@ -14,10 +15,18 @@ import viemp3.be_viemp3.repository.music.SongRepository;
 @RequiredArgsConstructor
 public class EntityQueryService {
     private final ArtistRepository artistRepository;
+    private final AlbumRepository albumRepository;
     private final GenreRepository genreRepository;
     private final SongRepository songRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
+    // ===== ALBUM =====
+    public Album findAlbumById(String id) {
+        return albumRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Album không tồn tại"));
+    }
 
     // ===== ARTIST =====
     public Artist findArtistById(String id) {
