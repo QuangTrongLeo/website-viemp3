@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.dto.request.music.song.SongRequest;
 import viemp3.be_viemp3.dto.response.music.SongResponse;
-import viemp3.be_viemp3.entity.Album;
 import viemp3.be_viemp3.entity.Artist;
 import viemp3.be_viemp3.entity.Genre;
 import viemp3.be_viemp3.entity.Song;
@@ -19,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SongService {
     private final SongRepository songRepository;
+    private final ListenHistoryService listenHistoryService;
     private final EntityQueryService entityService;
     private final FileStorageService fileStorageService;
 
@@ -45,6 +45,7 @@ public class SongService {
     // ===== GET BY ID =====
     public SongResponse getSongById(String songId) {
         Song song = entityService.findSongById(songId);
+        listenHistoryService.saveListenHistory(songId);
         return SongMapper.toResponse(song);
     }
 
