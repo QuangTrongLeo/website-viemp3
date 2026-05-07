@@ -28,6 +28,17 @@ export async function apiGetSongs() {
   }
 }
 
+// ===== GET SONGS BY ALBUM =====
+export async function apiGetSongsByAlbum(albumId) {
+  try {
+    const response = await axios.get(`${apiSongUrls.apiSongUrl}/album/${albumId}`);
+    return response.data.data;
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || 'Lỗi khi lấy bài hát theo album';
+    throw new Error(message);
+  }
+}
+
 // ===== GET SONGS BY GENRE =====
 export async function apiGetSongsByGenre(genreId) {
   try {
