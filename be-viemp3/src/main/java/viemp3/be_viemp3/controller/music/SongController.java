@@ -60,6 +60,20 @@ public class SongController {
         );
     }
 
+    // ===== GET ALL SONG BY ALBUM =====
+    @PreAuthorize("permitAll()")
+    @GetMapping("/album/{albumId}")
+    public ResponseEntity<ApiResponse<List<SongResponse>>> getSongsByAlbum(@PathVariable String albumId) {
+        List<SongResponse> songs = songService.getSongsByAlbum(albumId);
+        return ResponseEntity.ok(
+                ApiResponse.<List<SongResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách bài hát theo album thành công")
+                        .data(songs)
+                        .build()
+        );
+    }
+
     // ===== GET SONGS BY GENRE =====
     @PreAuthorize("permitAll()")
     @GetMapping("/genre/{genreId}")

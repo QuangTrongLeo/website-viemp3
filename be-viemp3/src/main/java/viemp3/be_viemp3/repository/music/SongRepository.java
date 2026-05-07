@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface SongRepository extends JpaRepository<Song, String> {
     List<Song> findByArtistId(String artistId);
+    List<Song> findByAlbumId(String albumId);
     List<Song> findByGenreId(String genreId);
 
     @Modifying
