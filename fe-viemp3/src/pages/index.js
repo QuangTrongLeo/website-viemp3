@@ -1,3 +1,4 @@
+export { default as AlbumDetail } from './AlbumDetail';
 export { default as ArtistDetail } from './ArtistDetail';
 export { default as GenreDetail } from './GenreDetail';
 export { default as Genres } from './Genres';
@@ -7,3 +8,5 @@ export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as Otp } from './Otp';
 export { default as SongDetail } from './SongDetail';
+
+export { default as AlbumManage } from './Management/AlbumManage';
