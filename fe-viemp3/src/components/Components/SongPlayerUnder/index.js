@@ -1,12 +1,17 @@
 import { Dropdown, initMDB } from 'mdb-ui-kit';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import icons from '~/assets/icons';
 import * as bootstrap from 'bootstrap';
 import './SongPlayerUnder.scss';
 import PlayerControls from '../PlayerControls';
 import { useAuth } from '~/components/Components/AuthProvider';
-import { apiGetSong } from '~/api/services/serviceSongs';
+import {
+  apiGetSong,
+  // apiGetMyFavoriteSongs,
+  // apiAddSongToFavorite,
+  // apiRemoveSongFromFavorite,
+} from '~/api/services/serviceSongs';
 import { apiGetArtist } from '~/api/services/serviceArtists';
 
 initMDB({ Dropdown });
@@ -42,124 +47,60 @@ function SongPlayerUnder({
   const [artist, setArtist] = useState(null);
   const [favoriteSongs, setFavoriteSongs] = useState([]);
 
-  const handleDownload = () => {
-    if (!isPremium) {
-      alert('Chỉ tài khoản PREMIUM mới được tải nhạc!');
-      return;
-    }
+  // --- TẢI VÀ PHÁT NHẠC ---
+  const loadAndPlaySong = useCallback(
+    async id => {
+      if (!id) return;
+      try {
+        const song = await apiGetSong(id);
+        setCurrentSong(song);
+        setClosedSongPlayerUnder(false);
 
-    if (!currentSong?.audio) return;
-
-    const link = document.createElement('a');
-    link.href = currentSong.audio;
-    link.download = `${currentSong.title}.mp3`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const handleToggleFavorite = async () => {
-    // if (!currentSong?.id) return;
-    // try {
-    //   if (likedVisible) {
-    //     const success = await apiRemoveSongFromFavorite(currentSong.id);
-    //     if (success) {
-    //       setFavoriteSongs(prev => prev.filter(f => String(f.song.id) !== String(currentSong.id)));
-    //     }
-    //   } else {
-    //     const success = await apiAddSongToFavorite(currentSong.id);
-    //     if (success) {
-    //       setFavoriteSongs(prev => [...prev, { song: currentSong }]);
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error('Lỗi khi cập nhật yêu thích:', error);
-    // }
-  };
-
-  //////// TOGGLE ////////
-  const toggleShuffle = () => {
-    setMode(prev => (prev === 'shuffle' ? null : 'shuffle'));
-  };
-  const toggleRepeat = () => {
-    setMode(prev => (prev === 'repeat' ? null : 'repeat'));
-  };
-  const togglePlayPause = () => {
-    if (!audioRef.current) return;
-    if (isPaused) {
-      if (audioRef.current.currentTime === audioRef.current.duration) {
-        audioRef.current.currentTime = 0;
+        // Reset progress về 0
         setCurrentTime(0);
         setProgressTime(0);
+
+        // Đợi DOM cập nhật src cho thẻ audio rồi mới phát
+        setTimeout(() => {
+          if (audioRef.current) {
+            audioRef.current.currentTime = 0;
+            audioRef.current
+              .play()
+              .then(() => setIsPaused(false))
+              .catch(err => console.warn('Không thể tự động phát:', err));
+          }
+        }, 100);
+      } catch (error) {
+        console.error('Lỗi khi tải dữ liệu bài hát:', error);
       }
-      audioRef.current.play();
+    },
+    [setCurrentSong]
+  );
+
+  // --- XỬ LÝ KHI KẾT THÚC BÀI HÁT ---
+  const handleAudioEnded = () => {
+    if (mode === 'repeat') {
+      loadAndPlaySong(currentSong.id);
     } else {
-      audioRef.current.pause();
+      if (typeof onEndedAudio === 'function') {
+        onEndedAudio();
+      }
     }
-    setIsPaused(prev => !prev);
   };
 
-  //////// TOOLTIP ////////
+  // --- THEO DÕI THAY ĐỔI URL (songId) ---
   useEffect(() => {
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    const tooltipList = [...tooltipTriggerList].map(el => {
-      const tooltip = new bootstrap.Tooltip(el, {
-        placement: 'top',
-        fallbackPlacements: [],
-        delay: { show: 0, hide: 0 },
-      });
-      el.addEventListener('mouseleave', () => tooltip.hide());
-      return tooltip;
-    });
-    return () => tooltipList.forEach(t => t.dispose());
-  }, []);
-
-  useEffect(() => {
-    const el = document.querySelector('.play-pause-btn');
-    if (!el) return;
-    const tooltip = bootstrap.Tooltip.getInstance(el);
-    if (tooltip) {
-      el.setAttribute('data-bs-title', isPaused ? 'Phát' : 'Tạm dừng');
-      tooltip.setContent({
-        '.tooltip-inner': isPaused ? 'Phát' : 'Tạm dừng',
-      });
-    }
-  }, [isPaused]);
-
-  //////// PROGRESS ////////
-  useEffect(() => {
-    setProgressTime((currentTime / durationAudio) * 100 || 0);
-  }, [currentTime, durationAudio]);
-
-  //////// LOAD SONG ////////
-  useEffect(() => {
-    const fetchSong = async () => {
-      if (!songId) return;
-      try {
-        const song = await apiGetSong(songId);
-        if (currentSong && String(currentSong.id) === String(songId)) {
-          setClosedSongPlayerUnder(false);
-          return;
-        }
-        setCurrentSong(song);
-        if (song) {
-          setClosedSongPlayerUnder(false);
-          setTimeout(() => {
-            if (audioRef.current) {
-              audioRef.current.currentTime = 0;
-              audioRef.current.play().catch(err => console.warn('Không thể tự phát:', err));
-            }
-          }, 0);
-          setIsPaused(false);
-        }
-      } catch (error) {
-        console.error('Không tìm thấy bài hát:', error);
+    if (songId) {
+      // Nếu bài hát đang phát khác bài trong URL thì mới load mới
+      if (!currentSong || String(currentSong.id) !== String(songId)) {
+        loadAndPlaySong(songId);
+      } else {
+        setClosedSongPlayerUnder(false);
       }
-    };
-    fetchSong();
-  }, [songId]);
+    }
+  }, [songId, currentSong, loadAndPlaySong]);
 
-  //////// LOAD ARTIST ////////
+  // --- TẢI THÔNG TIN NGHỆ SĨ ---
   useEffect(() => {
     const fetchArtist = async () => {
       if (!currentSong?.artistId) return;
@@ -173,64 +114,84 @@ function SongPlayerUnder({
     fetchArtist();
   }, [currentSong]);
 
-  // useEffect(() => {
-  //   const fetchFavorites = async () => {
-  //     try {
-  //       const data = await apiGetMyFavoriteSongs();
-  //       setFavoriteSongs(data || []);
-  //     } catch (error) {
-  //       console.error('Không lấy được favorite songs:', error);
-  //     }
-  //   };
-
-  //   if (currentSong) {
-  //     fetchFavorites();
-  //   }
-  // }, [currentSong]);
-
-  // useEffect(() => {
-  //   if (!currentSong) return;
-  //   const isLiked = favoriteSongs.some(fav => String(fav.song.id) === String(currentSong.id));
-  //   setLikedVisible(isLiked);
-  // }, [currentSong, favoriteSongs]);
-
-  //////// AUTO PLAY ////////
+  // --- TẢI DANH SÁCH YÊU THÍCH ---
   useEffect(() => {
-    if (!audioRef.current) return;
-    if (!currentSong) {
-      setClosedSongPlayerUnder(true);
-      return;
-    }
-    setClosedSongPlayerUnder(false);
-    const playAfterLoad = () => {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play().catch(err => console.warn('Audio auto-play failed:', err));
-      audioRef.current.removeEventListener('loadedmetadata', playAfterLoad);
+    const fetchFavorites = async () => {
+      try {
+        // const data = await apiGetMyFavoriteSongs();
+        // setFavoriteSongs(data || []);
+      } catch (error) {
+        console.error('Lỗi lấy danh sách yêu thích:', error);
+      }
     };
-    audioRef.current.addEventListener('loadedmetadata', playAfterLoad);
+    if (currentSong) fetchFavorites();
   }, [currentSong]);
 
-  if (!currentSong) return null;
+  // --- KIỂM TRA TRẠNG THÁI LIKE ---
+  useEffect(() => {
+    if (!currentSong) return;
+    const isLiked = favoriteSongs.some(fav => String(fav.song.id) === String(currentSong.id));
+    setLikedVisible(isLiked);
+  }, [currentSong, favoriteSongs]);
 
-  //////// UTILS ////////
+  // --- DOWNLOAD ---
+  const handleDownload = () => {
+    if (!isPremium) {
+      alert('Chỉ tài khoản PREMIUM mới được tải nhạc!');
+      return;
+    }
+    if (!currentSong?.audio) return;
+    const link = document.createElement('a');
+    link.href = currentSong.audio;
+    link.download = `${currentSong.title}.mp3`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // --- TOGGLE FAVORITE ---
+  const handleToggleFavorite = async () => {
+    if (!currentSong?.id) return;
+    try {
+      if (likedVisible) {
+        // const success = await apiRemoveSongFromFavorite(currentSong.id);
+        // if (success) {
+        //   setFavoriteSongs(prev => prev.filter(f => String(f.song.id) !== String(currentSong.id)));
+        // }
+      } else {
+        // const success = await apiAddSongToFavorite(currentSong.id);
+        // if (success) {
+        //   setFavoriteSongs(prev => [...prev, { song: currentSong }]);
+        // }
+      }
+    } catch (error) {
+      console.error('Lỗi khi cập nhật yêu thích:', error);
+    }
+  };
+
+  // --- PHÁT / TẠM DỪNG ---
+  const togglePlayPause = () => {
+    if (!audioRef.current) return;
+    if (isPaused) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+    setIsPaused(prev => !prev);
+  };
+
+  const toggleShuffle = () => setMode(prev => (prev === 'shuffle' ? null : 'shuffle'));
+  const toggleRepeat = () => setMode(prev => (prev === 'repeat' ? null : 'repeat'));
+
+  useEffect(() => {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el));
+    return () => tooltipList.forEach(t => t.dispose());
+  }, [currentSong]);
+
   const flashButton = setter => {
     setter(true);
     setTimeout(() => setter(false), 300);
-  };
-
-  const handleAudioEnded = () => {
-    if (mode === 'repeat') {
-      if (audioRef.current) {
-        audioRef.current.currentTime = 0;
-        audioRef.current.play();
-      }
-      setCurrentTime(0);
-      setProgressTime(0);
-    } else {
-      if (typeof onEndedAudio === 'function') {
-        onEndedAudio();
-      }
-    }
   };
 
   const handleClickTimeBar = e => {
@@ -240,65 +201,51 @@ function SongPlayerUnder({
     const percent = Math.max(0, Math.min(1, clickX / rect.width));
     const newTime = durationAudio * percent;
     setCurrentTime(newTime);
-    if (audioRef.current) {
-      audioRef.current.currentTime = newTime;
-    }
+    if (audioRef.current) audioRef.current.currentTime = newTime;
   };
 
   const handleClosePlayerUnder = () => {
     flashButton(setFlashClose);
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
+    if (audioRef.current) audioRef.current.pause();
     setIsPaused(true);
     setClosedSongPlayerUnder(true);
     closePlayListSideBar();
   };
 
   const formatTimeBar = seconds => {
-    seconds = Math.floor(seconds);
+    seconds = Math.floor(seconds || 0);
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
+  if (!currentSong) return null;
+
   return (
     <nav
-      className={`navbar navbar-expand-lg fixed-bottom navbar-song-player ${
-        closedSongPlayerUnder ? 'slide-down-song-player' : ''
-      }`}
+      className={`navbar navbar-expand-lg fixed-bottom navbar-song-player ${closedSongPlayerUnder ? 'slide-down-song-player' : ''}`}
     >
       <div className="container-fluid">
         <div className="row w-100">
-          {/* LEFT */}
           <div className="col-4 d-flex align-items-center">
-            <div className="navbar-brand me-2 mb-1 d-flex align-items-center">
+            <div className="navbar-brand me-2 mb-1">
               <img
                 src={currentSong.cover}
                 height="60"
-                alt="VieMp3"
-                loading="lazy"
-                style={{
-                  marginTop: '2px',
-                  border: '2px solid var(--black-color-light-1)',
-                  borderRadius: '6px',
-                }}
+                alt="Cover"
+                style={{ borderRadius: '6px', border: '2px solid #333' }}
               />
             </div>
-
             <div className="song-info-wrapper">
               <Link to={`/song/${currentSong.id}`} className="link-song-hover-color">
                 <h5 className="text-ellipsis">{currentSong.title}</h5>
               </Link>
-
               <Link to={`/artist/${artist?.name}`} className="link-artist-hover-color">
-                <p style={{ fontSize: '14px', marginTop: '2%' }}>{artist?.name}</p>
+                <p style={{ fontSize: '14px' }}>{artist?.name}</p>
               </Link>
             </div>
           </div>
 
-          {/* CENTER */}
           <div className="col-5 d-flex justify-content-center position-relative">
             <PlayerControls
               audioRef={audioRef}
@@ -328,42 +275,30 @@ function SongPlayerUnder({
             />
           </div>
 
-          {/* RIGHT */}
           <div className="col-3 d-flex justify-content-end align-items-center gap-1">
             <button
               className={`icon-song-player-right-element-btn ${likedVisible ? 'active' : ''}`}
-              data-bs-toggle="tooltip"
-              title="Thích"
               onClick={handleToggleFavorite}
+              title="Thích"
             >
               <i className={icons.iconHeart}></i>
             </button>
-
             {isPremium && (
-              <button
-                className="icon-song-player-right-element-btn"
-                data-bs-toggle="tooltip"
-                title="Tải nhạc"
-                onClick={handleDownload}
-              >
+              <button className="icon-song-player-right-element-btn" onClick={handleDownload} title="Tải nhạc">
                 <i className={icons.iconDownload}></i>
               </button>
             )}
-
             <button
               className={`icon-song-player-right-element-btn ${isShowPlayListSideBar ? 'active' : ''}`}
-              data-bs-toggle="tooltip"
-              title="Danh sách phát"
               onClick={togglePlayListSidebar}
+              title="Danh sách phát"
             >
               <i className={icons.iconBars}></i>
             </button>
-
             <button
               className={`icon-song-player-right-element-btn ${flashClose ? 'flash' : ''}`}
-              data-bs-toggle="tooltip"
-              title="Đóng"
               onClick={handleClosePlayerUnder}
+              title="Đóng"
             >
               <i className={icons.iconXMark}></i>
             </button>
