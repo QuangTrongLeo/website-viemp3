@@ -3,6 +3,7 @@ package viemp3.be_viemp3.controller.music;
 import lombok.RequiredArgsConstructor;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.request.music.album.AlbumRequest;
+import viemp3.be_viemp3.dto.request.music.album.SongToAlbumRequest;
 import viemp3.be_viemp3.dto.response.music.AlbumResponse;
 import viemp3.be_viemp3.service.music.AlbumService;
 
@@ -87,6 +88,32 @@ public class AlbumController {
                         .success(true)
                         .message("Lấy danh sách album thành công")
                         .data(responses)
+                        .build()
+        );
+    }
+
+    // ===== ADD SONG TO ALBUM =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD')")
+    @PostMapping("/add-song")
+    public ResponseEntity<ApiResponse<Void>> addSongToAlbum(@RequestBody SongToAlbumRequest request) {
+        albumService.addSongToAlbum(request);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Thêm bài hát vào album thành công")
+                        .build()
+        );
+    }
+
+    // ===== REMOVE SONG FROM ALBUM =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD')")
+    @DeleteMapping("/{songId}/remove-song")
+    public ResponseEntity<ApiResponse<Void>> removeSongFromAlbum(@PathVariable String songId) {
+        albumService.removeSongFromAlbum(songId);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Đã xóa bài hát khỏi album")
                         .build()
         );
     }

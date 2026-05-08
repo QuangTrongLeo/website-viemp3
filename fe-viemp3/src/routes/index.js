@@ -1,12 +1,17 @@
 import config from '~/config';
 import { SecondLayout } from '~/layouts';
 
-import { ArtistDetail, Home, GenreDetail, Genres, Login, Register, Otp, SongDetail, History } from '~/pages';
+import { ArtistDetail, Home, GenreDetail, Genres, Login, Register, Otp, SongDetail, History, AlbumDetail } from '~/pages';
+
+// modRoutes
+import { AlbumManage } from '~/pages';
+
 
 const publishRoutes = [
   { path: config.routes.home, component: Home },
   { path: `${config.routes.artist}/:artistName`, component: ArtistDetail },
   { path: `${config.routes.genre}/:genreId`, component: GenreDetail },
+  { path: `${config.routes.album}/:albumId`, component: AlbumDetail },
   { path: config.routes.genres, component: Genres },
   { path: config.routes.login, component: Login, layout: SecondLayout },
   { path: config.routes.register, component: Register, layout: SecondLayout },
@@ -16,9 +21,12 @@ const publishRoutes = [
 const userRoutes = [
   { path: `${config.routes.song}/:songId`, component: SongDetail },
   { path: config.routes.history, component: History },
+
 ];
 
-const modRoutes = [];
+const modRoutes = [
+  { path: config.routes.manageAlbums, component: AlbumManage },
+];
 
 const adminRoutes = [];
 
