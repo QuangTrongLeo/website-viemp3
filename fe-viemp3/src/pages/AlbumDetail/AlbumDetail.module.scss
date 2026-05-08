@@ -1,0 +1,73 @@
+.album-wrapper {
+  color: white;
+  padding: 20px;
+}
+
+.album-header {
+  background-color: var(--black-color-light-2);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.album-cover {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.album-title {
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.album-description {
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
+.album-meta {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 12px;
+}
+
+.play-all-btn {
+  background-color: var(--primary-color, #9b4de0);
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 999px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: #843fd3;
+  }
+
+  i {
+    margin-right: 8px;
+  }
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.favorite-btn {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 6px 16px;
+  border-radius: 999px;
+  color: var(--white-color);
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
