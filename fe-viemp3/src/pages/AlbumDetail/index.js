@@ -13,7 +13,7 @@ import {
 //   apiRemoveAlbumFromFavorite,
 } from '~/api/services/serviceAlbums';
 
-// import { apiGetSongsByAlbum, apiGetMyFavoriteSongs } from '~/api/services/serviceSongs';
+import { apiGetSongsByAlbum, apiGetMyFavoriteSongs } from '~/api/services/serviceSongs';
 
 const cx = classNames.bind(styles);
 
