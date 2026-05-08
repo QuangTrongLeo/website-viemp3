@@ -3,13 +3,16 @@ package viemp3.be_viemp3.service.music;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.dto.request.music.album.AlbumRequest;
+import viemp3.be_viemp3.dto.request.music.album.SongToAlbumRequest;
 import viemp3.be_viemp3.dto.response.music.AlbumResponse;
 import viemp3.be_viemp3.entity.Album;
 import viemp3.be_viemp3.entity.Artist;
+import viemp3.be_viemp3.entity.Song;
 import viemp3.be_viemp3.mapper.music.AlbumMapper;
 import viemp3.be_viemp3.repository.music.AlbumRepository;
 import viemp3.be_viemp3.service.file.FileStorageService;
@@ -78,6 +81,35 @@ public class AlbumService {
     // ===== GET ALL =====
     public List<AlbumResponse> getAllAlbums() {
         return AlbumMapper.toResponseList(albumRepository.findAll());
+    }
+
+    // ===== ADD SONG TO ALBUM =====
+    @Transactional
+    public void addSongToAlbum(SongToAlbumRequest request) {
+        Song song = entityQueryService.findSongById(request.getSongId());
+        Album album = entityQueryService.findAlbumById(request.getAlbumId());
+        validateSameArtist(song, album);
+        if (album.equals(song.getAlbum())) {
+            return;
+        }
+        song.setAlbum(album);
+    }
+
+    // ===== REMOVE SONG FROM ALBUM =====
+    @Transactional
+    public void removeSongFromAlbum(String songId) {
+        Song song = entityQueryService.findSongById(songId);
+        if (song.getAlbum() == null) {
+            throw new IllegalStateException("Bài hát chưa thuộc album nào");
+        }
+        song.setAlbum(null);
+    }
+
+    // ===== SUPPORT METHOD =====
+    private void validateSameArtist(Song song, Album album) {
+        if (!song.getArtist().getId().equals(album.getArtist().getId())) {
+            throw new IllegalArgumentException("Song và Album không cùng nghệ sĩ");
+        }
     }
     
 }

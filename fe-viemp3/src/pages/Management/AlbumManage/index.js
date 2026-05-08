@@ -9,8 +9,8 @@ import {
   apiCreateAlbum,
   apiUpdateAlbum,
   apiDeleteAlbum,
-//   apiAddSongToAlbum,
-//   apiRemoveSongFromAlbum,
+  apiAddSongToAlbum,
+  apiRemoveSongFromAlbum,
 } from '~/api/services/serviceAlbums';
 
 import { apiGetArtists } from '~/api/services/serviceArtists';

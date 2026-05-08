@@ -60,3 +60,41 @@ export async function apiGetSongsByArtist(artistId) {
     throw new Error(message);
   }
 }
+
+export async function apiAddSongToAlbum(albumId, songId) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(
+      `${apiAlbumUrls.apiAlbumUrl}/add-song`,
+      {
+        albumId,
+        songId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data.success;
+  } catch (error) {
+    if (error.response?.status === 403 || error.response?.status === 401) return null;
+  }
+}
+
+export async function apiRemoveSongFromAlbum(songId) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await axios.delete(`${apiAlbumUrls.apiAlbumUrl}/${songId}/remove-song`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.success;
+  } catch (error) {
+    if (error.response?.status === 403 || error.response?.status === 401) return null;
+  }
+}
+
