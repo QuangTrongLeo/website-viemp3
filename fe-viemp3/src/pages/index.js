@@ -8,5 +8,6 @@ export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as Otp } from './Otp';
 export { default as SongDetail } from './SongDetail';
+export { default as Profile } from './Profile';
 
 export { default as AlbumManage } from './Management/AlbumManage';

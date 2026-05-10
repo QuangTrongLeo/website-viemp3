@@ -1,7 +1,11 @@
 import config from '~/config';
 import { SecondLayout } from '~/layouts';
 
-import { ArtistDetail, Home, GenreDetail, Genres, Login, Register, Otp, SongDetail, History, AlbumDetail } from '~/pages';
+// publishRoutes
+import { Home, GenreDetail, Genres, Login, Register, Otp, History, AlbumDetail } from '~/pages';
+
+// userRoutes
+import { ArtistDetail, SongDetail, Profile } from '~/pages';
 
 // modRoutes
 import { AlbumManage } from '~/pages';
@@ -21,7 +25,7 @@ const publishRoutes = [
 const userRoutes = [
   { path: `${config.routes.song}/:songId`, component: SongDetail },
   { path: config.routes.history, component: History },
-
+  { path: config.routes.profile, component: Profile },
 ];
 
 const modRoutes = [
