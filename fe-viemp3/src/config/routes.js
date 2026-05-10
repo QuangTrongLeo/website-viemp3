@@ -14,6 +14,7 @@ const routes = {
   home: '/',
   login: '/login',
   register: '/register',
+  profile: '/profile',
   song: '/song',
   myAlbums: '/my-albums',
   otp: '/otp',
