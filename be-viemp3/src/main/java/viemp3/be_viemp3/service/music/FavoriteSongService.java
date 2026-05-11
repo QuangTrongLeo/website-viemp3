@@ -34,4 +34,13 @@ public class FavoriteSongService {
         favoriteSongRepository.save(favoriteSong);
         songRepository.incrementFavorites(songId);
     }
+
+    // ===== REMOVE SONG FROM FAVORITE =====
+    @Transactional
+    public void removeSongFromFavorite(String songId) {
+        User currentUser = securityService.getCurrentUser();
+        FavoriteSong favoriteSong = entityService.findFavoriteSong(currentUser.getId(), songId);
+        favoriteSongRepository.delete(favoriteSong);
+        songRepository.decrementFavorites(songId);
+    }
 }

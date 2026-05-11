@@ -3,10 +3,7 @@ package viemp3.be_viemp3.controller.music;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.service.music.FavoriteSongService;
 
@@ -25,6 +22,19 @@ public class FavoriteSongController {
                 ApiResponse.<Void>builder()
                         .success(true)
                         .message("Đã thêm bài hát vào danh sách yêu thích")
+                        .build()
+        );
+    }
+
+    // ===== REMOVE SONG FROM FAVORITE =====
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("/{songId}")
+    public ResponseEntity<ApiResponse<Void>> removeSongFromFavorite(@PathVariable String songId) {
+        favoriteSongService.removeSongFromFavorite(songId);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Đã xóa bài hát khỏi danh sách yêu thích")
                         .build()
         );
     }

@@ -6,16 +6,14 @@ import viemp3.be_viemp3.entity.*;
 import viemp3.be_viemp3.enums.RoleEnum;
 import viemp3.be_viemp3.repository.auth.RoleRepository;
 import viemp3.be_viemp3.repository.auth.UserRepository;
-import viemp3.be_viemp3.repository.music.AlbumRepository;
-import viemp3.be_viemp3.repository.music.ArtistRepository;
-import viemp3.be_viemp3.repository.music.GenreRepository;
-import viemp3.be_viemp3.repository.music.SongRepository;
+import viemp3.be_viemp3.repository.music.*;
 
 @Service
 @RequiredArgsConstructor
 public class EntityQueryService {
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
+    private final FavoriteSongRepository favoriteSongRepository;
     private final GenreRepository genreRepository;
     private final SongRepository songRepository;
     private final UserRepository userRepository;
@@ -49,6 +47,14 @@ public class EntityQueryService {
     public Song findSongById(String id) {
         return songRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Bài hát không tồn tại với id: " + id));
+    }
+
+    public FavoriteSong findFavoriteSong(String userId, String songId) {
+        return favoriteSongRepository
+                .findByUserIdAndSongId(userId, songId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Bài hát không tồn tại trong danh sách yêu thích")
+                );
     }
 
     // ===== USER =====
