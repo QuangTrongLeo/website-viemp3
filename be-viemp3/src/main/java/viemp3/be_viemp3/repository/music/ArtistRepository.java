@@ -16,4 +16,8 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
     @Modifying
     @Query("UPDATE Artist a SET a.favorites = a.favorites + 1 WHERE a.id = :artistId")
     void incrementFavorites(@Param("artistId") String artistId);
+
+    @Modifying
+    @Query("UPDATE Artist a SET a.favorites = CASE WHEN a.favorites > 0 THEN a.favorites - 1 ELSE 0 END WHERE a.id = :artistId")
+    void decrementFavorites(@Param("artistId") String artistId);
 }

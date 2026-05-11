@@ -13,6 +13,7 @@ import viemp3.be_viemp3.repository.music.*;
 public class EntityQueryService {
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
+    private final FavoriteArtistRepository favoriteArtistRepository;
     private final FavoriteSongRepository favoriteSongRepository;
     private final GenreRepository genreRepository;
     private final SongRepository songRepository;
@@ -35,6 +36,14 @@ public class EntityQueryService {
     public Artist findArtistByName(String artistName) {
         return artistRepository.findByNameContainingIgnoreCase(artistName)
                 .orElseThrow(() -> new IllegalArgumentException("Nghệ sĩ không tồn tại"));
+    }
+
+    public FavoriteArtist findFavoriteArtist(String userId, String artistId) {
+        return favoriteArtistRepository
+                .findByUserIdAndArtistId(userId, artistId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Artist không tồn tại trong danh sách yêu thích")
+                );
     }
 
     // ===== GENRE =====
