@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import styles from './ArtistDetail.module.scss';
 import SongItem from '~/components/Components/SongItem';
 import LimitedList from '~/components/Components/LimitedList';
+import { SquareCard } from '~/components/Components/Card';
 import { apiGetSongsByArtist } from '~/api/services/serviceSongs';
 import { apiGetArtistByName } from '~/api/services/serviceArtists';
 
@@ -14,10 +15,22 @@ function ArtistDetail() {
   const decodedArtistName = decodeURIComponent(artistName);
 
   const [artist, setArtist] = useState(null);
+  const albumsByArtist = [
+    {
+      id: '49e937a5-217c-45c3-bccc-9c955cb8bbcb',
+      title: 'Sky',
+      cover:
+        'https://res.cloudinary.com/drlhghtqx/image/upload/v1772539907/albums/8f4fb9ab-ddf8-4efe-8304-e3231db17f6a.jpg',
+      artistId: 'fe9a1409-4f94-4246-902e-2e1ce22354a1',
+      favorites: 1,
+      createdAt: '2026-03-03T12:11:48.78393Z',
+    },
+  ];
   const [songsByArtist, setSongsByArtist] = useState([]);
   const [latestSong, setLatestSong] = useState(null);
 
   const [artistLoading, setArtistLoading] = useState(true);
+  const [albumsLoading, setAlbumsLoading] = useState(false);
   const [songsLoading, setSongsLoading] = useState(false);
 
   // fetch artist
@@ -116,6 +129,27 @@ function ArtistDetail() {
             )}
           />
         </div>
+
+        <h5 className={cx('section-title', 'mb-4')}>Albums của {artist.name}</h5>
+
+        {albumsLoading ? (
+          <div>Đang tải album...</div>
+        ) : (
+          <LimitedList
+            items={albumsByArtist}
+            limit={8}
+            renderItem={album => (
+              <div key={album.id} className="col-6 col-sm-4 col-lg-3 mb-3 d-flex justify-content-center">
+                <SquareCard
+                  content={album.title}
+                  cover={album.cover}
+                  href={`/album/${album.id}`}
+                  icon={<i className="fas fa-list fa-3x"></i>}
+                />
+              </div>
+            )}
+          />
+        )}
       </>
     </div>
   );
