@@ -8,5 +8,6 @@ import viemp3.be_viemp3.entity.FavoriteArtist;
 
 @Repository
 public interface FavoriteArtistRepository extends JpaRepository<FavoriteArtist, String> {
+    boolean existsByUserIdAndArtistId(String userId, String artistId);
     List<FavoriteArtist> findByArtistId(String artistId);
 }
