@@ -5,7 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import viemp3.be_viemp3.common.response.ApiResponse;
+import viemp3.be_viemp3.dto.response.music.FavoriteSongResponse;
 import viemp3.be_viemp3.service.music.FavoriteSongService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("${api.vie-mp3-url}/favorite-songs")
@@ -35,6 +38,20 @@ public class FavoriteSongController {
                 ApiResponse.<Void>builder()
                         .success(true)
                         .message("Đã xóa bài hát khỏi danh sách yêu thích")
+                        .build()
+        );
+    }
+
+    // ===== GET MY FAVORITE SONGS =====
+    @GetMapping
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ApiResponse<List<FavoriteSongResponse>>> getMyFavoriteSongs() {
+        List<FavoriteSongResponse> response = favoriteSongService.getMyFavoriteSongs();
+        return ResponseEntity.ok(
+                ApiResponse.<List<FavoriteSongResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách bài hát yêu thích thành công")
+                        .data(response)
                         .build()
         );
     }
