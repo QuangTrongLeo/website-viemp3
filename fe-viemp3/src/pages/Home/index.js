@@ -3,9 +3,10 @@ import HorizontalScroll from '~/components/Components/HorizontalScroll';
 import styles from './Home.module.scss';
 import classNames from 'classnames/bind';
 import { useAuth } from '~/components/Components/AuthProvider';
-import { CircleCard, RectangleCard } from '~/components/Components/Card';
+import { CircleCard, RectangleCard, SquareCard } from '~/components/Components/Card';
 import { apiGetArtist, apiGetArtists } from '~/api/services/serviceArtists';
 import { apiGetSongs } from '~/api/services/serviceSongs';
+import { apiGetAlbums } from '~/api/services/serviceAlbums';
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +22,17 @@ function Home() {
   const { currentToken } = useAuth();
   const [newSongs, setNewSongs] = useState([]);
   const [trendingArtists, setTrendingArtists] = useState([]);
+  const [hotAlbums, setHotAlbums] = useState([]);
+
+  const handleHotAlbums = async () => {
+    try {
+      const data = await apiGetAlbums();
+      const sorted = sortDesc(data, 'favorites');
+      setHotAlbums(sorted);
+    } catch (error) {
+      console.error('Lỗi khi lấy album hot:', error);
+    }
+  };
 
   const handleNewSongs = async () => {
     try {
@@ -54,6 +66,7 @@ function Home() {
   useEffect(() => {
     handleNewSongs();
     handleTrendingArtists();
+    handleHotAlbums();
   }, [currentToken]);
 
   return (
@@ -83,6 +96,22 @@ function Home() {
         <HorizontalScroll>
           {trendingArtists?.map(artist => (
             <CircleCard key={artist.id} content={artist.name} cover={artist.avatar} href={`/artist/${artist.name}`} />
+          ))}
+        </HorizontalScroll>
+      </section>
+
+      {/* HOT ALBUMS */}
+      <section className={cx('section-block')}>
+        <h3>Album hot</h3>
+        <HorizontalScroll>
+          {hotAlbums.map(album => (
+            <SquareCard
+              key={album.id}
+              content={album.title}
+              desc={album.artistName}
+              cover={album.cover}
+              href={`/album/${album.id}`}
+            />
           ))}
         </HorizontalScroll>
       </section>
