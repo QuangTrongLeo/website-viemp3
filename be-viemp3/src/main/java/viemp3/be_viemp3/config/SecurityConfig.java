@@ -39,6 +39,7 @@ public class SecurityConfig {
                 "/albums/**",
                 "/favorite-artists/**",
                 "/favorite-albums/**",
+                "/favorite-songs/**",
                 "/genres/**",
                 "/listen-histories/**",
                 "/playlists/**",

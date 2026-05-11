@@ -20,4 +20,9 @@ public interface SongRepository extends JpaRepository<Song, String> {
     @Transactional
     @Query("UPDATE Song s SET s.listenCount = s.listenCount + 1 WHERE s.id = :songId")
     void incrementListenCount(@Param("songId") String songId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Song s SET s.favorites = s.favorites + 1 WHERE s.id = :songId")
+    void incrementFavorites(@Param("songId") String songId);
 }
