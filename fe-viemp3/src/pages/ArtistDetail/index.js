@@ -7,6 +7,7 @@ import LimitedList from '~/components/Components/LimitedList';
 import { SquareCard } from '~/components/Components/Card';
 import { apiGetSongsByArtist } from '~/api/services/serviceSongs';
 import { apiGetArtistByName } from '~/api/services/serviceArtists';
+import { apiGetAlbumsByArtist } from '~/api/services/serviceAlbums';
 
 const cx = classNames.bind(styles);
 
@@ -15,17 +16,7 @@ function ArtistDetail() {
   const decodedArtistName = decodeURIComponent(artistName);
 
   const [artist, setArtist] = useState(null);
-  const albumsByArtist = [
-    {
-      id: '49e937a5-217c-45c3-bccc-9c955cb8bbcb',
-      title: 'Sky',
-      cover:
-        'https://res.cloudinary.com/drlhghtqx/image/upload/v1772539907/albums/8f4fb9ab-ddf8-4efe-8304-e3231db17f6a.jpg',
-      artistId: 'fe9a1409-4f94-4246-902e-2e1ce22354a1',
-      favorites: 1,
-      createdAt: '2026-03-03T12:11:48.78393Z',
-    },
-  ];
+  const [albumsByArtist, setAlbumsByArtist] = useState([]);
   const [songsByArtist, setSongsByArtist] = useState([]);
   const [latestSong, setLatestSong] = useState(null);
 
@@ -70,6 +61,21 @@ function ArtistDetail() {
     }
   }, [artist]);
 
+  const handleAlbumsByArtist = useCallback(async () => {
+    if (!artist?.id) return;
+
+    try {
+      setAlbumsLoading(true);
+      const data = await apiGetAlbumsByArtist(artist.id);
+      setAlbumsByArtist(data);
+    } catch (error) {
+      console.error(error.message);
+      setAlbumsByArtist([]);
+    } finally {
+      setAlbumsLoading(false);
+    }
+  }, [artist]);
+
   useEffect(() => {
     handleGetArtist();
   }, [handleGetArtist]);
@@ -77,6 +83,10 @@ function ArtistDetail() {
   useEffect(() => {
     handleGetSongsByArtist();
   }, [handleGetSongsByArtist]);
+
+  useEffect(() => {
+    handleAlbumsByArtist();
+  }, [handleAlbumsByArtist]);
 
   if (artistLoading) return <div>Đang tải...</div>;
   if (songsLoading) return <div>Đang tải...</div>;
