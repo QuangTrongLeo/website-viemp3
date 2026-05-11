@@ -111,5 +111,12 @@ public class AlbumService {
             throw new IllegalArgumentException("Song và Album không cùng nghệ sĩ");
         }
     }
+
+    // ===== GET ALL ALBUMS BY ARTIST =====
+    public List<AlbumResponse> getAlbumsByArtist(String artistId) {
+        entityQueryService.findArtistById(artistId);
+        List<Album> albums = albumRepository.findByArtistId(artistId);
+        return AlbumMapper.toResponseList(albums);
+    }
     
 }
