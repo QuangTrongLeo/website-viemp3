@@ -76,6 +76,18 @@ export async function apiDeleteAlbum(albumId) {
   }
 }
 
+// ===== GET ALBUMS BY ARTIST =====
+export async function apiGetAlbumsByArtist(artistId) {
+  try {
+    const response = await axios.get(`${apiAlbumUrls.apiAlbumUrl}/artist/${artistId}`);
+    return response.data.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message || error.response?.data || error.message || 'Lỗi khi lấy album theo nghệ sĩ';
+    throw new Error(message);
+  }
+}
+
 export async function apiAddSongToAlbum(albumId, songId) {
   try {
     const token = localStorage.getItem('token');

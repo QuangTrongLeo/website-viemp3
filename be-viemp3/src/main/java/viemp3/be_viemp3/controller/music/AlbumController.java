@@ -117,5 +117,19 @@ public class AlbumController {
                         .build()
         );
     }
+
+    // ===== GET ALL ALBUMS BY ARTIST =====
+    @PreAuthorize("permitAll()")
+    @GetMapping("/artist/{artistId}")
+    public ResponseEntity<ApiResponse<List<AlbumResponse>>> getAlbumsByArtist(@PathVariable String artistId) {
+        List<AlbumResponse> responses = albumService.getAlbumsByArtist(artistId);
+        return ResponseEntity.ok(
+                ApiResponse.<List<AlbumResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách album của nghệ sĩ thành công")
+                        .data(responses)
+                        .build()
+        );
+    }
     
 }
