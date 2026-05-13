@@ -34,3 +34,19 @@ export async function apiGetArtists() {
     throw error;
   }
 }
+
+// =============== FAVORITE ARTIST ===============
+export async function apiGetMyFavoriteArtists() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(apiArtistUrls.apiFavoriteArtistUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách nghệ sĩ:', error);
+    return [];
+  }
+}

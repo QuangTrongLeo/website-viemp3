@@ -1,26 +1,43 @@
-import { CircleCard } from '~/components/Components/Card';
+import React, { useEffect, useState, useCallback } from 'react';
 import icons from '~/assets/icons';
 import styles from './FavoriteArtists.module.scss';
 import classNames from 'classnames/bind';
 import LimitedList from '~/components/Components/LimitedList';
+import { CircleCard } from '~/components/Components/Card';
+import { apiGetMyFavoriteArtists } from '~/api/services/serviceArtists';
 
 const cx = classNames.bind(styles);
 
 function FavoriteArtists() {
-  const favoriteArtists = [
-    {
-      id: '065bd5e7-9bff-42cf-beb4-328991d0f26d',
-      favoritedAt: '2026-03-05T01:46:17.844937Z',
-      artist: {
-        id: 'fe9a1409-4f94-4246-902e-2e1ce22354a1',
-        name: 'Sơn Tùng - MTP',
-        avatar:
-          'https://res.cloudinary.com/drlhghtqx/image/upload/v1772528088/artists/5e3aee0e-c031-4f51-82a7-c4e58ded036a.webp',
-        favorites: 100001,
-        createdAt: '2026-03-03T03:06:31.739971Z',
-      },
-    },
-  ];
+  const [favoriteArtists, setFavoriteArtists] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const handleGetMyFavoriteArtists = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await apiGetMyFavoriteArtists();
+      console.log(data);
+      if (!data) {
+        setFavoriteArtists([]);
+        return;
+      }
+      const sorted = [...data].sort((a, b) => new Date(b.favoritedAt) - new Date(a.favoritedAt));
+      setFavoriteArtists(sorted);
+    } catch (error) {
+      console.error(error.message);
+      setFavoriteArtists([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    handleGetMyFavoriteArtists();
+  }, [handleGetMyFavoriteArtists]);
+
+  if (loading) {
+    return <div className="text-center">Đang tải...</div>;
+  }
 
   return (
     <>
