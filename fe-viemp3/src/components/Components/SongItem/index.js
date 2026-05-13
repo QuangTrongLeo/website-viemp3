@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import SongMenu from '../SongMenu/index';
 
 import { apiGetArtist } from '~/api/services/serviceArtists';
-// import { apiGetMyFavoriteSongs, apiAddSongToFavorite, apiRemoveSongFromFavorite } from '~/api/services/serviceSongs';
+import { apiGetMyFavoriteSongs, apiAddSongToFavorite, apiRemoveSongFromFavorite } from '~/api/services/serviceSongs';
 
 const cx = classNames.bind(styles);
 
@@ -26,13 +26,13 @@ function SongItem({ song }) {
   // ===== FAVORITE =====
   useEffect(() => {
     const fetchFavorites = async () => {
-      // try {
-      //   const data = await apiGetMyFavoriteSongs();
-      //   const ids = data.map(item => item.song.id);
-      //   setIsLiked(ids.includes(song.id));
-      // } catch (error) {
-      //   console.error(error);
-      // }
+      try {
+        const data = await apiGetMyFavoriteSongs();
+        const ids = data.map(item => item.song.id);
+        setIsLiked(ids.includes(song.id));
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     fetchFavorites();
@@ -40,18 +40,17 @@ function SongItem({ song }) {
 
   const toggleLike = async e => {
     handleActionClick(e);
-
-    // try {
-    //   if (isLiked) {
-    //     await apiRemoveSongFromFavorite(song.id);
-    //     setIsLiked(false);
-    //   } else {
-    //     await apiAddSongToFavorite(song.id);
-    //     setIsLiked(true);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      if (isLiked) {
+        await apiRemoveSongFromFavorite(song.id);
+        setIsLiked(false);
+      } else {
+        await apiAddSongToFavorite(song.id);
+        setIsLiked(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // ===== ARTIST =====
@@ -98,7 +97,6 @@ function SongItem({ song }) {
         {/* TIME + MENU */}
         <div className={cx('right-group')}>
           <span className={cx('duration')}>{duration}</span>
-
           <SongMenu song={song} isLiked={isLiked} onToggleLike={toggleLike} handleActionClick={handleActionClick} />
         </div>
       </div>

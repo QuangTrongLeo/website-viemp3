@@ -28,7 +28,6 @@ function ArtistDetail() {
 
   const [artistLoading, setArtistLoading] = useState(true);
   const [albumsLoading, setAlbumsLoading] = useState(false);
-  const [songsLoading, setSongsLoading] = useState(false);
 
   const [isFollowed, setIsFollowed] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
@@ -53,8 +52,6 @@ function ArtistDetail() {
     if (!artist?.id) return;
 
     try {
-      setSongsLoading(true);
-
       const data = await apiGetSongsByArtist(artist.id);
 
       setSongsByArtist(data);
@@ -66,8 +63,6 @@ function ArtistDetail() {
       console.error(error.message);
       setSongsByArtist([]);
       setLatestSong(null);
-    } finally {
-      setSongsLoading(false);
     }
   }, [artist]);
 
@@ -115,10 +110,6 @@ function ArtistDetail() {
     if (artist?.id) checkIsFollowed();
   }, [artist, checkIsFollowed]);
 
-  if (artistLoading) return <div>Đang tải...</div>;
-  if (songsLoading) return <div>Đang tải...</div>;
-  if (!artist) return <div>Không tìm thấy nghệ sĩ...</div>;
-
   const popularSongs = [...songsByArtist].sort((a, b) => b.favorites - a.favorites);
 
   const toggleFollow = async () => {
@@ -149,6 +140,9 @@ function ArtistDetail() {
       setFollowLoading(false);
     }
   };
+
+  if (artistLoading) return <div>Đang tải...</div>;
+  if (!artist) return <div>Không tìm thấy nghệ sĩ...</div>;
 
   return (
     <div className={cx('artist-detail', 'py-4')}>
@@ -206,8 +200,8 @@ function ArtistDetail() {
                 items={popularSongs}
                 limit={10}
                 wrapInRow
-                renderItem={(song, idx) => (
-                  <div className="col-md-6 mb-3" key={idx}>
+                renderItem={song => (
+                  <div className="col-md-6 mb-3" key={song.id}>
                     <SongItem song={song} />
                   </div>
                 )}
