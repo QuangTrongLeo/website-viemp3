@@ -3,13 +3,13 @@ import Tippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
 import styles from './ChatBoxAI.module.scss';
 import { images } from '~/assets';
-// import { apiChatAI } from '~/api/services/serviceAIs';
+import { apiChatAI } from '~/api/services/serviceAIs';
 
 const cx = classNames.bind(styles);
 
 function ChatBoxAI() {
   const [visible, setVisible] = useState(false);
-  const [messages, setMessages] = useState([{ role: 'ai', content: 'Xin chào 👋 Tôi có thể giúp gì cho bạn?' }]);
+  const [messages, setMessages] = useState([{ role: 'ai', content: 'Xin chào. Tôi có thể giúp gì cho bạn?' }]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -36,26 +36,26 @@ function ChatBoxAI() {
     setLoading(true);
     setMessages(prev => [...prev, { role: 'ai', content: 'Đang trả lời...' }]);
 
-    // try {
-    //   const aiResponse = await apiChatAI(userMessage);
-    //   setMessages(prev => {
-    //     const updated = [...prev];
-    //     updated[updated.length - 1] = {
-    //       role: 'ai',
-    //       content: aiResponse,
-    //     };
-    //     return updated;
-    //   });
-    // } catch (error) {
-    //   setMessages(prev => {
-    //     const updated = [...prev];
-    //     updated[updated.length - 1] = {
-    //       role: 'ai',
-    //       content: 'AI đang quá tải, thử lại sau!',
-    //     };
-    //     return updated;
-    //   });
-    // }
+    try {
+      const aiResponse = await apiChatAI(userMessage);
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          role: 'ai',
+          content: aiResponse,
+        };
+        return updated;
+      });
+    } catch (error) {
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          role: 'ai',
+          content: 'AI đang quá tải, thử lại sau!',
+        };
+        return updated;
+      });
+    }
 
     setLoading(false);
   };
