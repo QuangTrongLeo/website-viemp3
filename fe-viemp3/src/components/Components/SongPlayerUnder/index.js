@@ -8,9 +8,9 @@ import PlayerControls from '../PlayerControls';
 import { useAuth } from '~/components/Components/AuthProvider';
 import {
   apiGetSong,
-  // apiGetMyFavoriteSongs,
-  // apiAddSongToFavorite,
-  // apiRemoveSongFromFavorite,
+  apiGetMyFavoriteSongs,
+  apiAddSongToFavorite,
+  apiRemoveSongFromFavorite,
 } from '~/api/services/serviceSongs';
 import { apiGetArtist } from '~/api/services/serviceArtists';
 
@@ -118,8 +118,8 @@ function SongPlayerUnder({
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        // const data = await apiGetMyFavoriteSongs();
-        // setFavoriteSongs(data || []);
+        const data = await apiGetMyFavoriteSongs();
+        setFavoriteSongs(data || []);
       } catch (error) {
         console.error('Lỗi lấy danh sách yêu thích:', error);
       }
@@ -154,15 +154,15 @@ function SongPlayerUnder({
     if (!currentSong?.id) return;
     try {
       if (likedVisible) {
-        // const success = await apiRemoveSongFromFavorite(currentSong.id);
-        // if (success) {
-        //   setFavoriteSongs(prev => prev.filter(f => String(f.song.id) !== String(currentSong.id)));
-        // }
+        const success = await apiRemoveSongFromFavorite(currentSong.id);
+        if (success) {
+          setFavoriteSongs(prev => prev.filter(f => String(f.song.id) !== String(currentSong.id)));
+        }
       } else {
-        // const success = await apiAddSongToFavorite(currentSong.id);
-        // if (success) {
-        //   setFavoriteSongs(prev => [...prev, { song: currentSong }]);
-        // }
+        const success = await apiAddSongToFavorite(currentSong.id);
+        if (success) {
+          setFavoriteSongs(prev => [...prev, { song: currentSong }]);
+        }
       }
     } catch (error) {
       console.error('Lỗi khi cập nhật yêu thích:', error);
