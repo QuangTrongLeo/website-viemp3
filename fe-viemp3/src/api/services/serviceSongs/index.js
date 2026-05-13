@@ -76,3 +76,37 @@ export async function apiGetMyFavoriteSongs() {
     if (error.response?.status === 403 || error.response?.status === 401) return [];
   }
 }
+
+export async function apiAddSongToFavorite(songId) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(
+      `${apiSongUrls.apiFavoriteSongUrl}/${songId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.success;
+  } catch (error) {
+    const message = error.response?.data?.message || error.response?.data || error.message;
+    throw new Error(message);
+  }
+}
+
+export async function apiRemoveSongFromFavorite(songId) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.delete(`${apiSongUrls.apiFavoriteSongUrl}/${songId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.success;
+  } catch (error) {
+    const message = error.response?.data?.message || error.response?.data || error.message;
+    throw new Error(message);
+  }
+}

@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import styles from './SongRow.module.scss';
 import SongMenu from '../../SongMenu/index';
 
-// import { apiGetArtist } from '~/api/services/serviceArtists';
+import { apiGetArtist } from '~/api/services/serviceArtists';
 // import { apiGetAlbum } from '~/api/services/serviceAlbums';
-// import { apiGetMyFavoriteSongs, apiAddSongToFavorite, apiRemoveSongFromFavorite } from '~/api/services/serviceSongs';
+import { apiGetMyFavoriteSongs, apiAddSongToFavorite, apiRemoveSongFromFavorite } from '~/api/services/serviceSongs';
 
 const cx = classNames.bind(styles);
 
@@ -21,18 +21,18 @@ function SongRow({ song }) {
   // ===== FETCH ARTIST + ALBUM =====
   useEffect(() => {
     const fetchData = async () => {
-      // try {
-      //   if (song.artistId) {
-      //     const data = await apiGetArtist(song.artistId);
-      //     setArtist(data);
-      //   }
+      try {
+        if (song.artistId) {
+          const data = await apiGetArtist(song.artistId);
+          setArtist(data);
+        }
       //   if (song.albumId) {
       //     const data = await apiGetAlbum(song.albumId);
       //     setAlbum(data);
       //   }
-      // } catch (error) {
-      //   console.error('Lỗi fetch data:', error);
-      // }
+      } catch (error) {
+         console.error('Lỗi fetch data:', error);
+      }
     };
     fetchData();
   }, [song.artistId, song.albumId]);
@@ -40,13 +40,13 @@ function SongRow({ song }) {
   // ===== FETCH FAVORITE =====
   useEffect(() => {
     const fetchFavorites = async () => {
-      // try {
-      //   const favorites = await apiGetMyFavoriteSongs();
-      //   const ids = favorites.map(item => item.song.id);
-      //   setIsLiked(ids.includes(song.id));
-      // } catch (error) {
-      //   console.error('Lỗi lấy favorite:', error);
-      // }
+      try {
+        const favorites = await apiGetMyFavoriteSongs();
+        const ids = favorites.map(item => item.song.id);
+        setIsLiked(ids.includes(song.id));
+      } catch (error) {
+        console.error('Lỗi lấy favorite:', error);
+      }
     };
     fetchFavorites();
   }, [song.id]);
@@ -61,10 +61,10 @@ function SongRow({ song }) {
     handleActionClick(e);
     try {
       if (isLiked) {
-        // await apiRemoveSongFromFavorite(song.id);
+        await apiRemoveSongFromFavorite(song.id);
         setIsLiked(false);
       } else {
-        // await apiAddSongToFavorite(song.id);
+        await apiAddSongToFavorite(song.id);
         setIsLiked(true);
       }
     } catch (error) {
