@@ -1,5 +1,6 @@
 export { default as AlbumDetail } from './AlbumDetail';
 export { default as ArtistDetail } from './ArtistDetail';
+export { default as FavoriteArtists } from './FavoriteArtists';
 export { default as GenreDetail } from './GenreDetail';
 export { default as Genres } from './Genres';
 export { default as History } from './History';
