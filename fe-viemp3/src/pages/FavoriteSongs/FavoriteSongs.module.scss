@@ -1,0 +1,14 @@
+.song-row {
+  border-bottom: 1px solid var(--black-color-light-2);
+  font-weight: 500;
+  color: var(--white-color);
+
+  .song-row-icon-header {
+    font-size: 16px;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4%;
+}
