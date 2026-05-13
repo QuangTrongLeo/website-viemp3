@@ -50,3 +50,37 @@ export async function apiGetMyFavoriteArtists() {
     return [];
   }
 }
+
+export async function apiAddArtistToFavorite(artistId) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(
+      `${apiArtistUrls.apiFavoriteArtistUrl}/${artistId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.success;
+  } catch (error) {
+    const message = error.response?.data?.message || error.response?.data || error.message;
+    throw new Error(message);
+  }
+}
+
+export async function apiRemoveArtistFromFavorite(artistId) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.delete(`${apiArtistUrls.apiFavoriteArtistUrl}/${artistId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.success;
+  } catch (error) {
+    const message = error.response?.data?.message || error.response?.data || error.message;
+    throw new Error(message);
+  }
+}

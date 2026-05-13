@@ -7,7 +7,12 @@ import SongItem from '~/components/Components/SongItem';
 import LimitedList from '~/components/Components/LimitedList';
 import { SquareCard } from '~/components/Components/Card';
 import { apiGetSongsByArtist } from '~/api/services/serviceSongs';
-import { apiGetArtistByName } from '~/api/services/serviceArtists';
+import {
+  apiGetArtistByName,
+  apiGetMyFavoriteArtists,
+  apiAddArtistToFavorite,
+  apiRemoveArtistFromFavorite,
+} from '~/api/services/serviceArtists';
 import { apiGetAlbumsByArtist } from '~/api/services/serviceAlbums';
 
 const cx = classNames.bind(styles);
@@ -25,6 +30,8 @@ function ArtistDetail() {
   const [albumsLoading, setAlbumsLoading] = useState(false);
   const [songsLoading, setSongsLoading] = useState(false);
 
+  const [isFollowed, setIsFollowed] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('songs');
 
   // fetch artist
@@ -79,6 +86,19 @@ function ArtistDetail() {
     }
   }, [artist]);
 
+  const checkIsFollowed = useCallback(async () => {
+    if (!artist?.id) return;
+
+    try {
+      const favoriteList = await apiGetMyFavoriteArtists();
+      const isExist = favoriteList.some(fav => String(fav.artist.id) === String(artist.id));
+      setIsFollowed(isExist);
+    } catch (error) {
+      console.error(error.message);
+      setIsFollowed(false);
+    }
+  }, [artist]);
+
   useEffect(() => {
     handleGetArtist();
   }, [handleGetArtist]);
@@ -91,11 +111,44 @@ function ArtistDetail() {
     handleAlbumsByArtist();
   }, [handleAlbumsByArtist]);
 
+  useEffect(() => {
+    if (artist?.id) checkIsFollowed();
+  }, [artist, checkIsFollowed]);
+
   if (artistLoading) return <div>Đang tải...</div>;
   if (songsLoading) return <div>Đang tải...</div>;
   if (!artist) return <div>Không tìm thấy nghệ sĩ...</div>;
 
   const popularSongs = [...songsByArtist].sort((a, b) => b.favorites - a.favorites);
+
+  const toggleFollow = async () => {
+    if (!artist?.id || followLoading) return;
+
+    try {
+      setFollowLoading(true);
+
+      let success = false;
+
+      if (!isFollowed) {
+        success = await apiAddArtistToFavorite(artist.id);
+      } else {
+        success = await apiRemoveArtistFromFavorite(artist.id);
+      }
+
+      if (success) {
+        setIsFollowed(prev => !prev);
+
+        setArtist(prev => ({
+          ...prev,
+          favorites: isFollowed ? Math.max((prev.favorites ?? 1) - 1, 0) : (prev.favorites ?? 0) + 1,
+        }));
+      }
+    } catch (error) {
+      console.error(error.message);
+    } finally {
+      setFollowLoading(false);
+    }
+  };
 
   return (
     <div className={cx('artist-detail', 'py-4')}>
@@ -108,8 +161,9 @@ function ArtistDetail() {
 
           <p className={cx('followers')}>{(artist.favorites ?? 0).toLocaleString('vi-VN')} người đang theo dõi</p>
 
-          <button className={cx('follow-btn')}>
-            <i className={cx(icons.iconCheck, 'me-1')}></i>
+          <button className={cx('follow-btn')} onClick={toggleFollow} disabled={followLoading}>
+            <i className={cx(isFollowed ? icons.iconCheck : icons.iconUserPlus, 'me-1')}></i>
+            {followLoading ? 'Đang xử lý...' : isFollowed ? 'Đang theo dõi' : 'Theo dõi'}
           </button>
         </div>
       </div>
