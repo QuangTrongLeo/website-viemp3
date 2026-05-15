@@ -2,6 +2,7 @@ package viemp3.be_viemp3.controller.music;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,18 @@ public class FavoriteAlbumController {
                 ApiResponse.<Void>builder()
                         .success(true)
                         .message("Đã thêm album vào danh sách yêu thích")
+                        .build()
+        );
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("/{albumId}")
+    public ResponseEntity<ApiResponse<Void>> removeAlbumFromFavorite(@PathVariable String albumId) {
+        favoriteAlbumService.removeAlbumFromFavorite(albumId);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Đã xóa album khỏi danh sách yêu thích")
                         .build()
         );
     }

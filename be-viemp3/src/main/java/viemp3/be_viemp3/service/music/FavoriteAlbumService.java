@@ -33,4 +33,14 @@ public class FavoriteAlbumService {
         favoriteAlbumRepository.save(favoriteAlbum);
         albumRepository.incrementFavorites(albumId);
     }
+
+    // ===== REMOVE ALBUM FROM FAVORITE =====
+    @Transactional
+    public void removeAlbumFromFavorite(String albumId) {
+        User currentUser = securityService.getCurrentUser();
+        FavoriteAlbum favoriteAlbum = entityQueryService.findFavoriteAlbum(currentUser.getId(), albumId);
+        favoriteAlbumRepository.delete(favoriteAlbum);
+        albumRepository.decrementFavorites(albumId);
+    }
+    
 }
