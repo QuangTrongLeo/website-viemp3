@@ -16,6 +16,7 @@ public class EntityQueryService {
     private final FavoriteArtistRepository favoriteArtistRepository;
     private final FavoriteAlbumRepository favoriteAlbumRepository;
     private final FavoriteSongRepository favoriteSongRepository;
+    private final PlaylistRepository playlistRepository;
     private final GenreRepository genreRepository;
     private final SongRepository songRepository;
     private final UserRepository userRepository;
@@ -59,6 +60,13 @@ public class EntityQueryService {
     public Genre findGenreById(String id) {
         return genreRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Genre không tồn tại với id: " + id));
+    }
+
+    // ===== PLAYLIST =====
+    public Playlist findPlaylistById(String id) {
+        return playlistRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Playlist không tồn tại"));
     }
 
     // ===== SONG =====

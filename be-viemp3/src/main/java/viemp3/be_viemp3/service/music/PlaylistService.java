@@ -41,4 +41,35 @@ public class PlaylistService {
         playlist = playlistRepository.save(playlist);
         return PlaylistMapper.toResponse(playlist);
     }
+
+    // ===== UPDATE =====
+    public PlaylistResponse updatePlaylist(String id, PlaylistRequest request) {
+        Playlist playlist = entityQueryService.findPlaylistById(id);
+        User user = securityService.getCurrentUser();
+        // check owner
+        if (!playlist.getUser().getEmail().equals(user.getEmail())) {
+            throw new IllegalArgumentException("Bạn không có quyền chỉnh sửa playlist này");
+        }
+        boolean isUpdated = false;
+        // update name
+        if (request.getName() != null && !request.getName().isBlank()) {
+            playlist.setName(request.getName().trim());
+            isUpdated = true;
+        }
+        // update cover
+        if (request.getCover() != null && !request.getCover().isEmpty()) {
+            if (playlist.getCover() != null && !playlist.getCover().isBlank()) {
+                fileStorageService.deleteByUrl(playlist.getCover());
+            }
+            String newCover = fileStorageService.upload(request.getCover(), "playlists");
+            playlist.setCover(newCover);
+            isUpdated = true;
+        }
+        if (!isUpdated) {
+            throw new IllegalArgumentException("Không có dữ liệu để cập nhật");
+        }
+        playlistRepository.save(playlist);
+        return PlaylistMapper.toResponse(playlist);
+    }
+    
 }
