@@ -1,6 +1,7 @@
 package viemp3.be_viemp3.service.music;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -122,6 +123,12 @@ public class PlaylistService {
     // ===== GET BY ID =====
     public PlaylistResponse getPlaylistById(String playlistId) {
         return PlaylistMapper.toResponse(entityQueryService.findPlaylistById(playlistId));
+    }
+
+    // ===== GET ALL BY USER =====
+    public List<PlaylistResponse> getPlaylistsByUser() {
+        User user = securityService.getCurrentUser();
+        return PlaylistMapper.toResponseList(playlistRepository.findByUser(user));
     }
     
 }

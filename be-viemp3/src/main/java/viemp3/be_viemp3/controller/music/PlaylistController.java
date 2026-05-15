@@ -1,5 +1,7 @@
 package viemp3.be_viemp3.controller.music;
 
+import java.util.List;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -101,6 +103,20 @@ public class PlaylistController {
                 ApiResponse.<PlaylistResponse>builder()
                         .success(true)
                         .message("Lấy playlist thành công")
+                        .data(response)
+                        .build()
+        );
+    }
+
+    // ===== GET ALL PLAYLIST OF CURRENT USER =====
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<List<PlaylistResponse>>> getMyPlaylists() {
+        List<PlaylistResponse> response = playlistService.getPlaylistsByUser();
+        return ResponseEntity.ok(
+                ApiResponse.<List<PlaylistResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách playlist thành công")
                         .data(response)
                         .build()
         );
