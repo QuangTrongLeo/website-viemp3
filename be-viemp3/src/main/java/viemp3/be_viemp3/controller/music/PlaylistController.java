@@ -1,0 +1,36 @@
+package viemp3.be_viemp3.controller.music;
+
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+import viemp3.be_viemp3.common.response.ApiResponse;
+import viemp3.be_viemp3.dto.request.music.playlist.PlaylistRequest;
+import viemp3.be_viemp3.dto.response.music.PlaylistResponse;
+import viemp3.be_viemp3.service.music.PlaylistService;
+
+@RestController
+@RequestMapping("${api.vie-mp3-url}/playlists")
+@RequiredArgsConstructor
+public class PlaylistController {
+    private final PlaylistService playlistService;
+
+    // ===== CREATE =====
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<PlaylistResponse>> createPlaylist(@ModelAttribute PlaylistRequest request) {
+        PlaylistResponse response = playlistService.createPlaylist(request);
+        return ResponseEntity.ok(
+                ApiResponse.<PlaylistResponse>builder()
+                        .success(true)
+                        .message("Tạo playlist thành công")
+                        .data(response)
+                        .build()
+        );
+    }
+}
