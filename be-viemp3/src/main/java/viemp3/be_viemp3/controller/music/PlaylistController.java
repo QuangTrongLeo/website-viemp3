@@ -79,4 +79,16 @@ public class PlaylistController {
         );
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("/remove-song")
+    public ResponseEntity<ApiResponse<Void>> removeSongFromPlaylist(@RequestBody SongToPlaylistRequest request) {
+        playlistService.removeSongFromPlaylist(request);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Đã xóa bài hát khỏi playlist")
+                        .build()
+        );
+    }
+
 }

@@ -103,5 +103,20 @@ public class PlaylistService {
         }
         playlist.getSongs().add(song);
     }
+
+    // ===== REMOVE SONG FROM PLAYLIST =====
+    @Transactional
+    public void removeSongFromPlaylist(SongToPlaylistRequest request) {
+        Playlist playlist = entityQueryService.findPlaylistById(request.getPlaylistId());
+        User currentUser = securityService.getCurrentUser();
+        if (!playlist.getUser().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("Bạn không có quyền chỉnh sửa playlist này");
+        }
+        Song song = entityQueryService.findSongById(request.getSongId());
+        if (!playlist.getSongs().contains(song)) {
+            throw new IllegalStateException("Bài hát không tồn tại trong playlist");
+        }
+        playlist.getSongs().remove(song);
+    }
     
 }
