@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.request.music.playlist.PlaylistRequest;
+import viemp3.be_viemp3.dto.request.music.playlist.SongToPlaylistRequest;
 import viemp3.be_viemp3.dto.response.music.PlaylistResponse;
 import viemp3.be_viemp3.service.music.PlaylistService;
 
@@ -64,5 +66,17 @@ public class PlaylistController {
                         .build()
         );
     }
-    
+
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("/add-song")
+    public ResponseEntity<ApiResponse<Void>> addSongToPlaylist(@RequestBody SongToPlaylistRequest request) {
+        playlistService.addSongToPlaylist(request);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Thêm bài hát vào playlist thành công")
+                        .build()
+        );
+    }
+
 }

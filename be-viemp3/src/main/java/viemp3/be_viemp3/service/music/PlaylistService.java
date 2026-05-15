@@ -2,13 +2,17 @@ package viemp3.be_viemp3.service.music;
 
 import java.util.ArrayList;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.dto.request.music.playlist.PlaylistRequest;
+import viemp3.be_viemp3.dto.request.music.playlist.SongToPlaylistRequest;
 import viemp3.be_viemp3.dto.response.music.PlaylistResponse;
 import viemp3.be_viemp3.entity.Playlist;
+import viemp3.be_viemp3.entity.Song;
 import viemp3.be_viemp3.entity.User;
 import viemp3.be_viemp3.mapper.music.PlaylistMapper;
 import viemp3.be_viemp3.repository.music.PlaylistRepository;
@@ -83,6 +87,21 @@ public class PlaylistService {
             fileStorageService.deleteByUrl(playlist.getCover());
         }
         playlistRepository.delete(playlist);
+    }
+
+    // ===== ADD SONG TO PLAYLIST =====
+    @Transactional
+    public void addSongToPlaylist(SongToPlaylistRequest request) {
+        Playlist playlist = entityQueryService.findPlaylistById(request.getPlaylistId());
+        User currentUser = securityService.getCurrentUser();
+        if (!playlist.getUser().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("Bạn không có quyền chỉnh sửa playlist này");
+        }
+        Song song = entityQueryService.findSongById(request.getSongId());
+        if (playlist.getSongs().contains(song)) {
+            return;
+        }
+        playlist.getSongs().add(song);
     }
     
 }
