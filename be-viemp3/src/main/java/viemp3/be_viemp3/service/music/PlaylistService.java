@@ -72,4 +72,17 @@ public class PlaylistService {
         return PlaylistMapper.toResponse(playlist);
     }
     
+    // ===== DELETE =====
+    public void deletePlaylist(String playlistId) {
+        Playlist playlist = entityQueryService.findPlaylistById(playlistId);
+        User user = securityService.getCurrentUser();
+        if (!playlist.getUser().getEmail().equals(user.getEmail())) {
+            throw new IllegalArgumentException("Bạn không có quyền xoá playlist này");
+        }
+        if (playlist.getCover() != null) {
+            fileStorageService.deleteByUrl(playlist.getCover());
+        }
+        playlistRepository.delete(playlist);
+    }
+    
 }

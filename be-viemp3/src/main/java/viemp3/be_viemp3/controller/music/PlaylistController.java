@@ -3,6 +3,7 @@ package viemp3.be_viemp3.controller.music;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,19 @@ public class PlaylistController {
                         .success(true)
                         .message("Cập nhật playlist thành công")
                         .data(playlistService.updatePlaylist(id, request))
+                        .build()
+        );
+    }
+
+    // ===== DELETE =====
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("/{playlistId}")
+    public ResponseEntity<ApiResponse<Void>> deletePlaylist(@PathVariable String playlistId) {
+        playlistService.deletePlaylist(playlistId);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Xoá playlist thành công")
                         .build()
         );
     }
