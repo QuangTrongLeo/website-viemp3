@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import viemp3.be_viemp3.security.JwtAuthenticationFilter;
+import viemp3.be_viemp3.security.OAuth2SuccessHandler;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-//    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Value("${api.vie-mp3-url}")
     private String baseUrl;
@@ -70,9 +71,9 @@ public class SecurityConfig {
                         .requestMatchers(publicEndpoints).permitAll()
                         .anyRequest().authenticated()
                 )
-//                .oauth2Login(oauth -> oauth
-//                        .successHandler(oAuth2SuccessHandler)
-//                )
+               .oauth2Login(oauth -> oauth
+                       .successHandler(oAuth2SuccessHandler)
+               )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
