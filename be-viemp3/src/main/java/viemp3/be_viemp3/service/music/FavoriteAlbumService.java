@@ -1,13 +1,17 @@
 package viemp3.be_viemp3.service.music;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import viemp3.be_viemp3.common.service.EntityQueryService;
+import viemp3.be_viemp3.dto.response.music.FavoriteAlbumResponse;
 import viemp3.be_viemp3.entity.Album;
 import viemp3.be_viemp3.entity.FavoriteAlbum;
 import viemp3.be_viemp3.entity.User;
+import viemp3.be_viemp3.mapper.music.FavoriteAlbumMapper;
 import viemp3.be_viemp3.repository.music.AlbumRepository;
 import viemp3.be_viemp3.repository.music.FavoriteAlbumRepository;
 import viemp3.be_viemp3.service.auth.SecurityService;
@@ -41,6 +45,13 @@ public class FavoriteAlbumService {
         FavoriteAlbum favoriteAlbum = entityQueryService.findFavoriteAlbum(currentUser.getId(), albumId);
         favoriteAlbumRepository.delete(favoriteAlbum);
         albumRepository.decrementFavorites(albumId);
+    }
+
+    // ===== GET MY FAVORITE ALBUMS =====
+    public List<FavoriteAlbumResponse> getMyFavoriteAlbums() {
+        User currentUser = securityService.getCurrentUser();
+        List<FavoriteAlbum> favoriteAlbums = favoriteAlbumRepository.findByUserId(currentUser.getId());
+        return FavoriteAlbumMapper.toResponseList(favoriteAlbums);
     }
     
 }
