@@ -1,4 +1,4 @@
-package be_viemp3.viemp3.service.ai;
+package viemp3.be_viemp3.service.ai;
 
 public class AIConstant {
     public static final String DB_SCHEMA = """

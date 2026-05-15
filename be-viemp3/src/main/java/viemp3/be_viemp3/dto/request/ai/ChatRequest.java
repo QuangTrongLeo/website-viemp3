@@ -1,4 +1,4 @@
-package be_viemp3.viemp3.dto.request.ai;
+package viemp3.be_viemp3.dto.request.ai;
 
 import lombok.Data;
 

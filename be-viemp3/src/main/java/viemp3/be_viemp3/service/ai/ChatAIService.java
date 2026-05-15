@@ -1,8 +1,8 @@
-package be_viemp3.viemp3.service.ai;
+package viemp3.be_viemp3.service.ai;
 
-import be_viemp3.viemp3.service.auth.SecurityService;
-import be_viemp3.viemp3.dto.request.ai.ChatRequest;
-import be_viemp3.viemp3.entity.User;
+import viemp3.be_viemp3.service.auth.SecurityService;
+import viemp3.be_viemp3.dto.request.ai.ChatRequest;
+import viemp3.be_viemp3.entity.User;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;

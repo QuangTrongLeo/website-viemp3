@@ -14,7 +14,9 @@ public class EntityQueryService {
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
     private final FavoriteArtistRepository favoriteArtistRepository;
+    private final FavoriteAlbumRepository favoriteAlbumRepository;
     private final FavoriteSongRepository favoriteSongRepository;
+    private final PlaylistRepository playlistRepository;
     private final GenreRepository genreRepository;
     private final SongRepository songRepository;
     private final UserRepository userRepository;
@@ -25,6 +27,14 @@ public class EntityQueryService {
         return albumRepository.findById(id)
                 .orElseThrow(() ->
                         new IllegalArgumentException("Album không tồn tại"));
+    }
+
+    public FavoriteAlbum findFavoriteAlbum(String userId, String albumId){
+        return favoriteAlbumRepository
+                .findByUserIdAndAlbumId(userId, albumId)
+                .orElseThrow(() ->
+                        new IllegalStateException("Album không tồn tại trong danh sách yêu thích")
+                );
     }
 
     // ===== ARTIST =====
@@ -50,6 +60,13 @@ public class EntityQueryService {
     public Genre findGenreById(String id) {
         return genreRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Genre không tồn tại với id: " + id));
+    }
+
+    // ===== PLAYLIST =====
+    public Playlist findPlaylistById(String id) {
+        return playlistRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Playlist không tồn tại"));
     }
 
     // ===== SONG =====

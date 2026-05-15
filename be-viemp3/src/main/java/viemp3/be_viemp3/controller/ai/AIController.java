@@ -1,8 +1,8 @@
-package be_viemp3.viemp3.controller.ai;
+package viemp3.be_viemp3.controller.ai;
 
-import be_viemp3.viemp3.common.response.ApiResponse;
-import be_viemp3.viemp3.dto.request.ai.ChatRequest;
-import be_viemp3.viemp3.service.ai.ChatAIService;
+import viemp3.be_viemp3.common.response.ApiResponse;
+import viemp3.be_viemp3.dto.request.ai.ChatRequest;
+import viemp3.be_viemp3.service.ai.ChatAIService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
