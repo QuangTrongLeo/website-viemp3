@@ -118,5 +118,10 @@ public class PlaylistService {
         }
         playlist.getSongs().remove(song);
     }
+
+    // ===== GET BY ID =====
+    public PlaylistResponse getPlaylistById(String playlistId) {
+        return PlaylistMapper.toResponse(entityQueryService.findPlaylistById(playlistId));
+    }
     
 }

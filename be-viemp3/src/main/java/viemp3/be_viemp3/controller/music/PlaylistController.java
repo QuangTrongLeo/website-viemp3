@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,6 +88,20 @@ public class PlaylistController {
                 ApiResponse.<Void>builder()
                         .success(true)
                         .message("Đã xóa bài hát khỏi playlist")
+                        .build()
+        );
+    }
+    
+    // ===== GET BY ID =====
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{playlistId}")
+    public ResponseEntity<ApiResponse<PlaylistResponse>> getPlaylistById(@PathVariable String playlistId) {
+        PlaylistResponse response = playlistService.getPlaylistById(playlistId);
+        return ResponseEntity.ok(
+                ApiResponse.<PlaylistResponse>builder()
+                        .success(true)
+                        .message("Lấy playlist thành công")
+                        .data(response)
                         .build()
         );
     }
