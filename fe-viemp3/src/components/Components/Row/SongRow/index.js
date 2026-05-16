@@ -5,7 +5,7 @@ import styles from './SongRow.module.scss';
 import SongMenu from '../../SongMenu/index';
 
 import { apiGetArtist } from '~/api/services/serviceArtists';
-// import { apiGetAlbum } from '~/api/services/serviceAlbums';
+import { apiGetAlbum } from '~/api/services/serviceAlbums';
 import { apiGetMyFavoriteSongs, apiAddSongToFavorite, apiRemoveSongFromFavorite } from '~/api/services/serviceSongs';
 
 const cx = classNames.bind(styles);
@@ -26,10 +26,10 @@ function SongRow({ song }) {
           const data = await apiGetArtist(song.artistId);
           setArtist(data);
         }
-      //   if (song.albumId) {
-      //     const data = await apiGetAlbum(song.albumId);
-      //     setAlbum(data);
-      //   }
+        if (song.albumId) {
+          const data = await apiGetAlbum(song.albumId);
+          setAlbum(data);
+        }
       } catch (error) {
          console.error('Lỗi fetch data:', error);
       }
