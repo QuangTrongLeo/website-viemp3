@@ -6,7 +6,7 @@ import styles from './SongMenu.module.scss';
 import LimitedList from '../LimitedList';
 import icons from '~/assets/icons';
 
-// import { apiGetArtist } from '~/api/services/serviceArtists';
+import { apiGetArtist } from '~/api/services/serviceArtists';
 // import { apiGetMyPlaylists, apiAddSongToPlaylist, apiRemoveSongFromPlaylist } from '~/api/services/servicePlaylists';
 
 const cx = classNames.bind(styles);
@@ -38,8 +38,8 @@ function SongMenu({ song, isLiked, onToggleLike, handleActionClick }) {
     const fetchArtist = async () => {
       try {
         if (song?.artistId) {
-          // const data = await apiGetArtist(song.artistId);
-          // setArtist(data);
+          const data = await apiGetArtist(song.artistId);
+          setArtist(data);
         }
       } catch (error) {
         console.error('Lỗi fetch artist:', error);
