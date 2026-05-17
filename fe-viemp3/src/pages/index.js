@@ -7,6 +7,7 @@ export { default as GenreDetail } from './GenreDetail';
 export { default as Genres } from './Genres';
 export { default as History } from './History';
 export { default as PlayListDetail } from './PlayListDetail';
+export { default as PlayList } from './PlayList';
 export { default as Home } from './Home';
 export { default as Login } from './Login';
 export { default as Register } from './Register';
