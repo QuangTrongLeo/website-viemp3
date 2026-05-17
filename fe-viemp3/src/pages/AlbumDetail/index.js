@@ -8,12 +8,12 @@ import { useParams } from 'react-router-dom';
 
 import {
   apiGetAlbum,
-//   apiGetMyFavoriteAlbums,
-//   apiAddAlbumToFavorite,
-//   apiRemoveAlbumFromFavorite,
+  apiGetMyFavoriteAlbums,
+  apiAddAlbumToFavorite,
+  apiRemoveAlbumFromFavorite,
 } from '~/api/services/serviceAlbums';
 
-// import { apiGetSongsByAlbum, apiGetMyFavoriteSongs } from '~/api/services/serviceSongs';
+import { apiGetSongsByAlbum, apiGetMyFavoriteSongs } from '~/api/services/serviceSongs';
 
 const cx = classNames.bind(styles);
 
@@ -29,18 +29,18 @@ function AlbumDetail() {
 
   // ===== FETCH DATA =====
   const fetchData = async () => {
-    // try {
-    //   setLoading(true);
+    try {
+      setLoading(true);
 
-    //   const [albumData, songsData] = await Promise.all([apiGetAlbum(albumId), apiGetSongsByAlbum(albumId)]);
+      const [albumData, songsData] = await Promise.all([apiGetAlbum(albumId), apiGetSongsByAlbum(albumId)]);
 
-    //   setAlbum(albumData);
-    //   setSongsInAlbum(songsData || []);
-    // } catch (error) {
-    //   console.error('Lỗi khi fetch album:', error);
-    // } finally {
-    //   setLoading(false);
-    // }
+      setAlbum(albumData);
+      setSongsInAlbum(songsData || []);
+    } catch (error) {
+      console.error('Lỗi khi fetch album:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -52,13 +52,13 @@ function AlbumDetail() {
   // ===== CHECK FAVORITE =====
   useEffect(() => {
     const checkFavorite = async () => {
-      // try {
-      //   const myFavorites = await apiGetMyFavoriteAlbums();
-      //   const isFav = myFavorites.some(item => item.album.id === albumId);
-      //   setIsFavorite(isFav);
-      // } catch (error) {
-      //   console.error('Lỗi khi kiểm tra favorite:', error);
-      // }
+      try {
+        const myFavorites = await apiGetMyFavoriteAlbums();
+        const isFav = myFavorites.some(item => item.album.id === albumId);
+        setIsFavorite(isFav);
+      } catch (error) {
+        console.error('Lỗi khi kiểm tra favorite:', error);
+      }
     };
 
     if (albumId) {
@@ -99,27 +99,27 @@ function AlbumDetail() {
 
   // ===== FAVORITE =====
   const toggleFavorite = async () => {
-    // try {
-    //   if (isFavorite) {
-    //     await apiRemoveAlbumFromFavorite(albumId);
-    //     setIsFavorite(false);
-    //   } else {
-    //     await apiAddAlbumToFavorite(albumId);
-    //     setIsFavorite(true);
-    //   }
-    // } catch (error) {
-    //   console.error('Lỗi khi toggle favorite:', error);
-    //   alert(error.message);
-    // }
+    try {
+      if (isFavorite) {
+        await apiRemoveAlbumFromFavorite(albumId);
+        setIsFavorite(false);
+      } else {
+        await apiAddAlbumToFavorite(albumId);
+        setIsFavorite(true);
+      }
+    } catch (error) {
+      console.error('Lỗi khi toggle favorite:', error);
+      alert(error.message);
+    }
   };
 
   const loadFavoriteSongs = async () => {
-    // try {
-    //   const data = await apiGetMyFavoriteSongs();
-    //   setFavoriteSongs(data);
-    // } catch (error) {
-    //   console.error(error.message);
-    // }
+    try {
+      const data = await apiGetMyFavoriteSongs();
+      setFavoriteSongs(data);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   useEffect(() => {

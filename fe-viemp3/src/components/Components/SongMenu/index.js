@@ -7,7 +7,7 @@ import LimitedList from '../LimitedList';
 import icons from '~/assets/icons';
 
 import { apiGetArtist } from '~/api/services/serviceArtists';
-// import { apiGetMyPlaylists, apiAddSongToPlaylist, apiRemoveSongFromPlaylist } from '~/api/services/servicePlaylists';
+import { apiGetMyPlaylists, apiAddSongToPlaylist, apiRemoveSongFromPlaylist } from '~/api/services/servicePlaylists';
 
 const cx = classNames.bind(styles);
 
@@ -19,16 +19,16 @@ function SongMenu({ song, isLiked, onToggleLike, handleActionClick }) {
   // ===== FETCH PLAYLIST =====
   useEffect(() => {
     const fetchPlaylists = async () => {
-      // try {
-      //   const data = await apiGetMyPlaylists();
-      //   const mapped = (data || []).map(pl => ({
-      //     ...pl,
-      //     isContainsSong: pl.songs?.some(s => s.id === song?.id),
-      //   }));
-      //   setPlaylists(mapped);
-      // } catch (error) {
-      //   console.error('Lỗi lấy playlist:', error);
-      // }
+      try {
+        const data = await apiGetMyPlaylists();
+        const mapped = (data || []).map(pl => ({
+          ...pl,
+          isContainsSong: pl.songs?.some(s => s.id === song?.id),
+        }));
+        setPlaylists(mapped);
+      } catch (error) {
+        console.error('Lỗi lấy playlist:', error);
+      }
     };
     if (song?.id) fetchPlaylists();
   }, [song?.id]);
@@ -54,11 +54,11 @@ function SongMenu({ song, isLiked, onToggleLike, handleActionClick }) {
     setLoadingPlaylistId(pl.id);
     try {
       let success;
-      // if (pl.isContainsSong) {
-      //   success = await apiRemoveSongFromPlaylist(pl.id, song.id);
-      // } else {
-      //   success = await apiAddSongToPlaylist(pl.id, song.id);
-      // }
+      if (pl.isContainsSong) {
+        success = await apiRemoveSongFromPlaylist(pl.id, song.id);
+      } else {
+        success = await apiAddSongToPlaylist(pl.id, song.id);
+      }
       if (success) {
         setPlaylists(prev =>
           prev.map(item => (item.id === pl.id ? { ...item, isContainsSong: !item.isContainsSong } : item))
