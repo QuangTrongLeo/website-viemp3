@@ -3,6 +3,7 @@ const routes = {
   alnums: '/albums',
   artist: '/artist',
   favoriteAlbums: '/favorite-albums',
+  favoriteAlbums: '/favorite-albums',
   favoriteArtists: '/favorite-artists',
   favoriteSongs: '/favorite-songs',
   genre: '/genre',

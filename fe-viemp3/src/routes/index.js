@@ -5,7 +5,7 @@ import { SecondLayout } from '~/layouts';
 import { Home, GenreDetail, Genres, Login, Register, Otp } from '~/pages';
 
 // userRoutes
-import { ArtistDetail, AlbumDetail, SongDetail, History, Profile, FavoriteArtists, FavoriteSongs } from '~/pages';
+import { ArtistDetail, AlbumDetail, SongDetail, History, Profile, FavoriteArtists, FavoriteSongs, FavoriteAlbums, PlayListDetail, } from '~/pages';
 
 // modRoutes
 import { AlbumManage } from '~/pages';
@@ -23,8 +23,10 @@ const publishRoutes = [
 
 const userRoutes = [
   { path: `${config.routes.song}/:songId`, component: SongDetail },
+  { path: `${config.routes.playlist}/:playlistId`, component: PlayListDetail },
   { path: config.routes.history, component: History },
   { path: config.routes.profile, component: Profile },
+  { path: config.routes.favoriteAlbums, component: FavoriteAlbums },
   { path: config.routes.favoriteArtists, component: FavoriteArtists },
   { path: config.routes.favoriteSongs, component: FavoriteSongs },
 ];

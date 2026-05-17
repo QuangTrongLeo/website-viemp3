@@ -1,10 +1,12 @@
 export { default as AlbumDetail } from './AlbumDetail';
 export { default as ArtistDetail } from './ArtistDetail';
+export { default as FavoriteAlbums } from './FavoriteAlbums';
 export { default as FavoriteArtists } from './FavoriteArtists';
 export { default as FavoriteSongs } from './FavoriteSongs';
 export { default as GenreDetail } from './GenreDetail';
 export { default as Genres } from './Genres';
 export { default as History } from './History';
+export { default as PlayListDetail } from './PlayListDetail';
 export { default as Home } from './Home';
 export { default as Login } from './Login';
 export { default as Register } from './Register';
