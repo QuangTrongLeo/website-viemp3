@@ -7,6 +7,7 @@ import viemp3.be_viemp3.dto.request.music.song.SongRequest;
 import viemp3.be_viemp3.dto.response.music.SongResponse;
 import viemp3.be_viemp3.entity.Artist;
 import viemp3.be_viemp3.entity.Genre;
+import viemp3.be_viemp3.entity.Playlist;
 import viemp3.be_viemp3.entity.Song;
 import viemp3.be_viemp3.mapper.music.SongMapper;
 import viemp3.be_viemp3.repository.music.SongRepository;
@@ -74,4 +75,12 @@ public class SongService {
         List<Song> songs = songRepository.findByArtistId(artistId);
         return SongMapper.toResponseList(songs);
     }
+
+    // ===== GET SONGS BY PLAYLIST =====
+    public List<SongResponse> getSongsByPlaylist(String playlistId) {
+        Playlist playlist = entityService.findPlaylistById(playlistId);
+        List<Song> songs = playlist.getSongs();
+        return SongMapper.toResponseList(songs);
+    }
+
 }
