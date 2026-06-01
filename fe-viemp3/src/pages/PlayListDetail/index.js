@@ -7,7 +7,7 @@ import { SongRow } from '~/components/Components/Row';
 import LimitedList from '~/components/Components/LimitedList';
 
 import { apiGetPlaylist } from '~/api/services/servicePlaylists';
-// import { apiGetSongsByPlaylist } from '~/api/services/serviceSongs';
+import { apiGetSongsByPlaylist } from '~/api/services/serviceSongs';
 
 const cx = classNames.bind(styles);
 
@@ -34,13 +34,13 @@ function PlayListDetail() {
   // ===== FETCH SONGS BY PLAYLIST =====
   useEffect(() => {
     const fetchSongs = async () => {
-      // try {
-      //   const data = await apiGetSongsByPlaylist(playlistId);
-      //   setSongs(data || []);
-      // } catch (error) {
-      //   console.error('Lỗi lấy bài hát theo playlist:', error);
-      //   setSongs([]);
-      // }
+      try {
+        const data = await apiGetSongsByPlaylist(playlistId);
+        setSongs(data || []);
+      } catch (error) {
+        console.error('Lỗi lấy bài hát theo playlist:', error);
+        setSongs([]);
+      }
     };
 
     if (playlistId) fetchSongs();

@@ -101,4 +101,17 @@ public class SongController {
                         .build()
         );
     }
+
+    @PreAuthorize("hasAnyRole('USER')")
+    @GetMapping("/playlist/{playlistId}")
+    public ResponseEntity<ApiResponse<List<SongResponse>>> getSongsByPlaylist(@PathVariable String playlistId) {
+        List<SongResponse> songs = songService.getSongsByPlaylist(playlistId);
+        return ResponseEntity.ok(
+                ApiResponse.<List<SongResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách bài hát theo playlist thành công")
+                        .data(songs)
+                        .build()
+        );
+    }
 }
