@@ -9,6 +9,7 @@ export { default as History } from './History';
 export { default as PlayListDetail } from './PlayListDetail';
 export { default as PlayList } from './PlayList';
 export { default as Home } from './Home';
+export { default as Library } from './Library';
 export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as Otp } from './Otp';
