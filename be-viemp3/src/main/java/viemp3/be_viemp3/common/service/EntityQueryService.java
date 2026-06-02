@@ -6,6 +6,7 @@ import viemp3.be_viemp3.entity.*;
 import viemp3.be_viemp3.enums.RoleEnum;
 import viemp3.be_viemp3.repository.auth.RoleRepository;
 import viemp3.be_viemp3.repository.auth.UserRepository;
+import viemp3.be_viemp3.repository.finance.PackageRepository;
 import viemp3.be_viemp3.repository.finance.VoucherRepository;
 import viemp3.be_viemp3.repository.music.*;
 
@@ -22,6 +23,7 @@ public class EntityQueryService {
     private final SongRepository songRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PackageRepository packageRepository;
     private final VoucherRepository voucherRepository;
 
     // ===== ALBUM =====
@@ -102,6 +104,13 @@ public class EntityQueryService {
         return roleRepository.findByName(role)
                 .orElseThrow(() -> new RuntimeException("Role không tồn tại!"));
     }
+
+    // ===== PACKAGES =====
+    public Packages findPackageById(String id) {
+        return packageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Package không tìm thấy"));
+    }
+
     // ===== VOUCHER =====
     public Voucher finVoucherById(String id) {
         return voucherRepository.findById(id)

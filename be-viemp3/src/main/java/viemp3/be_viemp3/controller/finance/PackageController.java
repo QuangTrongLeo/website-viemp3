@@ -3,10 +3,7 @@ package viemp3.be_viemp3.controller.finance;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.request.finance.PackageRequest;
 import viemp3.be_viemp3.dto.response.finance.PackageResponse;
@@ -32,4 +29,21 @@ public class PackageController {
                         .build()
         );
     }
+
+    // ===== UPDATE =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD')")
+    @PutMapping("/{packageId}")
+    public ResponseEntity<ApiResponse<PackageResponse>> updatePackage(
+            @PathVariable String packageId,
+            @RequestBody PackageRequest request) {
+        PackageResponse response = packageService.updatePackage(packageId, request);
+        return ResponseEntity.ok(
+                ApiResponse.<PackageResponse>builder()
+                        .success(true)
+                        .message("Cập nhật gói cước thành công")
+                        .data(response)
+                        .build()
+        );
+    }
+
 }
