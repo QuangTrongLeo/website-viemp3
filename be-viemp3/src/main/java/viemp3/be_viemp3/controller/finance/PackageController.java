@@ -73,4 +73,18 @@ public class PackageController {
                         .build()
         );
     }
+
+    // ===== GET BY ID =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD', 'USER')")
+    @GetMapping("/{packageId}")
+    public ResponseEntity<ApiResponse<PackageResponse>> getPackageById(@PathVariable String packageId) {
+        PackageResponse response = packageService.getPackageById(packageId);
+        return ResponseEntity.ok(
+                ApiResponse.<PackageResponse>builder()
+                        .success(true)
+                        .message("Lấy thông tin chi tiết gói cước thành công")
+                        .data(response)
+                        .build()
+        );
+    }
 }

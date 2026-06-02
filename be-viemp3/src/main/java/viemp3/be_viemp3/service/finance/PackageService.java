@@ -65,6 +65,11 @@ public class PackageService {
         return PackageMapper.toResponseList(packageRepository.findAllByOrderByCreatedAtAsc());
     }
 
+    public PackageResponse getPackageById(String id) {
+        Packages pkg = entityService.findPackageById(id);
+        return PackageMapper.toResponse(pkg);
+    }
+
     private Double calculateFinalPrice(Double basePrice, int months, Double discountPercent) {
         double totalBeforeDiscount = basePrice * months;
         return totalBeforeDiscount * (1 - (discountPercent / 100));
