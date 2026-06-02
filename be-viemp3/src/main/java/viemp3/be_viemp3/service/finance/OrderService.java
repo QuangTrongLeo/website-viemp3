@@ -8,12 +8,11 @@ import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.config.VNPayConfig;
 import viemp3.be_viemp3.dto.request.finance.OrderRequest;
 import viemp3.be_viemp3.dto.response.finance.OrderResponse;
-import viemp3.be_viemp3.entity.Order;
-import viemp3.be_viemp3.entity.Packages;
-import viemp3.be_viemp3.entity.User;
-import viemp3.be_viemp3.entity.Voucher;
+import viemp3.be_viemp3.entity.*;
 import viemp3.be_viemp3.enums.OrderStatus;
+import viemp3.be_viemp3.enums.RoleEnum;
 import viemp3.be_viemp3.mapper.finance.OrderMapper;
+import viemp3.be_viemp3.repository.auth.UserRepository;
 import viemp3.be_viemp3.repository.finance.OrderRepository;
 import viemp3.be_viemp3.service.auth.SecurityService;
 
@@ -26,6 +25,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
+    private final VoucherService voucherService;
     private final EntityQueryService entityService;
     private final SecurityService securityService;
     private final TaskScheduler taskScheduler;
@@ -77,6 +78,39 @@ public class OrderService {
     public OrderResponse getOrderById(String orderId) {
         Order order = entityService.findOrderById(orderId);
         return OrderMapper.toResponse(order);
+    }
+
+    @Transactional
+    public void completeOrder(String txnRef) {
+        Order order = entityService.findOrderByVnpTxnRef(txnRef);
+
+        // 1. Cập nhật trạng thái đơn hàng
+        order.setStatus(OrderStatus.COMPLETED);
+        order.setOrderDate(LocalDateTime.now());
+
+        int durationMonths = order.getAPackage().getDuration().getMonths();
+        order.setExpiryDate(LocalDateTime.now().plusMonths(durationMonths));
+
+        // 2. Nâng cấp Role cho User
+        User user = order.getUser();
+        Role premiumRole = entityService.findRoleByName(RoleEnum.PREMIUM);
+        if (!user.getRoles().contains(premiumRole)) {
+            user.getRoles().add(premiumRole);
+            userRepository.save(user);
+        }
+
+        if (order.getVoucher() != null) {
+            voucherService.useVoucher(order.getVoucher().getId());
+        }
+
+        orderRepository.save(order);
+    }
+
+    @Transactional
+    public void failOrder(String txnRef) {
+        Order order = entityService.findOrderByVnpTxnRef(txnRef);
+        order.setStatus(OrderStatus.FAILED);
+        orderRepository.save(order);
     }
 
     private void scheduleOrderCleanup(String orderId) {

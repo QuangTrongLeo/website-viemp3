@@ -113,6 +113,11 @@ public class EntityQueryService {
                 .orElseThrow(() -> new RuntimeException("Order không tồn tại"));
     }
 
+    public Order findOrderByVnpTxnRef(String vnpTxnRef) {
+        return orderRepository.findByVnpTxnRef(vnpTxnRef)
+                .orElseThrow(() -> new RuntimeException("Order không tồn tại"));
+    }
+
     // ===== PACKAGES =====
     public Packages findPackageById(String id) {
         return packageRepository.findById(id)

@@ -65,4 +65,24 @@ public class VNPayService {
 
         return vnPayConfig.getVnpPayUrl() + "?" + queryUrl;
     }
+
+    public boolean verifyCallback(Map<String, String> params) {
+        String vnp_SecureHash = params.get("vnp_SecureHash");
+        Map<String, String> hashParams = new HashMap<>(params);
+        hashParams.remove("vnp_SecureHash");
+        hashParams.remove("vnp_SecureHashType");
+
+        List<String> fieldNames = new ArrayList<>(hashParams.keySet());
+        Collections.sort(fieldNames);
+
+        StringJoiner hashData = new StringJoiner("&");
+        for (String fieldName : fieldNames) {
+            String fieldValue = hashParams.get(fieldName);
+            if (fieldValue != null && !fieldValue.isEmpty()) {
+                hashData.add(fieldName + "=" + URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII));
+            }
+        }
+        String builtHash = vnPayConfig.hmacSHA512(hashData.toString());
+        return builtHash.equalsIgnoreCase(vnp_SecureHash);
+    }
 }

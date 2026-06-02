@@ -4,10 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.service.finance.PaymentService;
 
@@ -36,5 +33,31 @@ public class PaymentController {
                         .data(result)
                         .build()
         );
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MOD','USER')")
+    @GetMapping("/payment-callback")
+    public ResponseEntity<ApiResponse<Boolean>> getPaymentCallback(
+            @RequestParam Map<String, String> allParams) {
+
+        boolean isSuccess = paymentService.processPaymentCallback(allParams);
+
+        if (isSuccess) {
+            return ResponseEntity.ok(
+                    ApiResponse.<Boolean>builder()
+                            .success(true)
+                            .message("Thanh toán và nâng cấp Premium thành công")
+                            .data(true)
+                            .build()
+            );
+        } else {
+            return ResponseEntity.ok(
+                    ApiResponse.<Boolean>builder()
+                            .success(false)
+                            .message("Thanh toán thất bại hoặc chữ ký không hợp lệ")
+                            .data(false)
+                            .build()
+            );
+        }
     }
 }
