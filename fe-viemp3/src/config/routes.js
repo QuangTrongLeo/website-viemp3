@@ -21,6 +21,7 @@ const routes = {
   otp: '/otp',
   order: '/order',
   premium: '/premium',
+  paymentCallback: 'payment-callback',
 
   manageAlbums: '/manage/albums',
 };

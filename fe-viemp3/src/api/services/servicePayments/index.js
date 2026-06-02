@@ -19,3 +19,19 @@ export async function apiCreatePaymentUrl(orderId) {
     throw new Error(error.response?.data?.message);
   }
 }
+
+export async function apiGetPaymentCallback(queryParams) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiPaymentUrl}/payment-callback`, {
+      params: queryParams,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Lỗi xác thực thanh toán');
+  }
+}
