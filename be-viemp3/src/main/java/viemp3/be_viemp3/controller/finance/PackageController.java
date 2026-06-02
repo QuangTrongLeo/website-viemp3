@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.request.finance.PackageRequest;
+import viemp3.be_viemp3.dto.response.finance.DurationTypeResponse;
 import viemp3.be_viemp3.dto.response.finance.PackageResponse;
 import viemp3.be_viemp3.dto.response.finance.PackageTypeResponse;
 import viemp3.be_viemp3.service.finance.PackageService;
@@ -97,6 +98,19 @@ public class PackageController {
                 ApiResponse.<List<PackageTypeResponse>>builder()
                         .success(true)
                         .message("Lấy danh sách loại gói thành công")
+                        .data(responses)
+                        .build()
+        );
+    }
+
+    // ===== GET ALL DURATION TYPES =====
+    @GetMapping("/durations")
+    public ResponseEntity<ApiResponse<List<DurationTypeResponse>>> getAllDurationTypes() {
+        List<DurationTypeResponse> responses = packageService.getAllDurationTypes();
+        return ResponseEntity.ok(
+                ApiResponse.<List<DurationTypeResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách thời hạn gói thành công")
                         .data(responses)
                         .build()
         );

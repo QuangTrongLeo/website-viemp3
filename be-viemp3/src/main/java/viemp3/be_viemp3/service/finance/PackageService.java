@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.dto.request.finance.PackageRequest;
+import viemp3.be_viemp3.dto.response.finance.DurationTypeResponse;
 import viemp3.be_viemp3.dto.response.finance.PackageResponse;
 import viemp3.be_viemp3.dto.response.finance.PackageTypeResponse;
 import viemp3.be_viemp3.entity.Packages;
+import viemp3.be_viemp3.mapper.enums.DurationTypeMapper;
 import viemp3.be_viemp3.mapper.enums.PackageTypeMapper;
 import viemp3.be_viemp3.mapper.finance.PackageMapper;
 import viemp3.be_viemp3.repository.finance.PackageRepository;
@@ -74,6 +76,10 @@ public class PackageService {
 
     public List<PackageTypeResponse> getAllPackageTypes() {
         return PackageTypeMapper.toResponseList();
+    }
+
+    public List<DurationTypeResponse> getAllDurationTypes() {
+        return DurationTypeMapper.toResponseList();
     }
 
     private Double calculateFinalPrice(Double basePrice, int months, Double discountPercent) {
