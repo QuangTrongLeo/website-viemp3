@@ -224,18 +224,21 @@ function Library() {
             {loadingAlbums ? (
               <p>Đang tải album...</p>
             ) : favoriteAlbums.length > 0 ? (
-              <LimitedList
-                items={favoriteAlbums}
-                limit={8}
-                renderItem={item => (
-                  <SquareCard
-                    key={item.album.id}
-                    content={item.album.title}
-                    cover={item.album.cover}
-                    href={`/album/${item.album.id}`}
-                  />
-                )}
-              />
+              <div className="row g-4">
+                <LimitedList
+                  items={favoriteAlbums}
+                  limit={8}
+                  renderItem={item => (
+                    <div key={item.album.id} className="col-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                      <SquareCard
+                        content={item.album.title}
+                        cover={item.album.cover}
+                        href={`/album/${item.album.id}`}
+                      />
+                    </div>
+                  )}
+                />
+              </div>
             ) : (
               <p>Bạn chưa có album yêu thích</p>
             )}
