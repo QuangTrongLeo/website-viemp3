@@ -73,6 +73,12 @@ public class OrderService {
         return OrderMapper.toResponseList(orders);
     }
 
+    // ===== GET ORDER BY ID =====
+    public OrderResponse getOrderById(String orderId) {
+        Order order = entityService.findOrderById(orderId);
+        return OrderMapper.toResponse(order);
+    }
+
     private void scheduleOrderCleanup(String orderId) {
         taskScheduler.schedule(
                 () -> {

@@ -56,4 +56,18 @@ public class OrderController {
                         .build()
         );
     }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MOD')")
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<OrderResponse>> getOrderById(@PathVariable String id) {
+        OrderResponse response = orderService.getOrderById(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.<OrderResponse>builder()
+                        .success(true)
+                        .message("Lấy chi tiết đơn hàng thành công")
+                        .data(response)
+                        .build()
+        );
+    }
 }
