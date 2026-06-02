@@ -9,6 +9,8 @@ import viemp3.be_viemp3.dto.request.finance.PackageRequest;
 import viemp3.be_viemp3.dto.response.finance.PackageResponse;
 import viemp3.be_viemp3.service.finance.PackageService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("${api.vie-mp3-url}/packages")
 @RequiredArgsConstructor
@@ -55,6 +57,19 @@ public class PackageController {
                 ApiResponse.<Void>builder()
                         .success(true)
                         .message("Xóa gói cước thành công")
+                        .build()
+        );
+    }
+
+    // ===== GET ALL =====
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<PackageResponse>>> getAllPackages() {
+        List<PackageResponse> responses = packageService.getAllPackages();
+        return ResponseEntity.ok(
+                ApiResponse.<List<PackageResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách gói cước thành công")
+                        .data(responses)
                         .build()
         );
     }

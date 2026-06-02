@@ -11,6 +11,7 @@ import viemp3.be_viemp3.mapper.finance.PackageMapper;
 import viemp3.be_viemp3.repository.finance.PackageRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +59,10 @@ public class PackageService {
 
     public void deletePackage(String id) {
         packageRepository.deleteById(id);
+    }
+
+    public List<PackageResponse> getAllPackages() {
+        return PackageMapper.toResponseList(packageRepository.findAllByOrderByCreatedAtAsc());
     }
 
     private Double calculateFinalPrice(Double basePrice, int months, Double discountPercent) {
