@@ -20,6 +20,7 @@ import viemp3.be_viemp3.service.auth.SecurityService;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +58,12 @@ public class OrderService {
         scheduleOrderCleanup(savedOrder.getId());
 
         return OrderMapper.toResponse(savedOrder);
+    }
+
+    // ===== GET ALL ORDER =====
+    public List<OrderResponse> getAllOrders() {
+        List<Order> orders = orderRepository.findAllByOrderByOrderDateDesc();
+        return OrderMapper.toResponseList(orders);
     }
 
     private void scheduleOrderCleanup(String orderId) {

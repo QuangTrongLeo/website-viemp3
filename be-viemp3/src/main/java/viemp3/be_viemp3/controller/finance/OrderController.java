@@ -3,14 +3,13 @@ package viemp3.be_viemp3.controller.finance;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.request.finance.OrderRequest;
 import viemp3.be_viemp3.dto.response.finance.OrderResponse;
 import viemp3.be_viemp3.service.finance.OrderService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("${api.vie-mp3-url}/orders")
@@ -27,6 +26,19 @@ public class OrderController {
                 ApiResponse.<OrderResponse>builder()
                         .success(true)
                         .message("Đã khởi tạo đơn hàng thành công")
+                        .data(response)
+                        .build()
+        );
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<OrderResponse>>> getAllOrders() {
+        List<OrderResponse> response = orderService.getAllOrders();
+        return ResponseEntity.ok(
+                ApiResponse.<List<OrderResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách tất cả đơn hàng thành công")
                         .data(response)
                         .build()
         );
