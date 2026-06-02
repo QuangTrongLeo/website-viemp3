@@ -66,6 +66,13 @@ public class OrderService {
         return OrderMapper.toResponseList(orders);
     }
 
+    // ===== GET ALL ORDER BY USER
+    public List<OrderResponse> getAllOrdersByUser() {
+        User user = securityService.getCurrentUser();
+        List<Order> orders = orderRepository.findAllByUserOrderByOrderDateDesc(user);
+        return OrderMapper.toResponseList(orders);
+    }
+
     private void scheduleOrderCleanup(String orderId) {
         taskScheduler.schedule(
                 () -> {

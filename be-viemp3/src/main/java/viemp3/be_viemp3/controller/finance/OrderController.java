@@ -43,4 +43,17 @@ public class OrderController {
                         .build()
         );
     }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'MOD')")
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<List<OrderResponse>>> getMyOrders() {
+        List<OrderResponse> response = orderService.getAllOrdersByUser();
+        return ResponseEntity.ok(
+                ApiResponse.<List<OrderResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách đơn hàng của bạn thành công")
+                        .data(response)
+                        .build()
+        );
+    }
 }
