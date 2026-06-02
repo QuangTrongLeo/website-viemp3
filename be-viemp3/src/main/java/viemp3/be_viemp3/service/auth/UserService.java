@@ -122,4 +122,12 @@ public class UserService {
         return UserMapper.toResponseList(users);
     }
 
+    // ===== CHECK USER IS STUDENT =====
+    public boolean checkUserIsStudent() {
+        User currentUser = securityService.getCurrentUser();
+        String email = currentUser.getEmail();
+        if (email == null) return false;
+        return email.toLowerCase().endsWith(".edu.vn");
+    }
+
 }

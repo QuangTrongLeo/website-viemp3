@@ -60,4 +60,18 @@ public class UserController {
         );
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/is-student")
+    public ResponseEntity<ApiResponse<Boolean>> checkUserIsStudent() {
+        boolean isStudent = userService.checkUserIsStudent();
+
+        return ResponseEntity.ok(
+                ApiResponse.<Boolean>builder()
+                        .success(true)
+                        .message(isStudent ? "Người dùng là sinh viên" : "Người dùng không phải là sinh viên")
+                        .data(isStudent)
+                        .build()
+        );
+    }
+
 }
