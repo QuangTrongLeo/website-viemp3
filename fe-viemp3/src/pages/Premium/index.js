@@ -4,9 +4,11 @@ import styles from './Premium.module.scss';
 import classNames from 'classnames/bind';
 import icons from '~/assets/icons';
 import config from '~/config';
+import PackageModal from '~/components/Components/PackageModal';
 import { useAuth } from '~/components/Components/AuthProvider';
 import { images } from '~/assets';
 import { apiGetPackages } from '~/api/services/servicePackages';
+import { apiCheckUserIsStudent } from '~/api/services/serviceUsers';
 
 const cx = classNames.bind(styles);
 
@@ -24,6 +26,8 @@ function Premium() {
   const { roles } = useAuth();
   const navigate = useNavigate();
   const [packages, setPackages] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const featuresMap = {
@@ -55,6 +59,26 @@ function Premium() {
       navigate(config.routes.login);
       return;
     }
+
+    if (pkg.packageType === 'STUDENT') {
+      const isStudent = await apiCheckUserIsStudent();
+
+      if (!isStudent) {
+        alert(
+          'Tài khoản của bạn không phải là email sinh viên. Vui lòng sử dụng email sinh viên để đăng ký gói ưu đãi này!'
+        );
+        return;
+      }
+    }
+
+    setSelectedPlan({
+      planName,
+      id: pkg.id,
+      duration: DURATION_MAP[pkg.duration],
+      price: formatPrice(pkg.finalPrice),
+      discount: pkg.discountPercent,
+    });
+    setShowModal(true);
   };
 
   const renderCard = (title, type, options, badge) => {
@@ -121,6 +145,8 @@ function Premium() {
         {renderCard('Gói Cá nhân', 'INDIVIDUAL', individualOptions, 'Phổ biến')}
         {renderCard('Gói Sinh viên', 'STUDENT', studentOptions, 'Tiết kiệm')}
       </section>
+
+      <PackageModal show={showModal} onClose={() => setShowModal(false)} data={selectedPlan} />
     </div>
   );
 }

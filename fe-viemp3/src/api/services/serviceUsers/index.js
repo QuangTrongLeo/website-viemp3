@@ -32,3 +32,20 @@ export async function apiUpdateProfile(formData) {
   }
   return data;
 }
+
+// ===== CHECK IF USER IS STUDENT =====
+export async function apiCheckUserIsStudent() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiUserUrl}/is-student`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data.data;
+  } catch (error) {
+    const message = error.response?.data?.message || error.message;
+    throw new Error(message);
+  }
+}

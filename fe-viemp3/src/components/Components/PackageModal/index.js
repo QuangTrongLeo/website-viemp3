@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './PackageModal.module.scss';
 import classNames from 'classnames/bind';
-// import { apiGetAvailableVouchers } from '~/api/services/serviceVouchers';
+import { apiGetAvailableVouchers } from '~/api/services/serviceVouchers';
 // import { apiCreateOrder } from '~/api/services/serviceOrders';
 // import { apiCreatePaymentUrl } from '~/api/services/servicePayments';
 
@@ -12,27 +12,28 @@ function PackageModal({ show, onClose, data }) {
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (show) {
-  //     const fetchVouchers = async () => {
-  //       setLoading(true);
-  //       try {
-  //         const res = await apiGetAvailableVouchers();
-  //         if (res) {
-  //           const validVouchers = res.filter(v => v.quantity > 0 && v.active);
-  //           setVouchers(validVouchers);
-  //         }
-  //       } catch (error) {
-  //         console.error('Lỗi lấy voucher:', error);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-  //     fetchVouchers();
-  //   } else {
-  //     setSelectedVoucher(null);
-  //   }
-  // }, [show]);
+  useEffect(() => {
+    if (show) {
+      const fetchVouchers = async () => {
+        setLoading(true);
+        try {
+          const res = await apiGetAvailableVouchers();
+          console.log(res);
+          if (res) {
+            const validVouchers = res.filter(v => v.quantity > 0 && v.active);
+            setVouchers(validVouchers);
+          }
+        } catch (error) {
+          console.error('Lỗi lấy voucher:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchVouchers();
+    } else {
+      setSelectedVoucher(null);
+    }
+  }, [show]);
 
   if (!show || !data) return null;
 
