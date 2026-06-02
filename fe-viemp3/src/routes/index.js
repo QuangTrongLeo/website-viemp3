@@ -2,10 +2,22 @@ import config from '~/config';
 import { SecondLayout } from '~/layouts';
 
 // publishRoutes
-import { Home, GenreDetail, Genres, Login, Register, Otp } from '~/pages';
+import { Home, GenreDetail, Genres, Login, Register, Otp, Premium } from '~/pages';
 
 // userRoutes
-import { ArtistDetail, AlbumDetail, SongDetail, History, Library, Profile, FavoriteArtists, FavoriteSongs, FavoriteAlbums, PlayListDetail, PlayList, } from '~/pages';
+import {
+  ArtistDetail,
+  AlbumDetail,
+  SongDetail,
+  History,
+  Library,
+  Profile,
+  FavoriteArtists,
+  FavoriteSongs,
+  FavoriteAlbums,
+  PlayListDetail,
+  PlayList,
+} from '~/pages';
 
 // modRoutes
 import { AlbumManage } from '~/pages';
@@ -16,6 +28,7 @@ const publishRoutes = [
   { path: `${config.routes.genre}/:genreId`, component: GenreDetail },
   { path: `${config.routes.album}/:albumId`, component: AlbumDetail },
   { path: config.routes.genres, component: Genres },
+   { path: config.routes.premium, component: Premium },
   { path: config.routes.login, component: Login, layout: SecondLayout },
   { path: config.routes.register, component: Register, layout: SecondLayout },
   { path: config.routes.otp, component: Otp, layout: SecondLayout },

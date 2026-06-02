@@ -1,0 +1,151 @@
+$primary: #72fe8f;
+$on-primary-container: #002a0c;
+$background: #0e0e0e;
+$surface-container-low: #131313;
+$surface-container: #1a1a1a;
+$on-surface-variant: #adaaaa;
+
+.premium-container {
+  .hero {
+    padding: 20px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+
+    .title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.04em;
+      color: white;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: $on-surface-variant;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.4;
+    }
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 6%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .card {
+    background-color: $surface-container-low;
+    border-radius: 20px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    .badge {
+      color: var(--primary-color);
+    }
+
+    .option-item:hover {
+      border-color: var(--primary-color);
+    }
+
+    .btn-subscribe {
+      margin-top: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      color: black;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: var(--primary-color);
+        color: var(--white-color);
+      }
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      .plan-name {
+        font-family: 'Plus Jakarta Sans';
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: white;
+      }
+
+      .badge {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 4px 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: 6px;
+      }
+    }
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option-item {
+    background: $surface-container;
+    padding: 12px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+
+    .price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      display: block;
+    }
+  }
+
+  .feature-list {
+    list-style: none;
+    padding: 16px 0 0;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: #ccc;
+
+      i {
+        font-size: 0.9rem;
+        width: 16px;
+        text-align: center;
+      }
+    }
+  }
+}

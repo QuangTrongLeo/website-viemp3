@@ -15,5 +15,6 @@ export { default as Register } from './Register';
 export { default as Otp } from './Otp';
 export { default as SongDetail } from './SongDetail';
 export { default as Profile } from './Profile';
+export { default as Premium } from './Premium';
 
 export { default as AlbumManage } from './Management/AlbumManage';
