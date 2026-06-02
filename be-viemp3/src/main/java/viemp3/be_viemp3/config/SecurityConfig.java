@@ -49,6 +49,7 @@ public class SecurityConfig {
                 "/notifications/**",
                 "/packages/**",
                 "/payments/**",
+                "/orders/**",
                 "/vouchers/**"
         };
 
