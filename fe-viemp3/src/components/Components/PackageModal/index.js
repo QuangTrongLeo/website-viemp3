@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styles from './PackageModal.module.scss';
 import classNames from 'classnames/bind';
 import { apiGetAvailableVouchers } from '~/api/services/serviceVouchers';
-// import { apiCreateOrder } from '~/api/services/serviceOrders';
-// import { apiCreatePaymentUrl } from '~/api/services/servicePayments';
+import { apiCreateOrder } from '~/api/services/serviceOrders';
+import { apiCreatePaymentUrl } from '~/api/services/servicePayments';
 
 const cx = classNames.bind(styles);
 
@@ -66,27 +66,27 @@ function PackageModal({ show, onClose, data }) {
 
   const handlePayment = async () => {
     setLoading(true);
-    // try {
-    //   const orderPayload = {
-    //     packageId: data.id,
-    //     voucherId: selectedVoucher ? selectedVoucher.id : null,
-    //     totalPrice: finalAmount,
-    //   };
+    try {
+      const orderPayload = {
+        packageId: data.id,
+        voucherId: selectedVoucher ? selectedVoucher.id : null,
+        totalPrice: finalAmount,
+      };
 
-    //   const orderRes = await apiCreateOrder(orderPayload);
-    //   if (orderRes && orderRes.id) {
-    //     const resData = await apiCreatePaymentUrl(orderRes.id);
-    //     if (resData && resData.paymentUrl) {
-    //       window.location.href = resData.paymentUrl;
-    //     } else {
-    //       console.error('Không lấy được URL thanh toán từ phản hồi');
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error('Lỗi thanh toán:', error);
-    // } finally {
-    //   setLoading(false);
-    // }
+      const orderRes = await apiCreateOrder(orderPayload);
+      if (orderRes && orderRes.id) {
+        const resData = await apiCreatePaymentUrl(orderRes.id);
+        if (resData && resData.paymentUrl) {
+          window.location.href = resData.paymentUrl;
+        } else {
+          console.error('Không lấy được URL thanh toán từ phản hồi');
+        }
+      }
+    } catch (error) {
+      console.error('Lỗi thanh toán:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
