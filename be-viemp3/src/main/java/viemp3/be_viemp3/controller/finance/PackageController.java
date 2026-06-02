@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.request.finance.PackageRequest;
 import viemp3.be_viemp3.dto.response.finance.PackageResponse;
+import viemp3.be_viemp3.dto.response.finance.PackageTypeResponse;
 import viemp3.be_viemp3.service.finance.PackageService;
 
 import java.util.List;
@@ -84,6 +85,19 @@ public class PackageController {
                         .success(true)
                         .message("Lấy thông tin chi tiết gói cước thành công")
                         .data(response)
+                        .build()
+        );
+    }
+
+    // ===== GET ALL PACKAGE TYPES =====
+    @GetMapping("/types")
+    public ResponseEntity<ApiResponse<List<PackageTypeResponse>>> getAllPackageTypes() {
+        List<PackageTypeResponse> responses = packageService.getAllPackageTypes();
+        return ResponseEntity.ok(
+                ApiResponse.<List<PackageTypeResponse>>builder()
+                        .success(true)
+                        .message("Lấy danh sách loại gói thành công")
+                        .data(responses)
                         .build()
         );
     }
