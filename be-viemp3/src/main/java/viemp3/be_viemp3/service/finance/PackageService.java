@@ -56,6 +56,10 @@ public class PackageService {
         return PackageMapper.toResponse(packageRepository.save(pkg));
     }
 
+    public void deletePackage(String id) {
+        packageRepository.deleteById(id);
+    }
+
     private Double calculateFinalPrice(Double basePrice, int months, Double discountPercent) {
         double totalBeforeDiscount = basePrice * months;
         return totalBeforeDiscount * (1 - (discountPercent / 100));

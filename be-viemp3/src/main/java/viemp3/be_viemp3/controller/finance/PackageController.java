@@ -46,4 +46,16 @@ public class PackageController {
         );
     }
 
+    // ===== DELETE =====
+    @PreAuthorize("hasAnyRole('ADMIN','MOD')")
+    @DeleteMapping("/{packageId}")
+    public ResponseEntity<ApiResponse<Void>> deletePackage(@PathVariable String packageId) {
+        packageService.deletePackage(packageId);
+        return ResponseEntity.ok(
+                ApiResponse.<Void>builder()
+                        .success(true)
+                        .message("Xóa gói cước thành công")
+                        .build()
+        );
+    }
 }
