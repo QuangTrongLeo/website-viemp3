@@ -14,5 +14,5 @@ public class VoucherResponse {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private OffsetDateTime createdAt;
-    private boolean active;
+    private Boolean active;
 }

@@ -21,7 +21,7 @@ public class VoucherMapper {
                 .startDate(voucher.getStartDate())
                 .endDate(voucher.getEndDate())
                 .createdAt(voucher.getCreatedAt())
-                .active(voucher.isActive())
+                .active(voucher.getActive())
                 .build();
     }
 

@@ -72,19 +72,21 @@ public class VoucherService {
     @Transactional
     public VoucherResponse updateVoucher(String id, VoucherRequest request) {
         Voucher voucher = entityService.finVoucherById(id);
-        LocalDate today = LocalDate.now();
-
+        LocalDateTime now = LocalDateTime.now();
         if (request.getQuantity() != null) voucher.setQuantity(request.getQuantity());
         if (request.getDiscountPercentage() != null) voucher.setDiscountPercentage(request.getDiscountPercentage());
         if (request.getMaxDiscountAmount() != null) voucher.setMaxDiscountAmount(request.getMaxDiscountAmount());
-
         if (request.getStartDate() != null) {
             voucher.setStartDate(request.getStartDate().atStartOfDay());
-            voucher.setActive(request.getStartDate().isEqual(today) || request.getStartDate().isBefore(today));
         }
-
-        if (request.getEndDate() != null) voucher.setEndDate(request.getEndDate().atTime(23, 59, 59));
-        if (request.getActive() != null) voucher.setActive(request.getActive());
+        if (request.getEndDate() != null) {
+            voucher.setEndDate(request.getEndDate().atTime(23, 59, 59));
+        }
+        if (voucher.getStartDate() != null && voucher.getEndDate() != null) {
+            boolean isStarted = now.isEqual(voucher.getStartDate()) || now.isAfter(voucher.getStartDate());
+            boolean isNotExpired = now.isEqual(voucher.getEndDate()) || now.isBefore(voucher.getEndDate());
+            voucher.setActive(isStarted && isNotExpired);
+        }
 
         return VoucherMapper.toResponse(voucherRepository.save(voucher));
     }
@@ -101,38 +103,48 @@ public class VoucherService {
     @Transactional
     public void useVoucher(String id) {
         Voucher voucher = entityService.finVoucherById(id);
-
-        if (!voucher.isActive()) {
-            throw new RuntimeException("Voucher hiện không hoạt động");
-        }
-        if (voucher.getQuantity() <= 0) {
-            throw new RuntimeException("Voucher đã hết lượt sử dụng");
-        }
-
+        if (!Boolean.TRUE.equals(voucher.getActive())) throw new RuntimeException("Voucher hiện không hoạt động");
+        if (voucher.getQuantity() <= 0) throw new RuntimeException("Voucher đã hết lượt sử dụng");
         voucher.setQuantity(voucher.getQuantity() - 1);
+        if (voucher.getQuantity() == 0) {
+            voucher.setActive(false);
+        }
         voucherRepository.save(voucher);
     }
 
     /**
      * 8. HỆ THỐNG TỰ ĐỘNG KÍCH HOẠT VOUCHER
+     * Chạy lúc 00:00:01 hàng ngày
      */
     @Scheduled(cron = "1 0 0 * * *")
     @Transactional
     public void autoActivateVouchers() {
-        LocalDate today = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate today = now.toLocalDate();
         List<Voucher> vouchers = voucherRepository.findAll();
 
         for (Voucher voucher : vouchers) {
-            // Nếu ngày bắt đầu là hôm nay và chưa active thì bật lên
-            if (voucher.getStartDate().toLocalDate().isEqual(today) && !voucher.isActive()) {
-                voucher.setActive(true);
-                voucherRepository.save(voucher);
+            // Tránh NullPointerException bằng cách lấy giá trị an toàn (mặc định false nếu null)
+            boolean currentActive = Boolean.TRUE.equals(voucher.getActive());
+
+            // CHẶN 1: Nếu ngày bắt đầu là hôm nay (hoặc trước đó) và chưa active -> BẬT LÊN
+            if (voucher.getStartDate() != null &&
+                    (voucher.getStartDate().toLocalDate().isEqual(today) || voucher.getStartDate().toLocalDate().isBefore(today))
+                    && !currentActive) {
+
+                // Đồng thời phải còn hạn và còn số lượng mới được bật
+                if (voucher.getEndDate().isAfter(now) && voucher.getQuantity() > 0) {
+                    voucher.setActive(true);
+                    voucherRepository.save(voucher);
+                }
             }
 
-            // Tự động tắt nếu đã hết hạn
-            if (voucher.getEndDate().isBefore(LocalDateTime.now()) && voucher.isActive()) {
-                voucher.setActive(false);
-                voucherRepository.save(voucher);
+            // CHẶN 2: Tự động tắt nếu đã hết hạn HOẶC đã hết số lượng mà vẫn đang bật -> TẮT ĐI
+            if (voucher.getEndDate() != null && currentActive) {
+                if (voucher.getEndDate().isBefore(now) || voucher.getQuantity() <= 0) {
+                    voucher.setActive(false);
+                    voucherRepository.save(voucher);
+                }
             }
         }
     }
