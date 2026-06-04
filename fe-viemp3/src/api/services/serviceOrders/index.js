@@ -16,3 +16,35 @@ export async function apiCreateOrder(payload) {
     throw new Error(error.response?.data?.message);
   }
 }
+
+// ===== GET MY ORDERS =====
+export async function apiGetMyOrders() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiOrderUrl}/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message);
+  }
+}
+
+// ===== GET ORDER BY ID =====
+export async function apiGetOrderById(orderId) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiOrderUrl}/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message);
+  }
+}
