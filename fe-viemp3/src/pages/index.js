@@ -19,4 +19,5 @@ export { default as Profile } from './Profile';
 export { default as Premium } from './Premium';
 export { default as PaymentCallback } from './PaymentCallback';
 
+export { default as Manage } from './Management/Manage';
 export { default as AlbumManage } from './Management/AlbumManage';

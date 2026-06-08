@@ -50,7 +50,10 @@ const userRoutes = [
   { path: config.routes.favoriteSongs, component: FavoriteSongs },
 ];
 
-const modRoutes = [{ path: config.routes.manageAlbums, component: AlbumManage }];
+const modRoutes = [
+  { path: config.routes.manage, component: Manage },
+  { path: config.routes.manageAlbums, component: AlbumManage },
+];
 
 const adminRoutes = [];
 

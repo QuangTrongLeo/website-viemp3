@@ -95,8 +95,7 @@ public class VoucherService {
     @Transactional
     public void deleteVoucher(String id) {
         Voucher voucher = entityService.finVoucherById(id);
-        voucher.setActive(false);
-        voucherRepository.save(voucher);
+        voucherRepository.delete(voucher);
     }
 
     // 7. Logic trừ số lượng Voucher
