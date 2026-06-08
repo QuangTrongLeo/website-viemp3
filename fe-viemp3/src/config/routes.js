@@ -23,6 +23,7 @@ const routes = {
   premium: '/premium',
   paymentCallback: 'payment-callback',
 
+  manage: '/manage',
   manageAlbums: '/manage/albums',
 };
 
