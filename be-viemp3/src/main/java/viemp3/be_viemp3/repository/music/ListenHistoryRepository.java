@@ -10,5 +10,6 @@ public interface ListenHistoryRepository extends JpaRepository<ListenHistory, St
     Optional<ListenHistory> findByUserIdAndSongId(String userId, String songId);
     List<ListenHistory> findByUserIdOrderByListenedAtAsc(String userId);
     List<ListenHistory> findByUserIdOrderByListenedAtDesc(String userId);
+    List<ListenHistory> findByUserId(String userId);
     long countByUserId(String userId);
 }

@@ -5,13 +5,12 @@ import org.springframework.stereotype.Service;
 import viemp3.be_viemp3.common.service.EntityQueryService;
 import viemp3.be_viemp3.dto.request.music.song.SongRequest;
 import viemp3.be_viemp3.dto.response.music.SongResponse;
-import viemp3.be_viemp3.entity.Artist;
-import viemp3.be_viemp3.entity.Genre;
-import viemp3.be_viemp3.entity.Playlist;
-import viemp3.be_viemp3.entity.Song;
+import viemp3.be_viemp3.entity.*;
 import viemp3.be_viemp3.mapper.music.SongMapper;
 import viemp3.be_viemp3.repository.music.SongRepository;
+import viemp3.be_viemp3.service.auth.SecurityService;
 import viemp3.be_viemp3.service.file.FileStorageService;
+import viemp3.be_viemp3.service.recommend.RecommendationService;
 
 import java.util.List;
 
@@ -22,6 +21,8 @@ public class SongService {
     private final ListenHistoryService listenHistoryService;
     private final EntityQueryService entityService;
     private final FileStorageService fileStorageService;
+    private final RecommendationService recommendationService;
+    private final SecurityService securityService;
 
     // ===== CREATE =====
     public SongResponse createSong(SongRequest request) {
@@ -83,4 +84,10 @@ public class SongService {
         return SongMapper.toResponseList(songs);
     }
 
+    // ===== GET SONGS RECOMMEND =====
+    public List<SongResponse> recommendSongs() {
+        User user = securityService.getCurrentUser();
+        List<Song> songs = recommendationService.recommend(user.getId());
+        return SongMapper.toResponseList(songs);
+    }
 }

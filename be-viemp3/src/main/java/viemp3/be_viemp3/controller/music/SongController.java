@@ -60,6 +60,20 @@ public class SongController {
         );
     }
 
+    // ===== GET SONGS RECOMMEND =====
+    @GetMapping("/recommend")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ApiResponse<List<SongResponse>>> recommendSongs() {
+        List<SongResponse> songs = songService.recommendSongs();
+        return ResponseEntity.ok(
+                ApiResponse.<List<SongResponse>>builder()
+                        .success(true)
+                        .message("Gợi ý bài hát cá nhân hóa thành công")
+                        .data(songs)
+                        .build()
+        );
+    }
+
     // ===== GET ALL SONG BY ALBUM =====
     @PreAuthorize("permitAll()")
     @GetMapping("/album/{albumId}")
