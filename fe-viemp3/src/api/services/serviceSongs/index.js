@@ -94,6 +94,80 @@ export async function apiGetSongsByPlaylist(playlistId) {
   }
 }
 
+// ===== CREATE SONG =====
+export async function apiCreateSong(title, description, artistId, genreId, cover, audio) {
+  try {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('artistId', artistId);
+    formData.append('genreId', genreId);
+    formData.append('cover', cover);
+    formData.append('audio', audio);
+    const response = await axios.post(apiSongUrls.apiSongUrl, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error.response);
+    const message = error.response?.data?.message || error.message;
+    throw new Error(message);
+  }
+}
+
+// ===== UPDATE SONG =====
+export async function apiUpdateSong(id, title, description, genreId, albumId, cover, audio) {
+  try {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    if (title) formData.append('title', title.trim());
+    if (description) formData.append('description', description);
+    if (genreId) formData.append('genreId', genreId);
+    if (albumId) formData.append('albumId', albumId);
+    if (cover) {
+      formData.append('cover', cover);
+    }
+    if (audio) {
+      formData.append('audio', audio);
+    }
+
+    const response = await axios.put(`${apiSongUrls.apiSongUrl}/${id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data.data;
+  } catch (error) {
+    const message = error.response?.data?.message || error.message;
+    throw new Error(message);
+  }
+}
+
+// ===== DELETE SONG =====
+export async function apiDeleteSong(songId) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.delete(apiSongUrls.apiSongUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        songId: songId,
+      },
+    });
+    return response.data.success;
+  } catch (error) {
+    const message = error.response?.data?.message || error.response?.data || error.message;
+    throw new Error(message);
+  }
+}
+
 // =============== FAVORITE SONG ===============
 export async function apiGetMyFavoriteSongs() {
   try {
