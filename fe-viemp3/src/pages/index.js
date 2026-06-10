@@ -23,3 +23,4 @@ export { default as Manage } from './Management/Manage';
 export { default as AlbumManage } from './Management/AlbumManage';
 export { default as ArtistManage } from './Management/ArtistManage';
 export { default as SongManage } from './Management/SongManage';
+export { default as PackageManage } from './Management/PackageManage';
