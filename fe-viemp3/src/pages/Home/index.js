@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { useAuth } from '~/components/Components/AuthProvider';
 import { CircleCard, RectangleCard, SquareCard } from '~/components/Components/Card';
 import { apiGetArtist, apiGetArtists } from '~/api/services/serviceArtists';
-import { apiGetSongs } from '~/api/services/serviceSongs';
+import { apiGetSongs, apiGetRecommendSongs } from '~/api/services/serviceSongs';
 import { apiGetAlbums } from '~/api/services/serviceAlbums';
 
 const cx = classNames.bind(styles);
@@ -23,6 +23,7 @@ function Home() {
   const [newSongs, setNewSongs] = useState([]);
   const [trendingArtists, setTrendingArtists] = useState([]);
   const [hotAlbums, setHotAlbums] = useState([]);
+  const [recommendSongs, setRecommendSongs] = useState([]);
 
   const handleHotAlbums = async () => {
     try {
@@ -63,10 +64,37 @@ function Home() {
     }
   };
 
+  const handleRecommendSongs = async () => {
+    try {
+      if (!currentToken) return;
+      const data = await apiGetRecommendSongs();
+      const songsWithArtist = await Promise.all(
+        data.map(async song => {
+          try {
+            const artist = await apiGetArtist(song.artistId);
+            return {
+              ...song,
+              artistName: artist?.name || 'Không tìm thấy nghệ sĩ',
+            };
+          } catch {
+            return {
+              ...song,
+              artistName: 'Không tìm thấy nghệ sĩ',
+            };
+          }
+        })
+      );
+      setRecommendSongs(songsWithArtist);
+    } catch (error) {
+      console.error('Lỗi khi lấy bài hát gợi ý:', error);
+    }
+  };
+
   useEffect(() => {
     handleNewSongs();
     handleTrendingArtists();
     handleHotAlbums();
+    handleRecommendSongs();
   }, [currentToken]);
 
   return (
@@ -115,6 +143,25 @@ function Home() {
           ))}
         </HorizontalScroll>
       </section>
+
+      {/* SUITABLE SONGS */}
+      {currentToken && recommendSongs.length > 0 && (
+        <section className={cx('section-block')}>
+          <h3>Phù hợp với bạn</h3>
+          <HorizontalScroll>
+            {recommendSongs.map(song => (
+              <RectangleCard
+                key={song.id}
+                content={song.title || song.songName}
+                desc={song.artistName}
+                createdAt={song.createdAt}
+                cover={song.cover}
+                href={`/song/${song.id}`}
+              />
+            ))}
+          </HorizontalScroll>
+        </section>
+      )}
     </div>
   );
 }

@@ -29,6 +29,22 @@ export async function apiGetSongs() {
   }
 }
 
+// ===== GET RECOMMEND SONGS =====
+export async function apiGetRecommendSongs() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiSongUrls.apiSongUrl}/recommend`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    const message = error.response?.data?.message || error.message;
+    throw new Error(message);
+  }
+}
+
 // ===== GET SONGS BY ALBUM =====
 export async function apiGetSongsByAlbum(albumId) {
   try {
