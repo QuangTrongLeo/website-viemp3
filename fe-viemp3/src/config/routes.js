@@ -24,7 +24,14 @@ const routes = {
   paymentCallback: 'payment-callback',
 
   manage: '/manage',
+  manageAccounts: '/manage/accounts',
+  manageArtists: '/manage/artists',
   manageAlbums: '/manage/albums',
+  manageSongs: '/manage/songs',
+  manageGenres: '/manage/genres',
+  managePackages: '/manage/packages',
+  manageOrders: '/manage/orders',
+  manageVouchers: '/manage/vouchers',
 };
 
 export default routes;
