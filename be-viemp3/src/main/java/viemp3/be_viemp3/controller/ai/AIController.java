@@ -17,17 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AIController {
     private final ChatAIService chatService;
 
-    @PreAuthorize("hasRole('USER')")
     @PostMapping("/chat")
-    public ResponseEntity<ApiResponse<String>> chatAI(@RequestBody ChatRequest request) {
-        String response = chatService.chatAI(request);
-
-        // Trả về ApiResponse với data là kết quả AI
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ApiResponse<Object>> chatAI(@RequestBody ChatRequest request) {
+        Object response = chatService.chatAI(request);
         return ResponseEntity.ok(
-                ApiResponse.<String>builder()
+                ApiResponse.<Object>builder()
                         .success(true)
                         .message("Gửi chat thành công")
-                        .data(response)  // Gán kết quả AI vào data
+                        .data(response)
                         .build()
         );
     }

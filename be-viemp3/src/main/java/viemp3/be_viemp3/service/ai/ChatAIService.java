@@ -1,62 +1,53 @@
 package viemp3.be_viemp3.service.ai;
 
-import viemp3.be_viemp3.service.auth.SecurityService;
-import viemp3.be_viemp3.dto.request.ai.ChatRequest;
-import viemp3.be_viemp3.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import viemp3.be_viemp3.dto.request.ai.ChatRequest;
+import viemp3.be_viemp3.entity.User;
+import viemp3.be_viemp3.service.auth.SecurityService;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class ChatAIService {
+
     private final ChatClient chatClient;
     private final JdbcTemplate jdbcTemplate;
-    private final SecurityService securityUtils;
+    private final SecurityService securityService;
 
-    public ChatAIService(ChatClient.Builder builder, JdbcTemplate jdbcTemplate, SecurityService securityUtils) {
+    public ChatAIService(ChatClient.Builder builder, JdbcTemplate jdbcTemplate, SecurityService securityService) {
         this.jdbcTemplate = jdbcTemplate;
-        this.securityUtils = securityUtils;
-
-        // 1. Khởi tạo bộ nhớ hội thoại
+        this.securityService = securityService;
         ChatMemory chatMemory = MessageWindowChatMemory.builder()
                 .maxMessages(50)
                 .build();
-
-        // 2. Build ChatClient với đầy đủ Advisors mặc định
-        this.chatClient = builder
-                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+        this.chatClient = builder.defaultAdvisors(
+                        MessageChatMemoryAdvisor
+                                .builder(chatMemory)
+                                .build())
                 .build();
     }
 
-    public String chatAI(ChatRequest request) {
-        User user = securityUtils.getCurrentUser();
+    public Object chatAI(ChatRequest request) {
+        User user = securityService.getCurrentUser();
         String question = request.getMessage();
-
         String conversationId = user.getId();
-
-        // 1. Generate SQL
         String sql = generateSql(question, conversationId);
-
-        // 2. Nếu không phải SQL → trả luôn
         if (!AISqlUtils.isSafeSelect(sql)) {
-            return sql;
+            return Map.of("text", sql);
         }
-
         try {
-            // 3. Execute SQL
-            List<Map<String, Object>> data = jdbcTemplate.queryForList(sql);
-
-            // 4. Format answer
-            return formatAnswer(question, data, conversationId);
-
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+            return buildResponse(question, rows, conversationId);
         } catch (Exception e) {
-            return "Không thể truy vấn dữ liệu: " + e.getMessage();
+            return Map.of("text", "Không thể truy vấn dữ liệu.");
         }
     }
 
@@ -64,17 +55,55 @@ public class ChatAIService {
         return chatClient.prompt()
                 .system(AIConstant.DB_SCHEMA)
                 .user(question)
-                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .advisors(a ->
+                        a.param(ChatMemory.CONVERSATION_ID, conversationId)
+                )
                 .call()
                 .content();
     }
 
-    private String formatAnswer(String question, List<Map<String, Object>> data, String conversationId) {
+    private String generateText(String question, List<Map<String, Object>> data, String conversationId) {
         return chatClient.prompt()
-                .system("Dựa trên dữ liệu sau, hãy trả lời người dùng: " + data)
+                .system(AIConstant.TEXT_PROMPT
+                                .replace("{question}", question)
+                                .replace("{data}", data.toString())
+                )
                 .user(question)
-                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .advisors(a ->
+                        a.param(ChatMemory.CONVERSATION_ID, conversationId)
+                )
                 .call()
                 .content();
+    }
+
+    private Object buildResponse(String question, List<Map<String, Object>> data, String conversationId) {
+        if (data.isEmpty()) {
+            return Map.of("text", "Không tìm thấy dữ liệu phù hợp.");
+        }
+        String text = generateText(question, data, conversationId);
+        String lower = question.toLowerCase();
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("text", text);
+        if (lower.contains("bài hát")) {
+            result.put("songs", data);
+            return result;
+        }
+
+        if (lower.contains("album")) {
+            result.put("albums", data);
+            return result;
+        }
+
+        if (lower.contains("nghệ sĩ") || lower.contains("ca sĩ")) {
+            result.put("artists", data);
+            return result;
+        }
+
+        if (lower.contains("thể loại")) {
+            result.put("genres", data);
+            return result;
+        }
+
+        return result;
     }
 }
