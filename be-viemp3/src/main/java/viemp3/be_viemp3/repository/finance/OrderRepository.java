@@ -15,11 +15,6 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
     Optional<Order> findByVnpTxnRef(String vnpTxnRef);
-    @Query("SELECT o.aPackage.pkg, o.aPackage.duration, COUNT(o) " +
-            "FROM Order o " +
-            "WHERE o.status = 'COMPLETED' " +
-            "GROUP BY o.aPackage.pkg, o.aPackage.duration")
-
     List<Order> findAllByOrderByOrderDateDesc();
     List<Order> findAllByUserOrderByOrderDateDesc(User user);
 
