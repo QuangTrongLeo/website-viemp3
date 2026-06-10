@@ -49,3 +49,19 @@ export async function apiCheckUserIsStudent() {
     throw new Error(message);
   }
 }
+
+// ===== GET ALL USERS =====
+export async function apiGetUsers() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiUserUrl}/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    const message = error.response?.data?.message || error.message;
+    throw new Error(message);
+  }
+}

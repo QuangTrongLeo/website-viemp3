@@ -22,7 +22,7 @@ import {
 } from '~/pages';
 
 // modRoutes
-import { AlbumManage } from '~/pages';
+import { AlbumManage, Manage, } from '~/pages';
 
 const publishRoutes = [
   { path: config.routes.home, component: Home },
