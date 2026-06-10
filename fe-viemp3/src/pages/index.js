@@ -21,3 +21,4 @@ export { default as PaymentCallback } from './PaymentCallback';
 
 export { default as Manage } from './Management/Manage';
 export { default as AlbumManage } from './Management/AlbumManage';
+export { default as ArtistManage } from './Management/ArtistManage';
