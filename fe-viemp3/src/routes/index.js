@@ -25,7 +25,7 @@ import {
 import { Manage, AlbumManage, ArtistManage, SongManage } from '~/pages';
 
 // adminRoutes
-import { PackageManage } from '~/pages';
+import { PackageManage, OrderManage } from '~/pages';
 
 const publishRoutes = [
   { path: config.routes.home, component: Home },
@@ -60,6 +60,9 @@ const modRoutes = [
   { path: config.routes.manageSongs, component: SongManage },
 ];
 
-const adminRoutes = [{ path: config.routes.managePackages, component: PackageManage }];
+const adminRoutes = [
+  { path: config.routes.managePackages, component: PackageManage },
+  { path: config.routes.manageOrders, component: OrderManage },
+];
 
 export { publishRoutes, userRoutes, modRoutes, adminRoutes };

@@ -48,3 +48,19 @@ export async function apiGetOrderById(orderId) {
     throw new Error(error.response?.data?.message);
   }
 }
+
+// ===== GET ALL ORDER =====
+export async function apiGetOrders() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiOrderUrl}/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message);
+  }
+}
