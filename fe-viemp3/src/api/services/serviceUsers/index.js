@@ -33,6 +33,16 @@ export async function apiUpdateProfile(formData) {
   return data;
 }
 
+export async function apiUpdateUserRoles(data) {
+  const token = localStorage.getItem('token');
+  const res = await axios.put(`${apiUserUrl}/roles`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data.success;
+}
+
 // ===== CHECK IF USER IS STUDENT =====
 export async function apiCheckUserIsStudent() {
   try {

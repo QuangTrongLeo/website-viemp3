@@ -22,7 +22,7 @@ import {
 } from '~/pages';
 
 // modRoutes
-import { Manage, AlbumManage, ArtistManage, SongManage } from '~/pages';
+import { Manage, AlbumManage, ArtistManage, SongManage, AccountManage, GenreManage, VoucherManage } from '~/pages';
 
 // adminRoutes
 import { PackageManage, OrderManage } from '~/pages';
@@ -58,6 +58,9 @@ const modRoutes = [
   { path: config.routes.manageAlbums, component: AlbumManage },
   { path: config.routes.manageArtists, component: ArtistManage },
   { path: config.routes.manageSongs, component: SongManage },
+  { path: config.routes.manageAccounts, component: AccountManage },
+  { path: config.routes.manageGenres, component: GenreManage },
+  { path: config.routes.manageVouchers, component: VoucherManage },
 ];
 
 const adminRoutes = [
