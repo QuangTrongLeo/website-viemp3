@@ -2,6 +2,7 @@ package viemp3.be_viemp3.service.analytic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import viemp3.be_viemp3.dto.response.analytics.MonthlyRevenueResponse;
 import viemp3.be_viemp3.dto.response.analytics.PackageDistributionResponse;
 import viemp3.be_viemp3.dto.response.analytics.RevenueStatisticsResponse;
 import viemp3.be_viemp3.enums.OrderStatus;
@@ -27,5 +28,11 @@ public class FinanceStatisticsService {
         long totalCompleted = orderRepository.countByStatus(OrderStatus.COMPLETED);
         List<Object[]> results = orderRepository.countOrdersByPackageGrouped();
         return FinanceAnalyticsMapper.toPackageDistributionList(results, totalCompleted);
+    }
+
+    // 3. Thống kê doanh thu 12 tháng trong năm
+    public List<MonthlyRevenueResponse> getMonthlyRevenueStatistics() {
+        List<Object[]> results = orderRepository.getMonthlyRevenueStats();
+        return FinanceAnalyticsMapper.toMonthlyRevenueList(results);
     }
 }

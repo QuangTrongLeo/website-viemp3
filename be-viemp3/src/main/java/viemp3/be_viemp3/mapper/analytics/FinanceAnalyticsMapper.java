@@ -1,8 +1,12 @@
 package viemp3.be_viemp3.mapper.analytics;
 
+import viemp3.be_viemp3.dto.response.analytics.MonthlyRevenueResponse;
 import viemp3.be_viemp3.dto.response.analytics.PackageDistributionResponse;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FinanceAnalyticsMapper {
@@ -19,5 +23,27 @@ public class FinanceAnalyticsMapper {
         return results.stream()
                 .map(res -> toPackageDistributionResponse(res, totalCompleted))
                 .collect(Collectors.toList());
+    }
+
+    public static List<MonthlyRevenueResponse> toMonthlyRevenueList(List<Object[]> results) {
+        // Khởi tạo map với 12 tháng mặc định doanh thu bằng 0
+        Map<Integer, Double> revenueMap = new HashMap<>();
+        for (int i = 1; i <= 12; i++) {
+            revenueMap.put(i, 0.0);
+        }
+
+        // Đổ dữ liệu từ query vào map
+        for (Object[] result : results) {
+            Integer month = ((Number) result[0]).intValue();
+            Double revenue = ((Number) result[1]).doubleValue();
+            revenueMap.put(month, revenue);
+        }
+
+        // Chuyển map sang List Response
+        List<MonthlyRevenueResponse> responses = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            responses.add(new MonthlyRevenueResponse("Th" + i, revenueMap.get(i)));
+        }
+        return responses;
     }
 }
