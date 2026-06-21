@@ -27,4 +27,13 @@ public class AnalyticsController {
                 .data(listenStatisticsService.getListenByDay())
                 .build();
     }
+
+    @GetMapping("/listen/week")
+    public ApiResponse<List<ListenStatisticsResponse>> getListenByWeek() {
+        return ApiResponse.<List<ListenStatisticsResponse>>builder()
+                .success(true)
+                .message("Lấy thống kê lượt nghe theo tuần thành công")
+                .data(listenStatisticsService.getListenByWeek())
+                .build();
+    }
 }
