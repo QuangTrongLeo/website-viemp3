@@ -99,3 +99,46 @@ export async function apiGetGenreStatistics() {
     throw error;
   }
 }
+
+// ===== USER STATISTICS =====
+export async function apiGetUserStatusStatistics() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiAnalyticUrl}/users/status`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function apiGetUserRoleStatistics() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiAnalyticUrl}/users/roles`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function apiGetUserMembershipStatistics() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiAnalyticUrl}/users/memberships`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+}

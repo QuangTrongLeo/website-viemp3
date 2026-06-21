@@ -1,256 +1,178 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './UsersAnalytic.module.scss';
+import {
+  apiGetUserStatusStatistics,
+  apiGetUserRoleStatistics,
+  apiGetUserMembershipStatistics,
+} from '~/api/services/serviceAnalytics';
 
 const cx = classNames.bind(styles);
 
 function UsersAnalytic() {
-  const growthData = [
-    { day: 'Thứ 2', val: 12, height: '40%' },
-    { day: 'Thứ 3', val: 18, height: '55%' },
-    { day: 'Thứ 4', val: 10, height: '35%' },
-    { day: 'Thứ 5', val: 28, height: '85%', active: true },
-    { day: 'Thứ 6', val: 22, height: '65%' },
-    { day: 'Thứ 7', val: 16, height: '50%' },
-    { day: 'Chủ nhật', val: 24, height: '75%' },
-  ];
+  const [statusData, setStatusData] = useState([]);
+  const [roleData, setRoleData] = useState([]);
+  const [membershipData, setMembershipData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [status, roles, memberships] = await Promise.all([
+          apiGetUserStatusStatistics(),
+          apiGetUserRoleStatistics(),
+          apiGetUserMembershipStatistics(),
+        ]);
+
+        setStatusData(status);
+        setRoleData(roles);
+        setMembershipData(memberships);
+      } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu thống kê:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+  const totalUsers = statusData.reduce((acc, curr) => acc + curr.count, 0);
+
+  const renderDonut = (data, colors) => {
+    let cumulativePercent = 0;
+    const total = data.reduce((acc, curr) => acc + curr.count, 0) || 1;
+
+    return (
+      <svg width="140" height="140" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)' }}>
+        <circle cx="50" cy="50" r="40" stroke="#262626" strokeWidth="10" fill="transparent" />
+        {data.map((item, index) => {
+          if (item.count === 0) return null;
+          const percent = (item.count / total) * 100;
+          const dashArray = `${(percent * 251.3) / 100} 251.3`;
+          const dashOffset = -(cumulativePercent * 251.3) / 100;
+          cumulativePercent += percent;
+
+          return (
+            <circle
+              key={index}
+              cx="50"
+              cy="50"
+              r="40"
+              stroke={colors[index % colors.length]}
+              strokeWidth="10"
+              fill="transparent"
+              strokeDasharray={dashArray}
+              strokeDashoffset={dashOffset}
+              style={{ transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' }}
+            />
+          );
+        })}
+      </svg>
+    );
+  };
+
+  if (loading) return <div className={cx('loading')}>Đang bóc tách dữ liệu...</div>;
 
   return (
     <main className={cx('wrapper')}>
-      {/* Header */}
-      <section>
+      <section className={cx('header')}>
         <h1 className={cx('main-title')}>Thống kê Người dùng</h1>
-        <p style={{ color: '#adaaaa' }}>Xem báo cáo tăng trưởng và phân bổ gói hội viên của đồ án Sonic Noir.</p>
+        <p className={cx('subtitle')}>Dữ liệu thời gian thực từ hệ thống Sonic Noir.</p>
       </section>
 
-      {/* Metrics */}
       <div className={cx('metrics-row')}>
         <div className={cx('card', 'metric-card')}>
-          <div>
-            <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#adaaaa', textTransform: 'uppercase' }}>
-              Tổng số người dùng
-            </span>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginTop: '8px' }}>
-              <span style={{ fontSize: '3rem', fontWeight: '900' }}>1,248</span>
-              <span
-                style={{
-                  color: '#1DB954',
-                  fontSize: '14px',
-                  background: 'rgba(29, 185, 84, 0.1)',
-                  padding: '2px 8px',
-                  borderRadius: '4px',
-                }}
-              >
-                +5%
-              </span>
+          <div className={cx('metric-info')}>
+            <span className={cx('label')}>Tổng số người dùng</span>
+            <div className={cx('value-group')}>
+              <span className={cx('value')}>{totalUsers}</span>
+              <span className={cx('badge', 'up')}>Live</span>
             </div>
-          </div>
-          <div className={cx('icon-box')}>
-            <span className="material-symbols-outlined" style={{ fontSize: '32px' }}>
-              groups
-            </span>
           </div>
         </div>
 
         <div className={cx('card', 'metric-card')}>
-          <div>
-            <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#adaaaa', textTransform: 'uppercase' }}>
-              Đăng ký mới hôm nay
-            </span>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginTop: '8px' }}>
-              <span style={{ fontSize: '3rem', fontWeight: '900' }}>24</span>
-              <span
-                style={{
-                  color: '#1DB954',
-                  fontSize: '14px',
-                  background: 'rgba(29, 185, 84, 0.1)',
-                  padding: '2px 8px',
-                  borderRadius: '4px',
-                }}
-              >
-                Mới
-              </span>
+          <div className={cx('metric-info')}>
+            <span className={cx('label')}>Premium Member</span>
+            <div className={cx('value-group')}>
+              <span className={cx('value')}>{membershipData.find(i => i.label.includes('Premium'))?.count || 0}</span>
+              <span className={cx('badge', 'premium')}>VIP</span>
             </div>
-          </div>
-          <div className={cx('icon-box')}>
-            <span className="material-symbols-outlined" style={{ fontSize: '32px' }}>
-              person_add
-            </span>
           </div>
         </div>
       </div>
 
-      {/* Charts Section */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '24px', marginBottom: '32px' }}>
-        {/* Bar Chart */}
-        <div className={cx('card', 'col-8')}>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '4px' }}>Tăng trưởng người dùng mới</h3>
-          <p style={{ color: '#adaaaa', fontSize: '14px', marginBottom: '32px' }}>
-            Số liệu thống kê trong 7 ngày gần nhất
-          </p>
-
-          <div className={cx('chart-container')}>
-            {growthData.map((item, index) => (
-              <div key={index} className={cx('bar-group')}>
-                <div className={cx('bar-bg', { 'bar-active': item.active })} style={{ height: item.height }}>
-                  <span
-                    className={cx('tooltip', { active: item.active })}
-                    style={{ color: item.active ? '#1DB954' : '#adaaaa' }}
-                  >
-                    {item.val}
-                  </span>
-                </div>
-                <span className={cx('label', { active: item.active })}>{item.day}</span>
+      <div className={cx('charts-grid')}>
+        {/* 1. Trạng thái */}
+        <div className={cx('card', 'chart-card')}>
+          <h3>Trạng thái tài khoản</h3>
+          <div className={cx('donut-box')}>
+            {renderDonut(statusData, ['#1DB954', '#E91E63'])}
+            <div className={cx('center-text')}>
+              <span className={cx('active-count')}>
+                {statusData.find(i => i.label.includes('hoạt động'))?.count || 0}
+              </span>
+              <small>Online</small>
+            </div>
+          </div>
+          <div className={cx('legend')}>
+            {statusData.map((item, index) => (
+              <div key={index} className={cx('legend-item')}>
+                <span className={cx('dot')} style={{ backgroundColor: index === 0 ? '#1DB954' : '#E91E63' }}></span>
+                <span className={cx('name')}>{item.label}</span>
+                <span className={cx('percentage')}>{item.percentage}%</span>
+                <span className={cx('count')}>{item.count}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Donut Chart */}
-        <div className={cx('card', 'col-4')} style={{ display: 'flex', flexDirection: 'column' }}>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Phân bổ Gói hội viên</h3>
-          <p style={{ color: '#adaaaa', fontSize: '14px', marginBottom: '32px' }}>
-            Tỉ lệ giữa Gói Cá nhân và Gói Sinh viên
-          </p>
-
-          <div
-            style={{
-              flexGrow: 1,
-              position: 'relative',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <svg width="160" height="160" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)' }}>
-              <circle cx="50" cy="50" r="40" stroke="#262626" strokeWidth="12" fill="transparent" />
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                stroke="#1DB954"
-                strokeWidth="12"
-                fill="transparent"
-                strokeDasharray="163.4 251.3"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                stroke="#0fe3ff"
-                strokeWidth="12"
-                fill="transparent"
-                strokeDasharray="87.9 251.3"
-                strokeDashoffset="-163.4"
-              />
-            </svg>
-            <span style={{ position: 'absolute', fontSize: '24px', fontWeight: '900' }}>100%</span>
+        {/* 2. Vai trò */}
+        <div className={cx('card', 'chart-card')}>
+          <h3>Phân bổ vai trò</h3>
+          <div className={cx('donut-box')}>
+            {renderDonut(roleData, ['#f1c40f', '#0fe3ff', '#1DB954'])}
+            <div className={cx('center-text')}>
+              <span>{totalUsers}</span>
+              <small>Roles</small>
+            </div>
           </div>
+          <div className={cx('legend')}>
+            {roleData.map((item, index) => (
+              <div key={index} className={cx('legend-item')}>
+                <span
+                  className={cx('dot')}
+                  style={{ backgroundColor: ['#f1c40f', '#0fe3ff', '#1DB954'][index] }}
+                ></span>
+                <span className={cx('name')}>{item.label}</span>
+                <span className={cx('percentage')}>{item.percentage}%</span>
+                <span className={cx('count')}>{item.count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          <div style={{ marginTop: '32px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#1DB954' }}></div>
-                <span style={{ fontSize: '14px', color: '#adaaaa' }}>Gói Cá nhân</span>
-              </div>
-              <span style={{ fontWeight: 'bold' }}>65%</span>
+        {/* 3. Hội viên */}
+        <div className={cx('card', 'chart-card')}>
+          <h3>Gói thành viên</h3>
+          <div className={cx('donut-box')}>
+            {renderDonut(membershipData, ['#1DB954', '#333333'])}
+            <div className={cx('center-text')}>
+              <span>{membershipData.find(i => i.label.includes('Premium'))?.percentage || 0}%</span>
+              <small>Premium</small>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#0fe3ff' }}></div>
-                <span style={{ fontSize: '14px', color: '#adaaaa' }}>Gói Sinh viên</span>
+          </div>
+          <div className={cx('legend')}>
+            {membershipData.map((item, index) => (
+              <div key={index} className={cx('legend-item')}>
+                <span className={cx('dot')} style={{ backgroundColor: index === 0 ? '#1DB954' : '#333333' }}></span>
+                <span className={cx('name')}>{item.label}</span>
+                <span className={cx('percentage')}>{item.percentage}%</span>
+                <span className={cx('count')}>{item.count}</span>
               </div>
-              <span style={{ fontWeight: 'bold' }}>35%</span>
-            </div>
+            ))}
           </div>
         </div>
       </div>
-
-      {/* Recent Registrations Table */}
-      <div className={cx('card', 'col-12')} style={{ padding: '0' }}>
-        <div style={{ padding: '32px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Người dùng mới đăng ký</h3>
-        </div>
-        <div className={cx('table-wrapper')}>
-          <table>
-            <thead>
-              <tr>
-                <th>Tên người dùng</th>
-                <th>Email</th>
-                <th>Gói hội viên</th>
-                <th>Trạng thái</th>
-                <th style={{ textAlign: 'right' }}>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div
-                      style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        backgroundColor: '#262626',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#1DB954',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      LM
-                    </div>
-                    <span style={{ fontWeight: 'bold' }}>Lê Minh Quân</span>
-                  </div>
-                </td>
-                <td style={{ color: '#adaaaa', fontSize: '14px' }}>quan.leminh@student.edu.vn</td>
-                <td>
-                  <span
-                    style={{
-                      padding: '4px 12px',
-                      borderRadius: '99px',
-                      fontSize: '10px',
-                      fontWeight: 'bold',
-                      textTransform: 'uppercase',
-                      backgroundColor: 'rgba(15, 227, 255, 0.1)',
-                      color: '#0fe3ff',
-                    }}
-                  >
-                    Gói Sinh viên
-                  </span>
-                </td>
-                <td>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className="material-symbols-outlined" style={{ color: '#1DB954', fontSize: '18px' }}>
-                      check_circle
-                    </span>
-                    <span style={{ fontSize: '12px', fontWeight: '500' }}>VNPAY Thành công</span>
-                  </div>
-                </td>
-                <td style={{ textAlign: 'right' }}>
-                  <button style={{ color: '#adaaaa' }}>
-                    <span className="material-symbols-outlined">more_horiz</span>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <footer style={{ marginTop: '48px', textAlign: 'center' }}>
-        <p
-          style={{
-            fontSize: '10px',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: 'rgba(173, 170, 170, 0.4)',
-            fontWeight: 'bold',
-          }}
-        >
-        </p>
-      </footer>
     </main>
   );
 }

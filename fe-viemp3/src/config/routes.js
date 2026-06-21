@@ -34,6 +34,9 @@ const routes = {
 
   analytic: '/analytic',
   analyticRevenues: '/analytic/revenues', // Doanh thu
+  analyticUsers: '/analytic/users', // Người dùng
+  analyticContents: '/analytic/contents', // Nội dung (Bài hát/Playlist)
+  analyticArtists: '/analytic/artists', // Nghệ sĩ & Album
 };
 
 export default routes;
