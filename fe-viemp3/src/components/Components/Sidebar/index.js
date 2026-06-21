@@ -24,29 +24,29 @@ const itemsRequireLogin = [
 ];
 
 const itemsManageMod = [
-    { label: 'Tổng quan', iconClass: icons.iconHeadphones, href: config.routes.manage },
-    { label: 'Quản lý nghệ sĩ', iconClass: icons.iconStar, href: config.routes.manageArtists },
-    { label: 'Quản lý album', iconClass: icons.iconCompactDisc, href: config.routes.manageAlbums },
-    { label: 'Quản lý bài hát', iconClass: icons.iconMusic, href: config.routes.manageSongs },
-    { label: 'Quản lý thể loại', iconClass: icons.iconLayerGroup, href: config.routes.manageGenres },
-    { label: 'Quản lý voucher', iconClass: icons.iconVoucher, href: config.routes.manageVouchers },
+  { label: 'Tổng quan', iconClass: icons.iconHeadphones, href: config.routes.manage },
+  { label: 'Quản lý nghệ sĩ', iconClass: icons.iconStar, href: config.routes.manageArtists },
+  { label: 'Quản lý album', iconClass: icons.iconCompactDisc, href: config.routes.manageAlbums },
+  { label: 'Quản lý bài hát', iconClass: icons.iconMusic, href: config.routes.manageSongs },
+  { label: 'Quản lý thể loại', iconClass: icons.iconLayerGroup, href: config.routes.manageGenres },
+  { label: 'Quản lý voucher', iconClass: icons.iconVoucher, href: config.routes.manageVouchers },
 ];
 
 const itemsManageAdmin = [
-    { label: 'Tổng quan', iconClass: icons.iconHeadphones, href: config.routes.manage },
-    { label: 'Quản lý tài khoản', iconClass: icons.iconUser, href: config.routes.manageAccounts },
-    { label: 'Quản lý gói Premium', iconClass: icons.iconPackage, href: config.routes.managePackages },
-    { label: 'Quản lý đơn hàng', iconClass: icons.iconOrder, href: config.routes.manageOrders },
-    ...itemsManageMod.slice(1),
+  { label: 'Tổng quan', iconClass: icons.iconHeadphones, href: config.routes.manage },
+  { label: 'Quản lý tài khoản', iconClass: icons.iconUser, href: config.routes.manageAccounts },
+  { label: 'Quản lý gói Premium', iconClass: icons.iconPackage, href: config.routes.managePackages },
+  { label: 'Quản lý đơn hàng', iconClass: icons.iconOrder, href: config.routes.manageOrders },
+  ...itemsManageMod.slice(1),
 ];
 
-// const itemsAnalytic = [
-//   { label: 'Tổng quan', iconClass: icons.iconHeadphones, href: config.routes.analytic },
-//   { label: 'Doanh thu', iconClass: icons.iconDollar, href: config.routes.analyticRevenues },
-//   { label: 'Người dùng', iconClass: icons.iconUser, href: config.routes.analyticUsers },
-//   { label: 'Nội dung', iconClass: icons.iconMusic, href: config.routes.analyticContents },
-//   { label: 'Nghệ sĩ & Album', iconClass: icons.iconCompactDisc, href: config.routes.analyticArtists },
-// ];
+const itemsAnalytic = [
+  { label: 'Tổng quan', iconClass: icons.iconHeadphones, href: config.routes.analytic },
+  { label: 'Doanh thu', iconClass: icons.iconDollar, href: config.routes.analyticRevenues },
+  { label: 'Người dùng', iconClass: icons.iconUser, href: config.routes.analyticUsers },
+  { label: 'Nội dung', iconClass: icons.iconMusic, href: config.routes.analyticContents },
+  { label: 'Nghệ sĩ & Album', iconClass: icons.iconCompactDisc, href: config.routes.analyticArtists },
+];
 
 function Sidebar() {
   const { roles } = useAuth();
@@ -67,9 +67,9 @@ function Sidebar() {
   }
 
   // Nếu đang ở trang analytic
-  //   else if (pathname.startsWith(config.routes.analytic)) {
-  //     menuItems = itemsAnalytic;
-  //   }
+  else if (pathname.startsWith(config.routes.analytic)) {
+    menuItems = itemsAnalytic;
+  }
 
   // Nếu là trang user bình thường
   else {
