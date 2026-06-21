@@ -30,3 +30,4 @@ export { default as GenreManage } from './Management/GenreManage';
 export { default as VoucherManage } from './Management/VoucherManage';
 
 export { default as Analytic } from './Analysis/Analytic';
+export { default as RevenuesAnalytic } from './Analysis/RevenuesAnalytic';

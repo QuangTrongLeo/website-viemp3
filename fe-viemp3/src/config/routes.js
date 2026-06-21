@@ -33,6 +33,7 @@ const routes = {
   manageVouchers: '/manage/vouchers',
 
   analytic: '/analytic',
+  analyticRevenues: '/analytic/revenues', // Doanh thu
 };
 
 export default routes;
