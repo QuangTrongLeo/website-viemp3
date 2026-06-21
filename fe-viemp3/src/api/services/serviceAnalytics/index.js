@@ -84,3 +84,18 @@ export async function apiGetMonthlyRevenue() {
     throw error;
   }
 }
+
+// ===== GENRE =====
+export async function apiGetGenreStatistics() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${apiAnalyticUrl}/genres`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+}

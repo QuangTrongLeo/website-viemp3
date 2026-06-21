@@ -31,3 +31,6 @@ export { default as VoucherManage } from './Management/VoucherManage';
 
 export { default as Analytic } from './Analysis/Analytic';
 export { default as RevenuesAnalytic } from './Analysis/RevenuesAnalytic';
+export { default as ArtistsAnalytic } from './Analysis/ArtistsAnalytic';
+export { default as ContentsAnalytic } from './Analysis/ContentsAnalytic';
+export { default as UsersAnalytic } from './Analysis/UsersAnalytic';
