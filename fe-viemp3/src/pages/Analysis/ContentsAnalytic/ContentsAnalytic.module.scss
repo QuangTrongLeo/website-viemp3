@@ -1,0 +1,243 @@
+// Variables cho Breakpoints
+$tablet: 1024px;
+$mobile: 768px;
+
+.wrapper {
+  padding-bottom: 2rem;
+  padding-inline: 1rem; // Thêm padding 2 bên cho mobile
+}
+
+.editorial-header {
+  font-size: clamp(2rem, 5vw, 3rem); // Tự động co giãn font chữ
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #a7a7a7;
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+
+  // Mobile: Chuyển tất cả về 1 cột
+  @media (max-width: $mobile) {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.card {
+  background: #121212;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid #1f1f1f;
+  transition: all 0.3s ease;
+
+  .chart-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.total-songs {
+  grid-column: span 5;
+
+  @media (max-width: $tablet) {
+    grid-column: span 12; // Chiếm hết hàng trên Tablet
+  }
+
+  .number {
+    color: #1db954;
+    font-size: clamp(2.5rem, 8vw, 3rem);
+    font-weight: 800;
+  }
+}
+
+.genre-chart {
+  grid-column: span 7;
+
+  @media (max-width: $tablet) {
+    grid-column: span 12;
+  }
+
+  .chart-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1.5rem;
+
+    @media (max-width: $mobile) {
+      flex-direction: column; // Xếp dọc biểu đồ và chú thích trên mobile
+      text-align: center;
+    }
+  }
+}
+
+.top-lists-wrapper {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+
+  @media (max-width: $tablet) {
+    grid-template-columns: 1fr; // Chuyển thành 1 cột trên tablet/mobile
+  }
+}
+
+.top-list-item {
+  height: fit-content;
+
+  .song-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    transition: 0.2s;
+
+    &:hover {
+      background: #282828;
+      .rank {
+        color: #1db954;
+      }
+    }
+
+    .rank {
+      width: 1.5rem;
+      font-weight: 800;
+      color: #555;
+      flex-shrink: 0;
+    }
+
+    .thumb {
+      width: 3.5rem;
+      height: 3.5rem;
+      margin: 0 1rem;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .song-info {
+      flex: 1;
+      min-width: 0;
+      .name {
+        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .description {
+        font-size: 12px;
+        color: #a7a7a7;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .stats {
+      text-align: right;
+      margin-left: 1rem;
+      flex-shrink: 0;
+
+      .views {
+        font-weight: 800;
+        &.heart {
+          color: #f472b6;
+        }
+      }
+      .sub {
+        font-size: 10px;
+        color: #a7a7a7;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.circular-chart {
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  flex-shrink: 0;
+
+  svg {
+    transform: rotate(-90deg);
+  }
+  .base-circle {
+    fill: transparent;
+    stroke: #1a1a1a;
+  }
+  .segment {
+    fill: transparent;
+    stroke-width: 3.8;
+  }
+
+  .chart-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .count {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  }
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+
+  @media (max-width: $mobile) {
+    width: 100%;
+    grid-template-columns: 1fr; // 1 cột cho chú thích trên mobile cực nhỏ
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .info {
+      font-size: 11px;
+      color: #a7a7a7;
+    }
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 1.2rem;
+  color: #1db954;
+}
