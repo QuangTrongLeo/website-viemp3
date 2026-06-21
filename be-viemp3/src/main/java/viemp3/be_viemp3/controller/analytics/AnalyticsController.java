@@ -1,17 +1,16 @@
 package viemp3.be_viemp3.controller.analytics;
 
+import viemp3.be_viemp3.common.response.ApiResponse;
+import viemp3.be_viemp3.dto.response.analytics.*;
+import viemp3.be_viemp3.service.analytic.FinanceStatisticsService;
+import viemp3.be_viemp3.service.analytic.GenreStatisticsService;
+import viemp3.be_viemp3.service.analytic.ListenStatisticsService;
+import viemp3.be_viemp3.service.analytic.UserStatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import viemp3.be_viemp3.common.response.ApiResponse;
-import viemp3.be_viemp3.dto.response.analytics.ListenStatisticsResponse;
-import viemp3.be_viemp3.dto.response.analytics.MonthlyRevenueResponse;
-import viemp3.be_viemp3.dto.response.analytics.PackageDistributionResponse;
-import viemp3.be_viemp3.dto.response.analytics.RevenueStatisticsResponse;
-import viemp3.be_viemp3.service.analytic.FinanceStatisticsService;
-import viemp3.be_viemp3.service.analytic.ListenStatisticsService;
 
 import java.util.List;
 
@@ -20,8 +19,39 @@ import java.util.List;
 @RequestMapping("${api.vie-mp3-url}/analytics")
 @RequiredArgsConstructor
 public class AnalyticsController {
+
+    private final UserStatisticsService userStatisticsService;
     private final ListenStatisticsService listenStatisticsService;
+    private final GenreStatisticsService genreStatisticsService;
     private final FinanceStatisticsService financeStatisticsService;
+
+    // ===== USER STATS =====
+    @GetMapping("/users/status")
+    public ApiResponse<List<UserStatisticsResponse>> getUserStatusStats() {
+        return ApiResponse.<List<UserStatisticsResponse>>builder()
+                .success(true)
+                .message("Lấy thống kê trạng thái tài khoản thành công")
+                .data(userStatisticsService.getStatusStatistics())
+                .build();
+    }
+
+    @GetMapping("/users/roles")
+    public ApiResponse<List<UserStatisticsResponse>> getUserRoleStats() {
+        return ApiResponse.<List<UserStatisticsResponse>>builder()
+                .success(true)
+                .message("Lấy thống kê vai trò hệ thống thành công")
+                .data(userStatisticsService.getSystemRoleStatistics())
+                .build();
+    }
+
+    @GetMapping("/users/memberships")
+    public ApiResponse<List<UserStatisticsResponse>> getUserMembershipStats() {
+        return ApiResponse.<List<UserStatisticsResponse>>builder()
+                .success(true)
+                .message("Lấy thống kê phân bổ hội viên thành công")
+                .data(userStatisticsService.getMembershipStatistics())
+                .build();
+    }
 
     // ===== LISTEN =====
     @GetMapping("/listen/day")
@@ -48,6 +78,16 @@ public class AnalyticsController {
                 .success(true)
                 .message("Lấy thống kê lượt nghe theo tháng thành công")
                 .data(listenStatisticsService.getListenByMonth())
+                .build();
+    }
+
+    // ===== GENRE =====
+    @GetMapping("/genres")
+    public ApiResponse<List<GenreStatisticsResponse>> getGenreStatistics() {
+        return ApiResponse.<List<GenreStatisticsResponse>>builder()
+                .success(true)
+                .message("Lấy thống kê tỷ trọng thể loại thành công")
+                .data(genreStatisticsService.getGenreStatistics())
                 .build();
     }
 
