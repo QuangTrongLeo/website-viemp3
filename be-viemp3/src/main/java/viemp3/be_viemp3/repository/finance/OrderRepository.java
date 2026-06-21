@@ -25,5 +25,11 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("SELECT SUM(o.totalPrice) FROM Order o WHERE o.status = 'COMPLETED'")
     Double sumTotalRevenueByCompletedStatus();
 
+    @Query("SELECT o.aPackage.pkg, o.aPackage.duration, COUNT(o) " +
+            "FROM Order o " +
+            "WHERE o.status = 'COMPLETED' " +
+            "GROUP BY o.aPackage.pkg, o.aPackage.duration")
+    List<Object[]> countOrdersByPackageGrouped();
+
     long countByStatus(OrderStatus status);
 }

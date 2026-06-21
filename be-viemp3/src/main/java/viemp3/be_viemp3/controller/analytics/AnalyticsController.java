@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.response.analytics.ListenStatisticsResponse;
+import viemp3.be_viemp3.dto.response.analytics.PackageDistributionResponse;
 import viemp3.be_viemp3.dto.response.analytics.RevenueStatisticsResponse;
 import viemp3.be_viemp3.service.analytic.FinanceStatisticsService;
 import viemp3.be_viemp3.service.analytic.ListenStatisticsService;
@@ -56,6 +57,15 @@ public class AnalyticsController {
                 .success(true)
                 .message("Lấy thống kê doanh thu thành công")
                 .data(financeStatisticsService.getRevenueStatistics())
+                .build();
+    }
+
+    @GetMapping("/finance/packages")
+    public ApiResponse<List<PackageDistributionResponse>> getPackageDistribution() {
+        return ApiResponse.<List<PackageDistributionResponse>>builder()
+                .success(true)
+                .message("Lấy thống kê phân bổ gói cước thành công")
+                .data(financeStatisticsService.getPackageDistribution())
                 .build();
     }
 }
