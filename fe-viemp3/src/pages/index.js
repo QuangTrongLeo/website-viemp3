@@ -28,3 +28,5 @@ export { default as OrderManage } from './Management/OrderManage';
 export { default as AccountManage } from './Management/AccountManage';
 export { default as GenreManage } from './Management/GenreManage';
 export { default as VoucherManage } from './Management/VoucherManage';
+
+export { default as Analytic } from './Analysis/Analytic';

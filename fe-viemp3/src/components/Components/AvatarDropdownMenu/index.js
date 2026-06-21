@@ -29,6 +29,17 @@ function AvatarDropdownMenu({ isMod, isAdmin }) {
         </>
       )}
 
+      {/* ADMIN */}
+      {isAdmin && (
+        <>
+          <li>
+            <Link className="dropdown-item" to={config.routes.analytic}>
+              <i className="fas fa-chart-column me-2"></i> Thống kê
+            </Link>
+          </li>
+        </>
+      )}
+
       <li>
         <hr className="dropdown-divider" />
       </li>

@@ -25,7 +25,7 @@ import {
 import { Manage, AlbumManage, ArtistManage, SongManage, AccountManage, GenreManage, VoucherManage } from '~/pages';
 
 // adminRoutes
-import { PackageManage, OrderManage } from '~/pages';
+import { Analytic, PackageManage, OrderManage } from '~/pages';
 
 const publishRoutes = [
   { path: config.routes.home, component: Home },
@@ -58,14 +58,15 @@ const modRoutes = [
   { path: config.routes.manageAlbums, component: AlbumManage },
   { path: config.routes.manageArtists, component: ArtistManage },
   { path: config.routes.manageSongs, component: SongManage },
-  { path: config.routes.manageAccounts, component: AccountManage },
   { path: config.routes.manageGenres, component: GenreManage },
   { path: config.routes.manageVouchers, component: VoucherManage },
 ];
 
 const adminRoutes = [
+  { path: config.routes.manageAccounts, component: AccountManage },
   { path: config.routes.managePackages, component: PackageManage },
   { path: config.routes.manageOrders, component: OrderManage },
+  { path: config.routes.analytic, component: Analytic },
 ];
 
 export { publishRoutes, userRoutes, modRoutes, adminRoutes };

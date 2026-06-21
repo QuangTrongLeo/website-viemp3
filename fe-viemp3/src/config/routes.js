@@ -31,6 +31,8 @@ const routes = {
   managePackages: '/manage/packages',
   manageOrders: '/manage/orders',
   manageVouchers: '/manage/vouchers',
+
+  analytic: '/analytic',
 };
 
 export default routes;
