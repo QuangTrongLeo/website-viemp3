@@ -1,0 +1,154 @@
+$bg-black: #0e0e0e;
+$surface: #1a1a1a;
+$surface-container-low: #131313;
+$primary: #1db954;
+$tertiary: #0fe3ff;
+$text-dim: #adaaaa;
+
+// .wrapper {
+//   background-color: $bg-black;
+//   min-height: 100vh;
+//   padding: 48px;
+//   color: white;
+//   font-family: 'Inter', sans-serif;
+// }
+
+.main-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.card {
+  background-color: $surface;
+  padding: 32px;
+  border-radius: 16px;
+
+  &.col-8 {
+    grid-column: span 8;
+  }
+  &.col-4 {
+    grid-column: span 4;
+  }
+  &.col-12 {
+    grid-column: span 12;
+  }
+}
+
+.metric-card {
+  background-color: $bg-black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .icon-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba($primary, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary;
+  }
+}
+
+// Chart Styling
+.chart-container {
+  height: 256px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 8px;
+  position: relative;
+}
+
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 48px;
+
+  .bar-bg {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    transition: all 0.3s;
+
+    &:hover {
+      background: rgba($primary, 0.2);
+      .tooltip {
+        opacity: 1;
+      }
+    }
+  }
+
+  .bar-active {
+    background: rgba($primary, 0.4);
+  }
+
+  .label {
+    font-size: 10px;
+    font-weight: 700;
+    color: $text-dim;
+    &.active {
+      color: $primary;
+    }
+  }
+
+  .tooltip {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}
+
+// Table Styling
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+
+    th {
+      padding: 16px 32px;
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: $text-dim;
+    }
+
+    td {
+      padding: 20px 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+.badge-student {
+  background: rgba($tertiary, 0.1);
+  color: $tertiary;
+}
+.badge-individual {
+  background: rgba($primary, 0.1);
+  color: $primary;
+}
