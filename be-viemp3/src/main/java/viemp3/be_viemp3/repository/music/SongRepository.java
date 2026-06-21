@@ -16,10 +16,8 @@ public interface SongRepository extends JpaRepository<Song, String> {
     List<Song> findByAlbumId(String albumId);
     List<Song> findByGenreId(String genreId);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE Song s SET s.listenCount = s.listenCount + 1 WHERE s.id = :songId")
-    void incrementListenCount(@Param("songId") String songId);
+    @Query("SELECT s.genre.name, COUNT(s) FROM Song s GROUP BY s.genre.name")
+    List<Object[]> countSongsByGenre();
 
     @Modifying
     @Transactional
@@ -35,4 +33,9 @@ public interface SongRepository extends JpaRepository<Song, String> {
         WHERE s.id = :songId
     """)
     void decrementFavorites(@Param("songId") String songId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Song s SET s.listenCount = s.listenCount + 1 WHERE s.id = :songId")
+    void incrementListenCount(@Param("songId") String songId);
 }

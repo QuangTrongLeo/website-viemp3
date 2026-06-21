@@ -2,7 +2,6 @@ package viemp3.be_viemp3.controller.auth;
 
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.response.auth.RoleResponse;
-import viemp3.be_viemp3.dto.response.auth.UserResponse;
 import viemp3.be_viemp3.service.auth.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
