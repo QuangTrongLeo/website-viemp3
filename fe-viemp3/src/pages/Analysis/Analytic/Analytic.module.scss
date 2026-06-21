@@ -1,0 +1,145 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 36px;
+    font-weight: 850;
+    span {
+      color: var(--primary-color);
+    }
+  }
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2%;
+  margin-bottom: 2%;
+
+  .card {
+    background: #121212;
+    padding: 12px;
+    border-radius: 20px;
+    border: 1px solid #1f1f1f;
+
+    .cardHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      .cardIcon {
+        color: var(--primary-color);
+        background: rgba(29, 185, 84, 0.1);
+        padding: 8px;
+        border-radius: 8px;
+      }
+
+      .trend {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--primary-color);
+        &.down {
+          color: #eb5757;
+        }
+      }
+    }
+
+    .cardTitle {
+      font-size: 14px;
+      color: #a7a7a7;
+      margin-bottom: 4px;
+    }
+
+    .cardValue {
+      font-size: 26px;
+      font-weight: 800;
+      .unit {
+        font-size: 14px;
+        color: #a7a7a7;
+      }
+    }
+  }
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.chartBox,
+.artistBox {
+  background: #121212;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #1f1f1f;
+  height: fit-content;
+}
+
+.boxHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.boxTitle {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.selectFilter {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.artistList {
+  flex-direction: column;
+
+  .artistItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: 0.2s;
+
+    &:hover {
+      background: #1f1f1f;
+    }
+
+    .rank {
+      width: 12px;
+      color: #555;
+      font-weight: 700;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .artistInfo {
+      flex: 1;
+      .artistName {
+        font-weight: 600;
+        font-size: 14px;
+      }
+    }
+
+    .artistStats {
+      font-weight: 700;
+      color: var(--primary-color);
+      font-size: 14px;
+    }
+  }
+}
