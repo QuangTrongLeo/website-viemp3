@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '~/components/Components/AuthProvider';
+import { googleAuthURL } from '~/utils/httpBaseURL';
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import images from '~/assets/images';
@@ -19,7 +20,7 @@ function Login({ showNotification }) {
   const [password, setPassword] = useState('');
 
   const handleLoginGoogle = () => {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    window.location.href = googleAuthURL;
   };
 
   const handleLogin = async e => {
