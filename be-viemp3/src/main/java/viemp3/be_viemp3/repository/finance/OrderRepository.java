@@ -21,4 +21,9 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Modifying
     @Transactional
     void deleteByIdAndStatus(String id, OrderStatus status);
+
+    @Query("SELECT SUM(o.totalPrice) FROM Order o WHERE o.status = 'COMPLETED'")
+    Double sumTotalRevenueByCompletedStatus();
+
+    long countByStatus(OrderStatus status);
 }

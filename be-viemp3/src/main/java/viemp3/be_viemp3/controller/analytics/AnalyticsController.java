@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import viemp3.be_viemp3.common.response.ApiResponse;
 import viemp3.be_viemp3.dto.response.analytics.ListenStatisticsResponse;
+import viemp3.be_viemp3.dto.response.analytics.RevenueStatisticsResponse;
+import viemp3.be_viemp3.service.analytic.FinanceStatisticsService;
 import viemp3.be_viemp3.service.analytic.ListenStatisticsService;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnalyticsController {
     private final ListenStatisticsService listenStatisticsService;
+    private final FinanceStatisticsService financeStatisticsService;
 
     // ===== LISTEN =====
     @GetMapping("/listen/day")
@@ -43,6 +46,16 @@ public class AnalyticsController {
                 .success(true)
                 .message("Lấy thống kê lượt nghe theo tháng thành công")
                 .data(listenStatisticsService.getListenByMonth())
+                .build();
+    }
+
+    // ===== FINANCE STATS =====
+    @GetMapping("/finance/revenue")
+    public ApiResponse<RevenueStatisticsResponse> getRevenueStatistics() {
+        return ApiResponse.<RevenueStatisticsResponse>builder()
+                .success(true)
+                .message("Lấy thống kê doanh thu thành công")
+                .data(financeStatisticsService.getRevenueStatistics())
                 .build();
     }
 }
