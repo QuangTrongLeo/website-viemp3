@@ -25,4 +25,10 @@ public class ListenStatisticsService {
         List<Object[]> results = listenHistoryRepository.getListenStatsByWeekNative();
         return listenStatisticsMapper.toResponseList(results);
     }
+
+    // Thống kê theo tháng
+    public List<ListenStatisticsResponse> getListenByMonth() {
+        List<Object[]> results = listenHistoryRepository.getListenStatsByMonthNative();
+        return listenStatisticsMapper.toResponseList(results);
+    }
 }

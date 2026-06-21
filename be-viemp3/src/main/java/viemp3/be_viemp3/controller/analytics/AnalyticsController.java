@@ -36,4 +36,13 @@ public class AnalyticsController {
                 .data(listenStatisticsService.getListenByWeek())
                 .build();
     }
+
+    @GetMapping("/listen/month")
+    public ApiResponse<List<ListenStatisticsResponse>> getListenByMonth() {
+        return ApiResponse.<List<ListenStatisticsResponse>>builder()
+                .success(true)
+                .message("Lấy thống kê lượt nghe theo tháng thành công")
+                .data(listenStatisticsService.getListenByMonth())
+                .build();
+    }
 }

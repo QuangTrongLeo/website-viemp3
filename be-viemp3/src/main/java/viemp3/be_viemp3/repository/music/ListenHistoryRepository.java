@@ -37,4 +37,16 @@ public interface ListenHistoryRepository extends JpaRepository<ListenHistory, St
         ORDER BY period ASC
     """, nativeQuery = true)
     List<Object[]> getListenStatsByWeekNative();
+
+    // Thống kê theo tháng
+    @Query(value = """
+        SELECT 
+            DATE_FORMAT(lh.listened_at, '%Y-%m') as period, 
+            SUM(s.listen_count) as totalListen 
+        FROM listen_history lh
+        JOIN songs s ON lh.song_id = s.id
+        GROUP BY period 
+        ORDER BY period ASC
+    """, nativeQuery = true)
+    List<Object[]> getListenStatsByMonthNative();
 }
