@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # --- CƠ SỞ DỮ LIỆU MYSQL ---
+  mysqldb:
+    image: mysql:8.0
+    container_name: vie-mp3-mysql
+    restart: always
+    env_file: .env
+    ports:
+      - "3307:3306"
+    environment:
+      # Ép Docker cho phép MySQL chạy mà không cần mật khẩu
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: ${SPRING_DATASOURCE_NAME_DB}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./viemp3-dump.sql:/docker-entrypoint-initdb.d/viemp3-dump.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- SPRING BOOT BACKEND ---
+  spring-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vie-mp3-backend
+    restart: always
+    ports:
+      - "${SERVER_LOCAL_PORT:-8080}:8080"
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      # Backend nội bộ gọi thẳng vào tên service và cổng nội bộ 3306 của container DB
+      SPRING_DATASOURCE_HOST: mysqldb
+      SPRING_DATASOURCE_PORT: 3306
+      # Truyền các biến môi trường từ file .env vào ứng dụng Spring
+      SPRING_DATASOURCE_NAME_DB: ${SPRING_DATASOURCE_NAME_DB}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+
+      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD}
+
+      APP_FE_MAIN_DOMAIN: ${FRONTEND_DOMAIN}
+
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_ACCESS_TOKEN_EXPIRATION: ${JWT_ACCESS_TOKEN_EXPIRATION}
+      JWT_REFRESH_TOKEN_EXPIRATION: ${JWT_REFRESH_TOKEN_EXPIRATION}
+
+      CLOUDINARY_NAME: ${CLOUDINARY_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+
+      MOD_USERNAME: ${MOD_USERNAME}
+      MOD_EMAIL: ${MOD_EMAIL}
+      MOD_PASSWORD: ${MOD_PASSWORD}
+
+      VNP_URL: ${VNP_URL}
+      VNP_CALLBACK_PATH: ${VNP_CALLBACK_PATH}
+      VNP_TMN_CODE: ${VNP_TMN_CODE}
+      VNP_HASH_SECRET: ${VNP_HASH_SECRET}
+      VNP_API_URL: ${VNP_API_URL}
+
+      OPEN_API_KEY: ${OPEN_API_KEY}
+
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+
+      API_VIE_MP3_URL: ${API_VIE_MP3_URL}
+    volumes:
+      - ./uploads:/app/uploads
+
+volumes:
+  mysql_data:
