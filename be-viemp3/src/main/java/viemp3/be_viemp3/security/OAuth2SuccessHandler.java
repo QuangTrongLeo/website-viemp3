@@ -2,6 +2,7 @@ package viemp3.be_viemp3.security;
 
 import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import viemp3.be_viemp3.entity.User;
 import viemp3.be_viemp3.service.auth.JwtService;
 import viemp3.be_viemp3.service.auth.UserService;
@@ -19,6 +20,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final UserService userService;
     private final JwtService jwtService;
 
+    @Value("${app.fe.main-domain}")
+    private String frontendDomain;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
@@ -34,8 +38,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
-        String domain = "http://localhost:3000";
-        String redirectUrl = domain + "/oauth2/redirect"
+        // Chuỗi URL redirect linh hoạt theo môi trường local / EC2
+        String redirectUrl = frontendDomain + "/oauth2/redirect"
                 + "?accessToken=" + accessToken
                 + "&refreshToken=" + refreshToken;
 
